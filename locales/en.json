@@ -67,7 +67,8 @@
         "terms_and_conditions" : "Terms and Conditions",
         "already_have_account" : "You already have an account ?",
         "activation_code" : "activation code",
-        "select_city" : "Select city"
+        "select_city" : "Select city",
+        "location" : "Location"
     },
 
     "Home": {
@@ -103,7 +104,9 @@
         "my_car" : "My car",
         "branches" : "Branches",
         "branch_managers" : "Branch managers",
-        "electronic_contract" : "Electronic contract"
+        "electronic_contract" : "Electronic contract",
+        "privacy_policies" : "Privacy policies",
+        "who_are_we" : "who are we"
     },
 
     "Global": {
@@ -227,7 +230,8 @@
         "month": "Month",
         "number_rental_days": "Number of rental days",
         "driver_fees": "Driver fees",
-        "sure_logout": "Are you sure you want to log out"
+        "sure_logout": "Are you sure you want to log out",
+        "search_here": "Search here"
     },
 
     "order": {

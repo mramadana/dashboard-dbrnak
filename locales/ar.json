@@ -14,7 +14,7 @@
         "image": "الصورة مطلوبة",
         "name": "من فضلك أدخل الاسم",
         "phone": "من فضلك أدخل رقم الهاتف",
-        "email": "من فضلك أدخل Email صحيح",
+        "email": "من فضلك أدخل البريد الالكترونى صحيح",
         "password": "من فضلك أدخل كلمة المرور",
         "confirmPassword": "كلمة المرور غير متطابقة",
         "search": "كلمة البحث مطلوبة",
@@ -67,7 +67,8 @@
         "terms_and_conditions" : "الشروط والإحكام",
         "already_have_account" : "لديك حساب بالفعل ؟",
         "activation_code" : "كود التفعيل",
-        "select_city" : "اختر المدينة"
+        "select_city" : "اختر المدينة",
+        "location" : "الموقع"
     },
 
     "Home": {
@@ -103,7 +104,9 @@
         "my_car" : "سياراتي",
         "branches" : "الفروع",
         "branch_managers" : "مديرين الفروع",
-        "electronic_contract" : "العقد الإلكتروني"
+        "electronic_contract" : "العقد الإلكتروني",
+        "privacy_policies" : "سياسات الخصوصية",
+        "who_are_we" : "من نحن"
     },
 
     "Global": {
@@ -228,7 +231,8 @@
         "month": "شهر",
         "number_rental_days": "عدد ايام التأجير",
         "driver_fees": "رسوم السائق",
-        "sure_logout": "هل انت متأكد من تسجيل الخروج"
+        "sure_logout": "هل انت متأكد من تسجيل الخروج",
+        "search_here": "ابحث هنا"
     },
 
     "order": {

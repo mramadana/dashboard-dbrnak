@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="layout-form custom-width">
                     <img src="@/assets/images/black_logo.png" alt="login-logo" class="login-logo" loading="lazy">
-                    <h1 class="main-title bold lg mb-5">{{ $t("Auth.create_account") }}</h1>
+                    <h1 class="main-title bold lg mb-4">{{ $t("Auth.create_account") }}</h1>
                     <form @submit.prevent="signUp" ref="signUpForm">
                         <div class="row">
                             <div class="col-12 col-md-10 mr-auto">
@@ -78,11 +78,11 @@
     
                                 <div class="form-group" @click="openmodal">
                                     <label class="label">
-                                        الموقع
+                                        {{ $t('Auth.location') }}
                                     </label>
                                     <div class="main_input pointer">
                                         <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon pointer" readonly :value="address"  placeholder="ادخل الموقع">
+                                        <input type="text" class="custum-input-icon pointer" readonly  v-model="mainAddress"  placeholder="ادخل الموقع">
                                     </div>
                                 </div>
     
@@ -108,11 +108,86 @@
                                             </button>
                                         </div>
                                 </div>
+
+                                <div class="parent-imgs">
+
+                                    <div class="form-group">
+                                        <div class="input_auth without-edit">
+                                            <img
+                                                src="@/assets/images/upload_img.png"
+                                                loading="lazy"
+                                                alt="default-img"
+                                                :class="{'hidden-default': uploadedImage.length !== 0,'default-class': true,}"/>
+                                            <span :class="{'hidden-default': uploadedImage.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <GlobalImgUploader
+                                                acceptedFiles="image/*"
+                                                name="commercial_image"
+                                                v-model="commercial_image"
+                                                @uploaded-images-updated="updateUploadedImages_1"
+                                                class="validInputs"
+                                            />
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <div class="input_auth without-edit">
+                                            <img
+                                                src="@/assets/images/upload_img.png"
+                                                loading="lazy"
+                                                alt="default-img"
+                                                :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
+                                            <span :class="{'hidden-default': uploadedImage_2.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <GlobalImgUploader
+                                                acceptedFiles="application/*"
+                                                name="file"
+                                                v-model="file"
+                                                @uploaded-images-updated="updateUploadedImages_2"
+                                                class="validInputs"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input_auth without-edit">
+                                            <img
+                                                src="@/assets/images/upload_img.png"
+                                                loading="lazy"
+                                                alt="default-img"
+                                                :class="{'hidden-default': uploadedImage_3.length !== 0,'default-class': true,}"/>
+                                            <span :class="{'hidden-default': uploadedImage_3.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <GlobalImgUploader
+                                                acceptedFiles="image/*"
+                                                name="logo"
+                                                v-model="logo"
+                                                @uploaded-images-updated="updateUploadedImages_3"
+                                                class="validInputs"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
         
                                 <div class="radios form-group check-inner mb-4">
                                     <div class="d-flex gap-3">
                                         <label class="custom-radio custom-check">
                                             <input type="checkbox" name="terms" v-model="terms" class="d-none">
+                                            <span class="mark">
+                                                <i class="fas fa-check icon"></i>
+                                            </span>
+                                            <p class="check-text hint">
+                                            {{ $t("Auth.agree_to") }}
+                                            <NuxtLink to="/terms" target="_blank" class="anchor">
+                                                {{ $t("Auth.terms_and_conditions") }}
+                                            </NuxtLink >
+                                            </p>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="radios form-group check-inner mb-4">
+                                    <div class="d-flex gap-3">
+                                        <label class="custom-radio custom-check">
+                                            <input type="checkbox" name="elctronic_file" v-model="elctronic_file" class="d-none">
                                             <span class="mark">
                                                 <i class="fas fa-check icon"></i>
                                             </span>
@@ -157,7 +232,7 @@
             :current_location="currentLocation"
             :isDraggable="true"
             :closeModal_btn="closeModal_btn"
-            :title= "$t('Global.current_location')"
+            :title= "$t('Auth.location')"
         />
     </div>
 
@@ -191,33 +266,51 @@
     // google map
     const { lat, lng, address} = storeToRefs(store);
 
+    const mainAddress = ref("");
+
+    
     const closeModal_btn = ref(true);
-
+    
     const show_inputs = ref(false);
-
+    
     const visible = ref(false);
     const currentLocation = ref(false);
-
+    
     const signUpForm = ref(null);
     const selectedCountry = ref({})
     const countries = ref([]);
-
+    
     const errors = ref([]);
     const loading = ref(false);
     const terms = ref(false);
+    const elctronic_file = ref(false);
     const email = ref('');
     const password = ref('');
     const confirmPassword = ref('');
     const passwordVisible = ref({
         definitelyNewPassword: false,
     });
-
+    
     const city = ref(null);
     const cities = ref([]);
+    
+    const uploadedImage = ref([]);
+    const uploadedImage_2 = ref([]);
+    const uploadedImage_3 = ref([]);
+    const updateUploadedImages_1 = (images) => {
+        uploadedImage.value = images;
+    };
+    const updateUploadedImages_2 = (images) => {
+        uploadedImage_2.value = images;
+    };
+
+    const updateUploadedImages_3 = (images) => {
+        uploadedImage_3.value = images;
+    }
 
     const closeModal = () => {
         visible.value = false
-        
+        mainAddress.value = address.value
     }
 
     const handleClose = () => {
@@ -282,16 +375,16 @@
             }
         }
 
-        if (password.value !== confirmPassword.value) {
-            errors.value.push(t(`validation.confirmPassword`));
-        }
-
         if (!terms.value) {
             errors.value.push(t(`validation.conditions`));
         }
 
-        if(phone.value == 0) {
-            phone.value = null
+        if (!elctronic_file.value) {
+            errors.value.push(t(`validation.conditions8888546`));
+        }
+
+        if(!city.value) {
+            errors.value.push(t(`validation.city`));
         }
     };
 

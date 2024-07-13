@@ -230,11 +230,6 @@
 
 <style lang="scss">
 
-    .login-logo {
-        max-width: 150px;
-        margin-bottom: 15px;
-    }
-
     .login-text {
         position: relative;
         z-index: 1;

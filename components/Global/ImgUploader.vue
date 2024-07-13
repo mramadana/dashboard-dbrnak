@@ -21,9 +21,11 @@
           alt="Uploaded Image"
           class="test"
         />
-        <div v-else-if="acceptedFiles == 'application/*'">
-          <p>{{ image.file.name }}</p>
-          pdf text
+        <div class="w-100 h-100" v-else-if="acceptedFiles == 'application/*'">
+          <div class="file-name">
+            <i class="far fa-file-alt"></i>
+            {{ image.file.name }}
+          </div>
         </div>
         <button class="remove-btn" @click="removeImage(index)">
           <i class="fa-solid fa-xmark"></i>

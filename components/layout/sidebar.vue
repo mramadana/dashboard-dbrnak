@@ -3,10 +3,13 @@
 
         <div class="sidebar" :class="{ 'active': isActive }">
 
+            <!-- ***** close icon to close sidebar ***** -->
             <div class="colse-icon" @click="$emit('toggle-active')"><i class="fas fa-times"></i></div>
+
+            <!-- ***** sidebar logo ***** -->
             <div class="sidebar-logo">
-                <nuxt-link to="/">
-                    <img src="@/assets/images/logo.png" alt="">
+                <nuxt-link to="/" class="logo">
+                    <img src="@/assets/images/black_logo.png" alt="">
                 </nuxt-link>
             </div>
             
@@ -52,6 +55,41 @@
                         <img src="@/assets/images/sidebar/setting.png" alt="hint-img">
                     </div>
                     {{ $t('Home.settings') }}
+                </nuxt-link>
+
+                <nuxt-link class="link" to="" @click="handleResize">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/privacy.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.privacy_policies') }}
+                </nuxt-link>
+
+                <nuxt-link class="link" to="" @click="handleResize">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/later.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.terms_and_conditions') }}
+                </nuxt-link>
+
+                <nuxt-link class="link" to="" @click="handleResize">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/users.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.who_are_we') }}
+                </nuxt-link>
+
+                <nuxt-link class="link" to="" @click="handleResize">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/contact.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.connect_us') }}
+                </nuxt-link>
+
+                <nuxt-link class="link" to="" @click="handleResize">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/logout.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.logout') }}
                 </nuxt-link>
             </div>
 
