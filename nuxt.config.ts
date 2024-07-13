@@ -24,7 +24,7 @@ export default defineNuxtConfig({
         { name: "description", content: "موقع دبرناك لحجز وايجار السيارات" },
       ],
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/logo.jpg" },
+        { rel: "icon", type: "image/x-icon", href: "/black_logo.png" },
       ],
     },
   },

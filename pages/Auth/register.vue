@@ -82,7 +82,7 @@
                                     </label>
                                     <div class="main_input pointer">
                                         <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon pointer" readonly  v-model="mainAddress"  placeholder="ادخل الموقع">
+                                        <input type="text" class="custum-input-icon pointer validInputs" name="location_required" readonly  v-model="mainAddress"  :placeholder="$t('Auth.enter_loaction')">
                                     </div>
                                 </div>
     
@@ -110,15 +110,12 @@
                                 </div>
 
                                 <div class="parent-imgs">
-
                                     <div class="form-group">
                                         <div class="input_auth without-edit">
                                             <img
-                                                src="@/assets/images/upload_img.png"
-                                                loading="lazy"
-                                                alt="default-img"
+                                                src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
                                                 :class="{'hidden-default': uploadedImage.length !== 0,'default-class': true,}"/>
-                                            <span :class="{'hidden-default': uploadedImage.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <span :class="{'hidden-default': uploadedImage.length !== 0}">{{ $t("Auth.attach_commercial_register") }}</span>
                                             <GlobalImgUploader
                                                 acceptedFiles="image/*"
                                                 name="commercial_image"
@@ -136,7 +133,7 @@
                                                 loading="lazy"
                                                 alt="default-img"
                                                 :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
-                                            <span :class="{'hidden-default': uploadedImage_2.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <span :class="{'hidden-default': uploadedImage_2.length !== 0}">{{ $t("Auth.attach_file") }}</span>
                                             <GlobalImgUploader
                                                 acceptedFiles="application/*"
                                                 name="file"
@@ -154,7 +151,7 @@
                                                 loading="lazy"
                                                 alt="default-img"
                                                 :class="{'hidden-default': uploadedImage_3.length !== 0,'default-class': true,}"/>
-                                            <span :class="{'hidden-default': uploadedImage_3.length !== 0}">{{ $t("Global.attach_photo") }}</span>
+                                            <span :class="{'hidden-default': uploadedImage_3.length !== 0}">{{ $t("Auth.add_logo") }}</span>
                                             <GlobalImgUploader
                                                 acceptedFiles="image/*"
                                                 name="logo"
@@ -194,7 +191,7 @@
                                             <p class="check-text hint">
                                             {{ $t("Auth.agree_to") }}
                                             <NuxtLink to="/terms" target="_blank" class="anchor">
-                                                {{ $t("Auth.terms_and_conditions") }}
+                                                {{ $t("Home.electronic_contract") }}
                                             </NuxtLink >
                                             </p>
                                         </label>
@@ -360,10 +357,10 @@
     // get cities
     const getCities = async () => {
         await axios.get('cities').then(res => {
-        if (response(res) == "success") {
-            cities.value = res.data.data;
-        }
-    }).catch(err => console.log(err));
+            if (response(res) == "success") {
+                cities.value = res.data.data;
+            }
+        }).catch(err => console.log(err));
     };
 
     // Validation Function
@@ -380,7 +377,7 @@
         }
 
         if (!elctronic_file.value) {
-            errors.value.push(t(`validation.conditions8888546`));
+            errors.value.push(t(`validation.electronic_agreement`));
         }
 
         if(!city.value) {
@@ -390,8 +387,17 @@
 
     // signUp Function
     const signUp = async () => {
+
         const fd = new FormData(signUpForm.value);
         fd.append('country_code', selectedCountry.value.key);
+        fd.append('city_id', city.value.id);
+        fd.append('map_desc', mainAddress.value);
+        // append lang
+        if (localStorage.getItem('lang') == null) {
+                fd.append('lang', 'ar');
+            } else {
+                fd.append('lang', localStorage.getItem('lang'));
+            }
 
         validate();
         

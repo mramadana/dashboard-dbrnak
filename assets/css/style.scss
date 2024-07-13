@@ -1,5 +1,9 @@
 @import "variables", "dir-mixins", "settings", "classes", "all_6.css";
 
+html {
+  scroll-behavior: smooth;
+  }
+
 :root {
     --main: #000;
     --main-bg: #282A29;
@@ -78,6 +82,7 @@
     min-width: 150px;
     padding: 10px 9px;
     min-height: 45px;
+    font-size: 12px;
   }
   &.lg {
     min-width: 550px;
@@ -126,10 +131,6 @@
 .color-wh {
   color: #fff !important;
 }
-
-// .fade:not(.show) {
-//   display: none;
-// }
 
 
 .drop-lang, .dropdown-profile {
@@ -224,8 +225,6 @@
       }
     }
 }
-
-
 
 .inner-header {
     display: flex;
@@ -559,9 +558,9 @@ input.p-inputtext.p-component {
   }
 
   &.lg {
-    font-size: 20px;
+    font-size: 18px;
     @media (max-width: $screen-xs) {
-      font-size: 17px;
+      font-size: 15px;
     }
   }
   
@@ -571,6 +570,13 @@ input.p-inputtext.p-component {
   &.fw-500 {
     font-weight: 500;
   }
+}
+
+.head-title {
+  padding: 12px 20px;
+  border-bottom: 1.5px solid #f0f0f0;
+  margin-bottom: 0;
+  font-size: 16px;
 }
 
 
@@ -964,6 +970,9 @@ input.p-inputtext.p-component {
     flex-direction: column;
     font-size: 12px;
     gap: 8px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     .default-class {
       width: 30px;
       height: 25px;
@@ -1002,6 +1011,7 @@ input.p-inputtext.p-component {
 .main-cl {
     color: var(--main) !important;
 }
+
 .custom-pd {
   padding: 12px;
 }
@@ -1127,7 +1137,6 @@ input.p-inputtext.p-component {
 
   .sidebar-logo {
     display: flex;
-    padding: 20px 15px;
     gap: 15px;
     text-align: start;
     margin-bottom: 15px;
@@ -1374,6 +1383,12 @@ input.p-inputtext.p-component {
       text-align: center;
       font-size: 14px;
     }
+
+    .p-datatable .p-sortable-column .p-sortable-column-icon {
+      color: #fff;
+      margin-left: 0;
+      margin-inline-start: 6px;
+    }
   }
 
   .file-name {
@@ -1404,4 +1419,57 @@ input.p-inputtext.p-component {
     .form-group {
       margin-bottom: 15px;
     }
+  }
+
+  .layout-form {
+    background-color: var(--wh);
+    box-shadow: 0px 3px 30px #0000001A;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    padding: 45px 15px;
+    &.sm-radius {
+      border-radius: 10px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid #eee;
+      text-align: start;
+      margin-bottom: 0;
+    }
+  
+    &.sm {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      padding: 15px;
+      font-size: 13px;
+      color: #000;
+      font-weight: bold;
+      border-radius: 15px;
+      border: 1px solid #DBDBDB;
+    }
+  
+    .card-setting {
+      i {
+        #{$ltr} & {
+          transform: scale(-1);
+        }
+        #{$rtl} & {
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  .datatable-image-custom {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .table-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--main);
   }

@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="main-text">
                     <h1 class="main-title">{{ $t('Home.home') }}</h1>
-                    <p class="main-disc">{{ $t('Home.welcome') }} معرض صالح ، {{ $t('Home.welcome_back') }}</p>
+                    <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
                 </div>
 
                 <!-- home card -->
@@ -97,9 +97,7 @@
                     :columns="columns"
                     :rows="10"
                     :filters="filters"
-                    :showSearch="false"
-                    :sortable="false"
-                    ref="dataTableRef" />
+                    :sortable="true"/>
                 </div>
 
                 <!-- ***** datatable skeleton ***** -->
@@ -123,9 +121,15 @@ definePageMeta({
     middleware: 'check'
 });
 
+// Store
+const store = useAuthStore();
 
+const { token, user } = storeToRefs(store);
+
+
+// config
 const config = {
-  headers: { Authorization: `Bearer ${'255|jb0pOv4RKajk0W8VbNK6N4DwI47eXrIAkeWllELV'}` }
+    headers: { Authorization: `Bearer ${token.value}` }
 };
 
 import { useI18n } from 'vue-i18n';
@@ -135,9 +139,6 @@ const { t } = useI18n({ useScope: 'global' });
 
 // success response
 const { response } = responseApi();
-
-// Toast
-const { successToast, errorToast } = toastMsg();
 
 // Axios
 const axios = useApi();
@@ -166,8 +167,6 @@ const SkeletonProducts = new Array(columns.value.length);
 
 const getData = async () => {
     loading.value = true;
-    const newToken = '255|jb0pOv4RKajk0W8VbNK6N4DwI47eXrIAkeWllELV';
-    config.headers = { Authorization: `Bearer ${newToken}` };
   await axios.get(`provider/home?page=${currentPage.value}`, config).then(res => {
     if (response(res) == "success") {
       products.value = res.data.data.orders;

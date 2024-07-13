@@ -26,12 +26,23 @@
             <template v-if="index === 1 && showImage" #body="slotProps">
               <img
                 :src="slotProps.data.image"
-                alt="package-img"
+                loading="lazy"
                 class="shadow-4 datatable-image-custom"
               />
             </template>
           </Column>
         </div>
+
+
+        <!--*********** Route To Details ***********-->
+        <Column :field="routeTable.header" :header="routeTable.header" v-if="routeTable">
+            <template #body="slotProps">
+                <router-link :to="routeTable.path + '/' + slotProps.data[routeTable.id]" class="table_link">
+                    <span v-if="routeTable.proptext">{{ routeTable.proptext }}</span>
+                    <span class="table-icon" v-if="!routeTable.icon"><i class="fas fa-ellipsis-h"></i></span>
+                </router-link>
+            </template>
+        </Column>
 
         <!-- in this Column pass dropdown have all dialogs inside package page  -->
         <Column v-if="DropDownpackageDialog" header="">
@@ -141,7 +152,7 @@ const props = defineProps({
     rows: Number,
     showSearch: {
       type: Boolean,
-      default: true, // Show search by default, change to false when you want to hide it
+      default: false, // Show search by default, change to false when you want to hide it
     },
 
     sortable: {
@@ -149,14 +160,18 @@ const props = defineProps({
       default: true, // show sortable by default, change to false when you want to hide it
     },
 
-    imageProp: {
-      type: String,
-      required: false,
-      default: "image_2", // Set a default value if needed
+    showImage: {
+      type: Boolean,
+      default: false, // show image by default, change to false when you want to hide it
     },
+
     showOrderId: {
       type: Boolean,
       default: false, // hide showOrderId by default, change to true when you want to show it
+    },
+
+    routeTable: {
+        type: Object, // pass object with path and header
     },
 });
 

@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     // Sign In
     async signInHandler(formData) {
-      const resData = await axios.post("sign-in", formData);
+      const resData = await axios.post("provider/sign-in", formData);
       console.log(resData.data.key);
       if (resData.data.key == "needActive") {
         navigateTo("/Auth/activateAccount");
@@ -47,7 +47,7 @@ export const useAuthStore = defineStore("auth", {
 
     // Sign Up
     async signUpHandler(formData) {
-      const resData = await axios.post("sign-up", formData);
+      const resData = await axios.post("provider/sign-up", formData);
       if (response(resData) == "success") {
         this.user = resData.data.data;
         navigateTo("/Auth/activateAccount");
@@ -103,7 +103,7 @@ export const useAuthStore = defineStore("auth", {
       );
       if (response(resData) == "success") {
         this.newPhone = newPhone;
-        navigateTo("/mobileActivateCode");
+        navigateTo("/settings/mobileActivateCode");
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };
@@ -177,7 +177,7 @@ export const useAuthStore = defineStore("auth", {
       if (response(resData) == "success") {
         this.currentemail = currentemail;
         this.currentPasword = currentPasword;
-        navigateTo('/emailActivateCode');
+        navigateTo('/settings/emailActivateCode');
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };

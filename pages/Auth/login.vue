@@ -18,7 +18,7 @@
                                         <div class="with_cun_select">
                                             <div class="main_input">
                                                 <i class="fas fa-mobile-alt sm-icon"></i>
-                                                <input type="number" class="custum-input-icon" v-model="phone" name="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
+                                                <input type="number" class="custum-input-icon validInputs" valid="phone" v-model="phone" name="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
                                             </div>
                                             <div class="card d-flex justify-content-center dropdown_card">
                                                 <Dropdown

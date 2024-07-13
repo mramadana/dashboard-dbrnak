@@ -34,7 +34,13 @@
         "rate": "Rate is required",
         "message": "Message is required",
         "rentalPeriod": "Rental period must be at least 1 day",
-        "enter_details": "You must enter the order details first"
+        "enter_details": "You must enter the order details first",
+        "electronic_agreement": "The electronic agreement must be approved",
+        "city": "City is required",
+        "location_required" : "Location is required",
+        "commercial_image" : "The commercial register is required",
+        "file" : "Please select a file",
+        "logo" : "The logo is required"
       },
 
     "Auth": {
@@ -68,7 +74,12 @@
         "already_have_account" : "You already have an account ?",
         "activation_code" : "activation code",
         "select_city" : "Select city",
-        "location" : "Location"
+        "location" : "Location",
+        "attach_commercial_register" : "Attach the commercial register",
+        "enter_loaction" : "Enter your location",
+        "attach_file" : "Attach file",
+        "add_logo" : "Add logo",
+        "view_profile" : "View profile"
     },
 
     "Home": {
@@ -253,7 +264,8 @@
         "total_orders": "Total orders",
         "number_of_cars": "Number of cars",
         "number_of_branches": "number of branches",
-        "number_of_canceled_orders": "Number of canceled orders"
+        "number_of_canceled_orders": "Number of canceled orders",
+        "location_determined" : "The location has not been determined yet"
     },
     
     "Table" : {
@@ -262,7 +274,11 @@
         "order_number" : "Order number",
         "customer_name" : "Customer name",
         "car_name" : "Car name",
-        "date_of_order" : "Date of order"
+        "date_of_order" : "Date of order",
+        "car_image" : "Car image",
+        "car_type" : "Car type",
+        "vehicle_class" : "Vehicle class",
+        "car_model" : "Car model"
     }
 
 }

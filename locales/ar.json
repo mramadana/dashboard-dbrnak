@@ -34,7 +34,13 @@
         "rate": "التقييم مطلوب",
         "message": "الرسالة مطلوبة",
         "rentalPeriod": "يجب ان تكون مدة التأجير على الاقل 1",
-        "enter_details": "يجب ادخال تفاصيل الطلب اولا"
+        "enter_details": "يجب ادخال تفاصيل الطلب اولا",
+        "electronic_agreement": "يجب الموافقة على العقد الإلكتروني",
+        "city": "المدينة مطلوبة",
+        "location_required" : "الموقع مطلوب",
+        "commercial_image" : "صورة السجل التجارى مطلوبة",
+        "file" : "من فضلك أدخل الملف",
+        "logo" : "الشعار مطلوب"
       },
 
     "Auth": {
@@ -68,7 +74,12 @@
         "already_have_account" : "لديك حساب بالفعل ؟",
         "activation_code" : "كود التفعيل",
         "select_city" : "اختر المدينة",
-        "location" : "الموقع"
+        "location" : "الموقع",
+        "attach_commercial_register" : "إرفاق السجل التجاري",
+        "enter_loaction" : "ادخل موقعك",
+        "attach_file" : "إرفاق ملف",
+        "add_logo" : "إضافة لوجو",
+        "view_profile" : "عرض الملف الشخصي"
     },
 
     "Home": {
@@ -254,7 +265,8 @@
         "total_orders": "اجمالي الطلبات",
         "number_of_cars": "عدد السيارات",
         "number_of_branches": "عدد الفروع",
-        "number_of_canceled_orders": "عدد الطلبات الملغيه"
+        "number_of_canceled_orders": "عدد الطلبات الملغيه",
+        "location_determined" : "لم يتم تحديد الموقع بعد"
     },
     
     "Table" : {
@@ -263,7 +275,11 @@
         "order_number" : "رقم الطلب",
         "customer_name" : "اسم العميل",
         "car_name" : "اسم السيارة",
-        "date_of_order" : "تاريخ الطلب"
+        "date_of_order" : "تاريخ الطلب",
+        "car_image" : "صورة السيارة",
+        "car_type" : "نوع السيارة",
+        "vehicle_class" : "فئة السيارة",
+        "car_model" : "موديل السيارة"
     }
 
 }

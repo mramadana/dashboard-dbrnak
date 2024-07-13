@@ -1,11 +1,10 @@
 <template>
-    <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Global.change_password") }}</h1>
-
+    <div>
+        <h1 class="main-title bold head-title mb-5">{{ $t("Global.change_password") }}</h1>
+        <div class="container">
             <form @submit.prevent="changePassword" ref="changePasswordForm">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
+                <div class="row pb-4">
+                    <div class="col-12 col-md-6">
                         <div class="text-center mb-5">
                             <img src="@/assets/images/restore-img.png" loading="lazy" alt="restore-image" class="restore-image mb-4">
                             <p class="main-title">{{ $t("Global.enter_old_password_new_password") }}</p>
@@ -14,10 +13,9 @@
                         <div class="form-group">
                             <label class="label">
                                 {{ $t('Global.old_password') }}
-                                <span class="hint-red">*</span>
                             </label>
                             <div class="main_input with_icon">
-                                <input :type="inputType('oldPassword')" name="password" v-model="oldpassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
+                                <input :type="inputType('oldPassword')" name="old_password" v-model="old_password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
                                 <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('oldPassword')" :class="{ 'active_class': passwordVisible.oldPassword }">
                                 <i class="far fa-eye icon"></i>
                                 </button>
@@ -27,7 +25,6 @@
                         <div class="form-group">
                             <label class="label">
                                 {{ $t('Auth.new_password') }}
-                                <span class="hint-red">*</span>
                             </label>
                             <div class="main_input with_icon">
                                 <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
@@ -40,7 +37,6 @@
                         <div class="form-group">
                             <label class="label">
                                 {{ $t('Auth.definitely_new_password') }}
-                                <span class="hint-red">*</span>
                             </label>
                             <div class="main_input with_icon">
                                 <input :type="inputType('definitelyNewPassword_2')" name="confirmPassword" valid="confirmPassword" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
@@ -50,7 +46,7 @@
                             </div>
                         </div>
 
-                        <button class="custom-btn w-100 mr-auto">
+                        <button class="custom-btn md mr-auto">
                             {{ $t('Global.save') }}
                             <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
                         </button>
@@ -72,7 +68,7 @@
     import { useI18n } from 'vue-i18n';
     const store = useAuthStore();
     const { token } = storeToRefs(store);
-    const oldpassword = ref('');
+    const old_password = ref('');
     const errors = ref([]);
     const password = ref('');
     const confirmPassword = ref('');
@@ -115,13 +111,15 @@
     const changePassword = async () => {
         loading.value = true;
         const fd = new FormData(changePasswordForm.value);
+        // fd.append('oldpassword', oldpassword.value);
+        // fd.append('password', password.value);
         validate();
         if (errors.value.length) {
             errorToast(errors.value[0]);
             loading.value = false;
             errors.value = [];
         } else {
-            await axios.patch(`update-password?old_password=${oldpassword.value}&password=${password.value}`, fd, config).then(res => {
+            await axios.post(`update-passward?_method=patch`, fd, config).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
                     navigateTo('/settings');
@@ -131,8 +129,6 @@
                 loading.value = false;
             }).catch(err => console.log(err))
         }
-
-
         
     }
 

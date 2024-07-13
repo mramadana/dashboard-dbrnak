@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     // Store
     const store = useAuthStore();
-    const { isLoggedIn, hideElement } = storeToRefs(store);
+    const { isLoggedIn } = storeToRefs(store);
   
     // Toast
     const { errorToast } = toastMsg();
@@ -14,11 +14,11 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const nuxtApp = useNuxtApp();
     const t = nuxtApp.vueApp.config.globalProperties.$t;
 
-    // for auth
-
+    if (to.path === '/settings') {
     
-
-
+      return '/settings/profile';
+      
+    };
 
     // if user logged in
   

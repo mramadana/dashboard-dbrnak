@@ -1,13 +1,11 @@
 <template>
 
     <div>
-
+        <h1 class="main-title bold head-title mb-5">{{ $t("Global.change_mobile_number") }}</h1>
         <div class="container">
-            <div class="layout-form custom-width">
-                <h1 class="main-title bold lg mb-5">{{ $t("Global.change_mobile_number") }}</h1>
                 <form @submit.prevent="changePhone" ref="changePhoneForm">
-                    <div class="row">
-                        <div class="col-12 col-md-8 mr-auto">
+                    <div class="row pb-4">
+                        <div class="col-12 col-md-6">
                             <div class="text-center mb-5">
                                 <img src="@/assets/images/restore-img.png" loading="lazy" alt="restore-image" class="restore-image mb-4">
                                 <p class="main-title">{{ $t("Global.enter_current_password_new_mobile") }}</p>
@@ -15,7 +13,6 @@
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.password') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="main_input with_icon">
                                     <input :type="inputType" name="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
@@ -28,7 +25,6 @@
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Global.new_mobile') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="with_cun_select">
                                     <div class="main_input">
@@ -71,7 +67,7 @@
                                 </div>
                             </div>
     
-                            <button class="custom-btn w-100 mr-auto mt-5">
+                            <button class="custom-btn md mr-auto mt-5">
                                 {{ $t('Home.continuation') }}
 
                                 <span class="spinner-border spinner-border-sm" v-if="loading" role="status"
@@ -81,7 +77,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 
@@ -193,50 +188,3 @@
         await getCountries();
     });
 </script>
-
-<!-- <script>
-import dropdown_img from '@/assets/images/Flag.webp';
-import dropdown_img_1 from '@/assets/images/messi.gif';
-
-export default {
-    
-    data() {
-        return {
-            selectedCountry: {
-                    key: "+966",
-                    code: "SA",
-                    image: dropdown_img,
-            },
-            countries: [
-                {
-                key: "+966",
-                code: "SA",
-                image: dropdown_img_1,
-                },
-                {
-                key: "+20",
-                code: "Eg",
-                image: dropdown_img_1,
-                },
-            ],
-            passwordVisible: {
-                definitelyNewPassword: false,
-            }
-        }
-    },
-
-    methods: {
-        togglePasswordVisibility(input) {
-            this.passwordVisible[input] = !this.passwordVisible[input];
-        },
-
-        inputType(input) {
-            return this.passwordVisible[input] ? 'text' : 'password';
-        },
-
-        submitData() {
-            this.$router.push('/mobileActivateCode');
-        }
-    }
-}
-</script> -->

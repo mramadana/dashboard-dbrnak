@@ -15,11 +15,10 @@
                         </NuxtLink>
 
                         <div class="profile-hint resp-icon">
-                            <img :src="user.image" loading="lazy" alt="user-image" class="user-img">
-                            <p class="user-name notif-hint" v-if="user.name"> {{ $t("Auth.hello") }} {{ user.name }}</p>
+                            <img :src="user.image" loading="lazy" class="user-img">
                             <div class="hints">
-                                <p class="title">تيست </p>
-                                <p class="desc">تيست</p>
+                                <p class="title" v-if="user.name">{{ user.name }} </p>
+                                <p class="desc" v-if="user.type">{{ user.type }}</p>
                             </div>
                         </div>
 
@@ -71,7 +70,6 @@
 <script setup>
 
     import { useAuthStore } from '~/stores/auth';
-    import { useGlobalStore } from '~/stores/global';
     
     // Toast
     const { successToast, errorToast } = toastMsg();
@@ -83,8 +81,6 @@
     const store = useAuthStore();
 
     const isActive = ref(false);
-
-    const globalStore = useGlobalStore();
 
     const { user, isLoggedIn, token } = storeToRefs(store);
 
