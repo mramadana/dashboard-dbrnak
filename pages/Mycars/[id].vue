@@ -1,7 +1,11 @@
 <template>
     <div>
         <div class="container">
-            {{ id }}
+
+            <div class="main-text">
+                <h1 class="main-title">{{ $t('Global.car_details') }}</h1>
+                <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
+            </div>
 
             <div class="row">
                 <div class="col-12 col-xl-7 mb-5">
@@ -22,7 +26,8 @@
 
                     <div class="main-disc custom-desc">
                         <p v-if="carDetails?.description && !loading">{{ carDetails.description }}</p>
-                        <p v-else>{{ $t('Cars.no_description') }}</p>
+                        <p v-if="!carDetails?.description && !loading">{{ $t('Cars.no_description') }}</p>
+                        <Skeleton width="100px" height="10px" v-if="loading"></Skeleton>
                     </div>
 
                 </div>
@@ -55,13 +60,31 @@
     
                         <div class="item-details">
                             <h6 class="text">{{ $t('Cars.owner_car') }}</h6>
-                            <h6 class="text" v-if="!loading">{{ $t('Order.car_owner') }}</h6>
+                            <h6 class="text" v-if="!loading">{{ $t('Cars.car_owner') }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
 
                         <div class="item-details">
                             <h6 class="text">{{ $t('Cars.car_color') }}</h6>
                             <h6 class="text" v-if="!loading">{{ carDetails.color }}</h6>
+                            <skeleton v-if="loading" width="100px" height="10px"/>
+                        </div>
+
+                        <div class="item-details">
+                            <h6 class="text">{{ $t('Cars.branch_name') }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails.branch?.name }}</h6>
+                            <skeleton v-if="loading" width="100px" height="10px"/>
+                        </div>
+
+                        <div class="item-details">
+                            <h6 class="text">{{ $t('Cars.branch_address') }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails.branch?.map_desc }}</h6>
+                            <skeleton v-if="loading" width="100px" height="10px"/>
+                        </div>
+
+                        <div class="item-details">
+                            <h6 class="text">{{ $t('Cars.quantity') }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails?.quantity }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
 
@@ -76,35 +99,31 @@
 
                         <div class="item-details">
                             <h6 class="text">{{ $t('Global.daily') }}</h6>
-                            <h6 class="text" v-if="!loading">{{ carDetails.rental_prices?.daily }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails.rental?.daily }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
 
                         <div class="item-details">
                             <h6 class="text">{{ $t('Global.monthly') }}</h6>
-                            <h6 class="text" v-if="!loading">{{ carDetails.rental_prices?.monthly }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails.rental?.monthly }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
 
                         <div class="item-details">
                             <h6 class="text">{{ $t('Global.yearly') }}</h6>
-                            <h6 class="text" v-if="!loading">{{ carDetails.rental_prices?.yearly }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails.rental?.yearly }}</h6>
+                            <skeleton v-if="loading" width="100px" height="10px"/>
+                        </div>
+
+                        <div class="item-details">
+                            <h6 class="text">{{ $t('Cars.notavailable_date') }}</h6>
+                            <h6 class="text" v-if="!loading">{{ carDetails?.off_date }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
                     </div>
-
-                    <router-link class="custom-btn md mr-auto" :class="{'disabled_btn' : carDetails.off_dates?.length}" :to="!carDetails.off_dates?.length ? '/createOrder' : ''">
-                        <span v-if="!carDetails.off_dates?.length">
-                            {{ $t('Global.reservation_car') }}
-                        </span>
-                        <span v-else>
-                            {{ $t('Order.car_not_available') }}
-                        </span>
-                    </router-link>
                 </div>
 
             </div>
-        
         
         </div>
 
@@ -139,6 +158,7 @@
     
 
         </Dialog> -->
+    
     </div>
 </template>
 
@@ -146,9 +166,19 @@
 
     definePageMeta({
         name: "Global.car_details",
+        middleware: ['auth', 'check'],
     });
 
+    // store
     const store = useAuthStore();
+
+    const { token , user } = storeToRefs(store);
+
+
+    // config
+    const config = {
+        headers: { Authorization: `Bearer ${token.value}` }
+    };
 
     // success response
     const { response } = responseApi();
@@ -168,10 +198,9 @@
 
     const car_details = async () => {
         loading.value = true;
-        await axios.get(`provider/car-details?car_id=${id}`).then(res => {
+        await axios.get(`provider/car-details?car_id=${id}`, config).then(res => {
             if (response(res) == "success") {
-                // carDetails.value = res.data.data.car;
-                console.log(res.data.data);
+                carDetails.value = res.data.data;
             } 
             loading.value = false;
         }).catch(err => console.log(err));

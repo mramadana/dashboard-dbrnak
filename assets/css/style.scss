@@ -126,6 +126,13 @@ html {
       background-color: var(--main) !important;
     }
   }
+
+  &.plus {
+    min-width: 36px;
+    min-height: 35px;
+    font-size: 24px;
+    padding: 0;
+  }
 }
 
 .color-wh {
@@ -200,9 +207,9 @@ html {
           }
         }
         &::after {
-          content: "\f142";
+          content: "\f141";
           @include dir-margin-left(0);
-          font-size: 14px;
+          font-size: 17px;
         }
       }
       .dropdown-menu {
@@ -213,8 +220,33 @@ html {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          font-size: 12px;
+          font-size: 13px;
           margin-bottom: 4px;
+          i {
+            margin-inline-end: 0 !important;
+            font-size: 13px;
+            &.custom-icon {
+              font-size: 12px;
+              width: 22px;
+              height: 22px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              &.edit {
+                background-color: #ededed;
+                color: var(--main);
+              }
+              &.delete {
+                background-color: #f5e1e1;
+                color: #eb5757;
+              }
+              &.details {
+                background-color: hsl(0deg, 0%, 0%, 70%);
+                color: #fff;
+              }
+            }
+          }
         }
       }
     }
@@ -237,6 +269,9 @@ html {
       @media (max-width: $screen-xs) {
          font-size: 12px;
       }
+    }
+    @media (max-width: 375px) {
+       padding: 10px 5px;
     }
 }
 
@@ -1139,7 +1174,7 @@ input.p-inputtext.p-component {
     display: flex;
     gap: 15px;
     text-align: start;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     @media (max-width: $screen-xs) {
       padding: 20px 10px;
     }
@@ -1472,4 +1507,55 @@ input.p-inputtext.p-component {
     cursor: pointer;
     font-size: 20px;
     color: var(--main);
+  }
+
+  .car-details {
+    object-fit: cover;
+    border-radius: 3px;
+    height: 350px;
+  }
+  
+  .item-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 10px;
+    &:nth-child(odd) {
+        background-color: rgb(157 157 156 / 10%);
+    }
+    &:nth-child(even) {
+        background-color: rgb(157 157 156 / 40%);
+    }
+    .text {
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+  }
+
+  .slider-img {
+    width: 100%;
+    height: 570px;
+    object-fit: cover;
+
+    @media screen and (max-width: $screen-xs) {
+      height: 300px;
+    }
+  }
+
+  .with-plus-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+
+  .cl-red {
+    color: #F10021 !important;
+  }
+  
+  .bg-red {
+    background: #F10021 !important;
   }

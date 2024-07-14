@@ -7,7 +7,9 @@
         "payment_pending" : "قيد الدفع",
         "current" : "حالي",
         "finished" : "منتهي",
-        "activation_code" : "كود التفعيل"
+        "activation_code" : "كود التفعيل",
+        "branch_data": "بيانات الفرع",
+        "addBranch": "اضافة فرع"
     },
 
     "validation": {
@@ -243,7 +245,12 @@
         "number_rental_days": "عدد ايام التأجير",
         "driver_fees": "رسوم السائق",
         "sure_logout": "هل انت متأكد من تسجيل الخروج",
-        "search_here": "ابحث هنا"
+        "search_here": "ابحث هنا",
+        "model" : "موديل",
+        "daily" : "يومى",
+        "monthly" : "شهرى",
+        "yearly" : "سنوى",
+        "desc_car" : "وصف السيارة"
     },
 
     "order": {
@@ -279,7 +286,41 @@
         "car_image" : "صورة السيارة",
         "car_type" : "نوع السيارة",
         "vehicle_class" : "فئة السيارة",
-        "car_model" : "موديل السيارة"
-    }
+        "car_model" : "موديل السيارة",
+        "number" : "رقم",
+        "branch_img" : "صورة الفرع",
+        "phone" : "الجوال"
+    },
 
+    "Cars": {
+        "car_type" : "نوع السيارة",
+        "category" : "فئة",
+        "owner_car" : "صاحب السيارة",
+        "car_color" : "لون السيارة",
+        "Structure_number" : "رقم الهيكل",
+        "rental_car" : "إيجار السيارة",
+        "not_available" : "غير متاحة",
+        "not_available_date" : "غير متاحة بتاريخ",
+        "no_description" : "لا يوجد وصف",
+        "reservation_details" : "تفاصيل الحجز",
+        "cost_day" : "تكلفة اليوم",
+        "booking_cost" : "تكلفة الحجز",
+        "rental_after_discount" : "سعر الإيجار بعد الخصم",
+        "Value_Added" : "القيمة المضافة",
+        "choose_payment" : "اختيار طريقة الدفع",
+        "wallet" : "محفظة",
+        "electronic_payment" : "دفع الكتروني",
+        "complete_order" : "إتمام الطلب",
+        "car_owner" : "دبرناك",
+        "branch_name": "اسم الفرع",
+        "branch_address": "عنوان الفرع",
+        "quantity": "الكمية المتوفرة",
+        "notavailable_date": "تاريخ عدم توفر",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "view_data": "عرض البيانات",
+        "view_branch_data": "عرض بيانات الفرع",
+        "add_branch_data": "اضافة بيانات الفرع",
+        "edit_branch_data": "تعديل بيانات الفرع"
+    }
 }

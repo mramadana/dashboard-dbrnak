@@ -7,7 +7,9 @@
         "payment_pending" : "Payment pending",
         "current" : "Current",
         "finished" : "Finished",
-        "activation_code" : "Activation code"
+        "activation_code" : "Activation code",
+        "branch_data": "Branch data",
+        "addBranch": "Add branch"
     },
 
     "validation": {
@@ -242,7 +244,12 @@
         "number_rental_days": "Number of rental days",
         "driver_fees": "Driver fees",
         "sure_logout": "Are you sure you want to log out",
-        "search_here": "Search here"
+        "search_here": "Search here",
+        "model" : "Model",
+        "daily" : "Daily",
+        "monthly" : "Monthly",
+        "yearly" : "Yearly",
+        "desc_car" : "Car description"
     },
 
     "order": {
@@ -278,7 +285,41 @@
         "car_image" : "Car image",
         "car_type" : "Car type",
         "vehicle_class" : "Vehicle class",
-        "car_model" : "Car model"
-    }
+        "car_model" : "Car model",
+        "number" : "Number",
+        "branch_img" : "Branch image",
+        "phone" : "Phone"
+    },
 
+    "Cars": {
+        "car_type" : "Car type",
+        "category" : "Category",
+        "owner_car" : "Owner car",
+        "car_color" : "Car color",
+        "Structure_number" : "Structure number",
+        "rental_car" : "Rental car",
+        "not_available" : "Not available",
+        "not_available_date" : "Not available on date",
+        "no_description" : "No description",
+        "reservation_details" : "Reservation details",
+        "cost_day" : "Cost day",
+        "booking_cost" : "Booking cost",
+        "rental_after_discount" : "Rental price after discount",
+        "Value_Added" : "Value Added",
+        "choose_payment" : "Choose payment way",
+        "wallet" : "Wallet",
+        "electronic_payment" : "Electronic payment",
+        "complete_order" : "Complete order",
+        "car_owner" : "Dbrnak",
+        "branch_name": "Branch name",
+        "branch_address": "Branch address",
+        "quantity": "Quantity Available",
+        "notavailable_date": "Not available on date",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view_data": "View data",
+        "view_branch_data": "View branch data",
+        "add_branch_data": "Add branch data",
+        "edit_branch_data": "Edit branch data"
+    }
 }

@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <div class="main-table">
+        <div class="main-table skilton_table">
           <DataTable :value="SkeletonProducts">
 
             <!-- Header Columns -->
@@ -31,8 +31,10 @@
         justify-content: center;
     }
 
-    .p-skeleton.p-component {
-      height: 0.6rem !important;
+    .skilton_table {
+      .p-skeleton.p-component {
+        height: 0.6rem !important;
+      }
     }
 </style>
 

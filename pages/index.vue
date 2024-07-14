@@ -2,6 +2,7 @@
     <div>
         <main>
             <div class="container">
+                
                 <div class="main-text">
                     <h1 class="main-title">{{ $t('Home.home') }}</h1>
                     <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
@@ -118,7 +119,7 @@
 
 definePageMeta({
     name: "Titles.home",
-    middleware: 'check'
+    middleware: ['auth', 'check'],
 });
 
 // Store

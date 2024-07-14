@@ -15,70 +15,70 @@
             
             <div ref="linksList" class="links" @scroll="saveScrollPosition">
 
-                <nuxt-link class="link" to="/" @click="handleResize" :class="{ 'active': isActiveLink('/') }">
+                <nuxt-link class="link" to="/" :class="{ 'active': isActiveLink('/') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/index.png" alt="hint-img">
                     </div>
                     {{ $t('Home.home') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="/Mycars" @click="handleResize" :class="{ 'active': isActiveLink('/Mycars') }">
+                <nuxt-link class="link" to="/Mycars" :class="{ 'active': isActiveLink('/Mycars') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/cars.png" alt="hint-img">
                     </div>
                     {{ $t('Home.my_car') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="/branches" :class="{ 'active': isActiveLink('/branches') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/branch.png" alt="hint-img">
                     </div>
                     {{ $t('Home.branches') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/user.png" alt="hint-img">
                     </div>
                     {{ $t('Home.branch_managers') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/later.png" alt="hint-img">
                     </div>
                     {{ $t('Home.electronic_contract') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="/settings" @click="handleResize" :class="{ 'active': isActiveLink('/settings/profile') }">
+                <nuxt-link class="link" to="/settings" :class="{ 'active': isActiveLink('/settings/profile') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/setting.png" alt="hint-img">
                     </div>
                     {{ $t('Home.settings') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/privacy.png" alt="hint-img">
                     </div>
                     {{ $t('Home.privacy_policies') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/later.png" alt="hint-img">
                     </div>
                     {{ $t('Home.terms_and_conditions') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/users.png" alt="hint-img">
                     </div>
                     {{ $t('Home.who_are_we') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="/connectUs" @click="handleResize" :class="{ 'active': isActiveLink('/connectUs') }"
+                <nuxt-link class="link" to="/connectUs" :class="{ 'active': isActiveLink('/connectUs') }"
                 >
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/contact.png" alt="hint-img">
@@ -86,7 +86,7 @@
                     {{ $t('Home.connect_us') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="" @click="handleResize">
+                <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/logout.png" alt="hint-img">
                     </div>
@@ -188,9 +188,7 @@ const handleRouteChange = () => {
 watch(router, handleRouteChange);
 
 router.afterEach((to, from) => {
-        console.log('Route changed:', from, '->', to);
         if (window.innerWidth <= 1250) {
-          console.log('Emitting toggle-active event');
           emit('toggle-active');
           handleResize();
         }

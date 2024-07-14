@@ -24,7 +24,7 @@
         <!--***** Paginator *****-->
         <div class="paginate-parent" v-if="showPaginate">
             <Paginator :rows="pageLimit" @page="onPaginate" :totalRecords="totalPage" dir="ltr" />
-        </div>    
+        </div>   
     </div>
 </template>
 
@@ -32,7 +32,7 @@
 
     definePageMeta({
         name: "Home.my_car",
-        middleware: 'auth',
+        middleware: ['auth', 'check'],
     });
 
     // store
@@ -67,7 +67,7 @@ const totalPage = ref();
 
 const columns = ref(
     [
-        { field: 'id', header: t('Table.order_number') },
+        { field: 'id', header: t('Table.number') },
         { field: 'image', header: t('Table.car_image') },
         { field: 'name', header: t('Table.car_name') },
         { field: 'car_type', header: t('Table.car_type') },
@@ -112,7 +112,6 @@ let showPaginate = computed(() => {
 
 
 onMounted(async () => {
-
     // get datatable data
     await getData();
 

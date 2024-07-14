@@ -45,7 +45,7 @@
         </Column>
 
         <!-- in this Column pass dropdown have all dialogs inside package page  -->
-        <Column v-if="DropDownpackageDialog" header="">
+        <Column v-if="DropDownbranches" header="">
           <template #body="slotProps">
             <div class="dropdown drop-lang dropdown-table sort-table">
               <div
@@ -53,54 +53,35 @@
                 type="button"
                 id="dropdownMenuButton1"
                 data-bs-toggle="dropdown"
-                aria-expanded="false"
-              ></div>
+                aria-expanded="false">
+              </div>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>
                   <button
                     class="dropdown-item"
-                    @click="delete_package_Dialog(slotProps.data.id)"
-                  >
-                    {{ $t("Glopal.delete") }}
-                    <img
-                      :src="require('@/assets/images/dropdown-img/trash.png')"
-                      alt="delet-img"
-                      class="tb-img"
-                    />
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    @click="edit_package_Dialog(slotProps.data.id)"
-                  >
-                    {{ $t("Glopal.edit") }}
-                    <img
-                      :src="require('@/assets/images/dropdown-img/edit.png')"
-                      alt="edit-img"
-                      class="tb-img"
-                    />
-                  </button>
-                </li>
-                <li>
-                  <button
-                    class="dropdown-item"
-                    @click="rate_package_Dialog(slotProps.data.id)"
-                  >
-                    {{ $t("Glopal.ratings") }}
-                    <img
-                      :src="require('@/assets/images/dropdown-img/star.png')"
-                      alt="star-img"
-                      class="tb-img"
-                    />
+                    @click="deleteItem(slotProps.data.id)">
+                    {{ $t("Cars.delete") }}
+                    <i class="fas fa-trash-alt custom-icon edit"></i>
                   </button>
                 </li>
 
                 <li>
-                  <button class="dropdown-item" @click="details_package(slotProps.data.id)">
-                    {{$t('Glopal.details')}}
-                    <i class="fa-solid fa-circle-info tb-img"></i>
-                  </button>
+
+                  <!-- <button class="dropdown-item" @click="editItem(slotProps.data.id)">
+                    {{ $t("Cars.edit") }}
+                    <i class="far fa-edit custom-icon delete"></i>
+                  </button> -->
+
+                  <router-link :to="'/branches/editBranch'" class="table_link dropdown-item" @click="editItem(slotProps.data.id)">
+                    {{ $t("Cars.edit") }}
+                    <i class="far fa-edit custom-icon delete"></i>
+                  </router-link>
+                </li>
+                <li>
+                    <router-link :to="'/branches/'+ slotProps.data.id" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
+                      {{ $t("Cars.view_data") }}
+                      <i class="fas fa-eye custom-icon details"></i>
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -141,7 +122,8 @@ const currentPage = ref(1);
 /******************* Provide && Inject *******************/
 
 /******************* Emits *******************/
-const emit = defineEmits(['updateProduct', 'updateType', 'paginateNum']);
+
+const emit = defineEmits(['deleteItem', 'editItem', 'viewItem']);
 
 /******************* Props *******************/
 const props = defineProps({
@@ -173,30 +155,28 @@ const props = defineProps({
     routeTable: {
         type: Object, // pass object with path and header
     },
+
+    DropDownbranches: {
+        type: Boolean,
+        default: false, // hide dropdown by default, change to true when you want to show it
+    }
 });
 
 /******************* Methods *******************/
 
-const updateProductQuantity = (data) => {
-    emit('updateProduct', data);
-}
 
-const updateType = (data) => {
-    emit('updateType', data);
-}
-
-// Paginate Function
-const onPaginate = (e) => {
-  currentPage.value = e.page + 1;
-  window.scrollTo(0, 0);
-  emit('paginateNum', currentPage.value);
+const deleteItem = (id) => {
+  emit('deleteItem', id);
 };
 
-/******************* Computed *******************/
+const editItem = (id) => {
+  emit('editItem', id);
+};
 
-/******************* Watch *******************/
+const viewItem = (id) => {
+  emit('viewItem', id);
+};
 
-/******************* Mounted *******************/
 </script>
 
 <style lang="scss"></style>

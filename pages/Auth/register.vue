@@ -135,7 +135,7 @@
                                                 :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
                                             <span :class="{'hidden-default': uploadedImage_2.length !== 0}">{{ $t("Auth.attach_file") }}</span>
                                             <GlobalImgUploader
-                                                acceptedFiles="application/*"
+                                                acceptedFiles="application/*,image/*"
                                                 name="file"
                                                 v-model="file"
                                                 @uploaded-images-updated="updateUploadedImages_2"

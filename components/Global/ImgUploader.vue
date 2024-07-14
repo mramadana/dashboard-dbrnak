@@ -1,37 +1,38 @@
 
 
 <template>
-    <input
-      class="validInputs"
-      type="file"
-      :multiple="IsMultible"
-      ref="deleteVal"
-      :name="name"
-      :accept="acceptedFiles"
-      @change="handleFileChange" />
-    <div v-if="uploadedImages.length > 0">
-      <div
-        class="uploaded-block"
-        v-for="(image, index) in uploadedImages"
-        :key="index"
-      >
-        <img
-          v-if="acceptedFiles == 'image/*'"
-          :src="image.url"
-          alt="Uploaded Image"
-          class="test"
-        />
-        <div class="w-100 h-100" v-else-if="acceptedFiles == 'application/*'">
-          <div class="file-name">
-            <i class="far fa-file-alt"></i>
-            {{ image.file.name }}
-          </div>
+  <input
+    class="validInputs"
+    type="file"
+    :multiple="IsMultible"
+    ref="deleteVal"
+    :name="name"
+    :accept="acceptedFiles"
+    @change="handleFileChange"
+  />
+  <div v-if="uploadedImages.length > 0">
+    <div
+      class="uploaded-block"
+      v-for="(file, index) in uploadedImages"
+      :key="index"
+    >
+      <img
+        v-if="file.file.type.startsWith('image/')"
+        :src="file.url"
+        alt="Uploaded Image"
+        class="test"
+      />
+      <div class="w-100 h-100" v-else>
+        <div class="file-name">
+          <i class="far fa-file-alt"></i>
+          {{ file.file.name }}
         </div>
-        <button class="remove-btn" @click="removeImage(index)">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
       </div>
+      <button class="remove-btn" @click="removeImage(index)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
+  </div>
 </template>
 
 <script>
