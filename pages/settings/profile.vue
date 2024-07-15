@@ -150,7 +150,6 @@
                                         acceptedFiles="image/*"
                                         name="logo"
                                         v-model="logo"
-                                        @uploaded-images-updated="updateUploadedImages_3"
                                         :newImages="logo"
                                     />
                                 </div>
@@ -282,8 +281,8 @@ const editProfileform = ref(null);
             mainAddress.value = res.data.data.map_desc;
             lat.value = res.data.data.lat;
             lng.value = res.data.data.lng;
-            // logo.value = res.data.data.logo;
-            // file.value = res.data.data.file;
+            logo.value = res.data.data.logo;
+            file.value = res.data.data.file;
             commercial_image.value = res.data.data.commercial_image;
         }).catch(err => console.log(err));
     }

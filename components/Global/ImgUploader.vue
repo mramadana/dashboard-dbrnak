@@ -1,6 +1,6 @@
 
 
-<template>
+<!-- <template>
   <input
     class="validInputs"
     type="file"
@@ -17,7 +17,7 @@
       :key="index"
     >
       <img
-        v-if="file.file.type.startsWith('image/')"
+        v-if="file.file && file.file.type && file.file.type.startsWith('image/')"
         :src="file.url"
         alt="Uploaded Image"
         class="test"
@@ -25,8 +25,41 @@
       <div class="w-100 h-100" v-else>
         <div class="file-name">
           <i class="far fa-file-alt"></i>
-          {{ file.file.name }}
+          {{ file.file ? file.file.name : 'Unknown file' }}
         </div>
+      </div>
+      <button class="remove-btn" @click="removeImage(index)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+</template> -->
+
+
+<template>
+  <input
+    class="validInputs"
+    type="file"
+    :multiple="IsMultible"
+    ref="deleteVal"
+    :name="name"
+    :accept="acceptedFiles"
+    @change="handleFileChange" />
+  <div v-if="uploadedImages.length > 0">
+    <div
+      class="uploaded-block"
+      v-for="(image, index) in uploadedImages"
+      :key="index"
+    >
+      <img
+        v-if="acceptedFiles == 'image/*'"
+        :src="image.url"
+        alt="Uploaded Image"
+        class="test"
+      />
+      <div v-else-if="acceptedFiles == 'application/*'">
+        <p>{{ image.file.name }}</p>
+        pdf text
       </div>
       <button class="remove-btn" @click="removeImage(index)">
         <i class="fa-solid fa-xmark"></i>

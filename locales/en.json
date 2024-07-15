@@ -321,5 +321,21 @@
         "view_branch_data": "View branch data",
         "add_branch_data": "Add branch data",
         "edit_branch_data": "Edit branch data"
+    },
+
+    "Branches": {
+        "worktime": "Work time",
+        "saturday" : "Saturday",
+        "sunday" : "Sunday",
+        "monday" : "Monday",
+        "tuesday" : "Tuesday",
+        "wednesday" : "Wednesday",
+        "thursday" : "Thursday",
+        "friday" : "friday",
+        "time_from": "Time from",
+        "time_to": "Time to",
+        "from" : "From",
+        "to" : "To",
+        "day" : "Day"
     }
 }

@@ -283,7 +283,6 @@
     const elctronic_file = ref(false);
     const email = ref('');
     const password = ref('');
-    const confirmPassword = ref('');
     const passwordVisible = ref({
         definitelyNewPassword: false,
     });

@@ -322,5 +322,21 @@
         "view_branch_data": "عرض بيانات الفرع",
         "add_branch_data": "اضافة بيانات الفرع",
         "edit_branch_data": "تعديل بيانات الفرع"
+    },
+
+    "Branches": {
+        "worktime": "أوقات العمل",
+        "saturday" : "السبت",
+        "sunday" : "الأحد",
+        "monday" : "الاثنين",
+        "tuesday" : "الثلاثاء",
+        "wednesday" : "الأر بعاء",
+        "thursday" : "الخميس",
+        "friday" : "الجمعة",
+        "time_from": "الوقت من",
+        "time_to": "الوقت الي",
+        "from" : "من",
+        "to" : "الي",
+        "day" : "اليوم"
     }
 }
