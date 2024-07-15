@@ -66,12 +66,6 @@
                 </li>
 
                 <li>
-
-                  <!-- <button class="dropdown-item" @click="editItem(slotProps.data.id)">
-                    {{ $t("Cars.edit") }}
-                    <i class="far fa-edit custom-icon delete"></i>
-                  </button> -->
-
                   <router-link :to="'/branches/editBranch'" class="table_link dropdown-item" @click="editItem(slotProps.data.id)">
                     {{ $t("Cars.edit") }}
                     <i class="far fa-edit custom-icon delete"></i>
@@ -178,5 +172,3 @@ const viewItem = (id) => {
 };
 
 </script>
-
-<style lang="scss"></style>
