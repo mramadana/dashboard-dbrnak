@@ -1,31 +1,33 @@
 <template>
-
     <div>
-        <div class="with-plus-btn">
+        <div class="container">
+            <div class="with-plus-btn">
 
-            <div class="main-text mb-0">
-                <h1 class="main-title">{{ $t('Home.branches') }}</h1>
-                <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
-            </div>
-
-            <div class="search-section">
-                <div class="main_input with_icon search">
-                    <input type="text" class="custum-input-icon" v-model="filters['global'].value" :placeholder="$t('Table.keywords')">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="main-text mb-0">
+                    <h1 class="main-title">{{ $t('Home.employees') }}</h1>
+                    <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
                 </div>
-                <nuxt-link to="/branches/addBranch" class="custom-btn plus sm"><i class="fas fa-plus"></i></nuxt-link>
+
+                <div class="search-section">
+                    <div class="main_input with_icon search">
+                        <input type="text" class="custum-input-icon" v-model="filters['global'].value" :placeholder="$t('Table.keywords')">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <button @click="addedemployee = true" class="custom-btn plus sm"><i class="fas fa-plus"></i></button>
+                </div>
             </div>
         </div>
+
+
 
         <!-- ***** datatable ***** -->
         <div v-if="!loading">
             <DatatableTable :products="products"
             :columns="columns"
             :rows="10"
-            :sortable="true"
             :filters="filters"
-            :showImage="true"
-            :DropDownbranches="true"
+            :sortable="true"
+            :DropDownemployees="true"
             @deleteItem="deleteItem"
             @editItem="editItem"
             @viewItem="viewItem"
@@ -33,41 +35,59 @@
         </div>
 
         <!-- ***** datatable skeleton ***** -->
-            <div v-if="loading">
+        <div v-if="loading">
                 <DatatableSkelton :SkeletonProducts="SkeletonProducts" />
             </div>
 
         <!--***** Paginator *****-->
         <div class="paginate-parent" v-if="showPaginate">
             <Paginator :rows="pageLimit" @page="onPaginate" :totalRecords="totalPage" dir="ltr" />
-        </div> 
+        </div>
 
 
-        <!-- delete dialog -->
+        <!-- add employee -->
+
+        <Dialog v-model:visible="addedemployee" modal class="custum_dialog_width" :draggable="false">
+            <div class="text-center">
+                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_employee') }}</h1>
+                اضافة الموظف
+                <button class="custom-btn sm bg-red d-inline-flex" @click="addedSuccessfullyFun">{{ $t('Global.yes') }}</button>
+            </div>
+        </Dialog> 
+
+
+        <!-- edit employee -->
+
+        <Dialog v-model:visible="addeditemployee" modal class="custum_dialog_width" :draggable="false">
+            <div class="text-center">
+                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_employee') }}</h1>
+                تعديل الموظف
+                <button class="custom-btn sm bg-red d-inline-flex" @click="editSuccessfullyFun">{{ $t('Global.yes') }}</button>
+            </div>
+        </Dialog> 
+
+
+        <!-- delete employee -->
 
         <Dialog v-model:visible="deleteSuccessfully" modal class="custum_dialog_width" :draggable="false">
-                <div class="text-center">
-                    <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
-                    <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
-                    <div class="section-btns">
-                        <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
-                        <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
-                    </div>
+            <div class="text-center">
+                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_employee') }}</h1>
+                <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
+                <div class="section-btns">
+                    <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
+                    <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
                 </div>
-        </Dialog>
-
-
+            </div>
+        </Dialog> 
     </div>
 </template>
-
 
 <script setup>
 
     // import FilterMatchMode to get input search work
     import { FilterMatchMode } from 'primevue/api';
-
     definePageMeta({
-        name: "Home.branches",
+        name: "Home.employees",
         middleware: ['auth', 'check'],
     });
 
@@ -89,6 +109,10 @@
 
     const deleteSuccessfully = ref(false);
 
+    const editemployee = ref(false);
+
+    const addedemployee = ref(false);
+
 // success response
 const { response } = responseApi();
 
@@ -109,13 +133,16 @@ const totalPage = ref();
 const columns = ref(
     [
         { field: 'id', header: t('Table.number') },
-        { field: 'image', header: t('Table.branch_img') },
-        { field: 'name', header: t('Cars.branch_name') },
-        { field: 'phone', header: t('Table.phone') },
+        { field: 'image', header: t('Table.username') },
+        { field: 'name', header: t('Table.job') },
+        { field: 'phone', header: t('Table.date_added') },
     ]
 );
 
 const SkeletonProducts = new Array(columns.value.length);
+
+
+// methods
 
 // delete item
 const deleteItem = async (id) => {
@@ -126,7 +153,7 @@ const deleteItem = async (id) => {
 // edit item
 const editItem = async (id) => {
     branch_id.value = id;
-    localStorage.setItem('editItem_branch_id', branch_id.value);
+    editemployee.value = true
 }
 
 // view item
@@ -134,7 +161,12 @@ const viewItem = async (id) => {
     branch_id.value = id;
 }
 
+
 const deleteSuccessfullyFun = () => {
+    console.log(branch_id.value, "branch_id");
+}
+
+const editSuccessfullyFun = () => {
     console.log(branch_id.value, "branch_id");
 }
 
@@ -153,9 +185,9 @@ const deleteSuccessfullyFun = () => {
 
 const getData = async () => {
     loading.value = true;
-  await axios.get(`provider/branches?page=${currentPage.value}`, config).then(res => {
+  await axios.get(`provider/employees?page=${currentPage.value}`, config).then(res => {
     if (response(res) == "success") {
-      products.value = res.data.data.branches;
+      products.value = res.data.data.employees;
       totalPage.value = res.data.data.pagination.total_items;
       pageLimit.value = res.data.data.pagination.per_page;
     }

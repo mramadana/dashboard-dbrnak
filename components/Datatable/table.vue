@@ -12,7 +12,7 @@
         ref="my_table"
       >
         <template #empty>
-          {{ $t("orders.no_records_found") }}
+          {{ $t("Table.no_records_found") }}
         </template>
 
         <div v-for="(col, index) in columns" :key="col.field">
@@ -44,7 +44,7 @@
             </template>
         </Column>
 
-        <!-- in this Column pass dropdown have all dialogs inside package page  -->
+        <!-- in this Column pass dropdown have all dialogs inside branches page  -->
         <Column v-if="DropDownbranches" header="">
           <template #body="slotProps">
             <div class="dropdown drop-lang dropdown-table sort-table">
@@ -73,6 +73,45 @@
                 </li>
                 <li>
                     <router-link :to="'/branches/'+ slotProps.data.id" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
+                      {{ $t("Cars.view_data") }}
+                      <i class="fas fa-eye custom-icon details"></i>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </Column>
+
+        <!-- this dropdown have all dialogs inside employees page -->
+
+        <Column v-if="DropDownemployees" header="">
+          <template #body="slotProps">
+            <div class="dropdown drop-lang dropdown-table sort-table">
+              <div
+                class="dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+              </div>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    @click="deleteItem(slotProps.data.id)">
+                    {{ $t("Cars.delete") }}
+                    <i class="fas fa-trash-alt custom-icon edit"></i>
+                  </button>
+                </li>
+
+                <li>
+                  <button class="dropdown-item" @click="editItem(slotProps.data.id)">
+                    {{ $t("Cars.edit") }}
+                    <i class="far fa-edit custom-icon delete"></i>
+                  </button>
+                </li>
+                <li>
+                    <router-link :to="'/employees/'+ slotProps.data.id" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
                       {{ $t("Cars.view_data") }}
                       <i class="fas fa-eye custom-icon details"></i>
                   </router-link>
@@ -151,6 +190,11 @@ const props = defineProps({
     },
 
     DropDownbranches: {
+        type: Boolean,
+        default: false, // hide dropdown by default, change to true when you want to show it
+    },
+
+    DropDownemployees: {
         type: Boolean,
         default: false, // hide dropdown by default, change to true when you want to show it
     }

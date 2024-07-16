@@ -42,7 +42,14 @@
         "location_required" : "Location is required",
         "commercial_image" : "The commercial register is required",
         "file" : "Please select a file",
-        "logo" : "The logo is required"
+        "logo" : "The logo is required",
+        "manager_image": "The manager image is required",
+        "manager_phone": "The manager phone is required",
+        "manager_email": "The manager email is required",
+        "manager_name": "The manager name is required",
+        "manager_password": "The manager password is required",
+        "manager_confirm_password": "The manager confirm password is required",
+        "choose_one_ability": "Choose at least one ability"
       },
 
     "Auth": {
@@ -81,7 +88,9 @@
         "enter_loaction" : "Enter your location",
         "attach_file" : "Attach file",
         "add_logo" : "Add logo",
-        "view_profile" : "View profile"
+        "view_profile" : "View profile",
+        "name" : "Name",
+        "enter_name" : "Please enter your name"
     },
 
     "Home": {
@@ -119,7 +128,8 @@
         "branch_managers" : "Branch managers",
         "electronic_contract" : "Electronic contract",
         "privacy_policies" : "Privacy policies",
-        "who_are_we" : "who are we"
+        "who_are_we" : "who are we",
+        "employees" : "Employees"
     },
 
     "Global": {
@@ -288,7 +298,11 @@
         "car_model" : "Car model",
         "number" : "Number",
         "branch_img" : "Branch image",
-        "phone" : "Phone"
+        "phone" : "Phone",
+        "keywords" : "Keywords",
+        "username" : "Username",
+        "job" : "Job",
+        "date_added" : "Date added"
     },
 
     "Cars": {
@@ -336,6 +350,13 @@
         "time_to": "Time to",
         "from" : "From",
         "to" : "To",
-        "day" : "Day"
+        "day" : "Day",
+        "closed" : "Closed",
+        "branch_manager_account" : "Create branch manager account",
+        "abilities" : "Abilities",
+        "please_enter_branch_name": "Please enter branch name",
+        "add" : "Add",
+        "delete_branch" : "Are you sure you want to delete the branch?",
+        "delete_employee" : "Are you sure you want to delete the employee?"
     }
 }

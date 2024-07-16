@@ -1,17 +1,6 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-import {resolve} from 'path';
-
 export default defineNuxtConfig({
-
-  // ssr: false,
-
-  // router: {
-  //   options: {
-  //     hashMode: true
-  //   }
-  // },
   
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   app: {
     pageTransition: { name: 'layout', mode: 'out-in' },
@@ -37,7 +26,6 @@ export default defineNuxtConfig({
   ],
   
     alias: {
-    // "@": resolve(__dirname, "/"),
     assets: "/<rootDir>/assets",
   },
 

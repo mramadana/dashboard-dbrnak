@@ -1581,3 +1581,21 @@ input.p-inputtext.p-component {
         border: transparent;
       }
   }
+
+  .search-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    .main_input {
+      background-color: #fff;
+      padding: 5px 10px;
+      border-radius: 10px;
+      height: 40px;
+      input {
+        width: 200px;
+        @media (max-width: $screen-xxs) {
+          width: 170px;
+        }
+      }
+    }
+  }

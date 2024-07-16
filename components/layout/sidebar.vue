@@ -36,6 +36,13 @@
                     {{ $t('Home.branches') }}
                 </nuxt-link>
 
+                <nuxt-link class="link" to="/employees" :class="{ 'active': isActiveLink('/employees') }">
+                    <div class="hint-img">
+                        <img src="@/assets/images/sidebar/branch.png" alt="hint-img">
+                    </div>
+                    {{ $t('Home.employees') }}
+                </nuxt-link>
+
                 <nuxt-link class="link" to="">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/user.png" alt="hint-img">

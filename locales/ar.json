@@ -42,7 +42,14 @@
         "location_required" : "الموقع مطلوب",
         "commercial_image" : "صورة السجل التجارى مطلوبة",
         "file" : "من فضلك أدخل الملف",
-        "logo" : "الشعار مطلوب"
+        "logo" : "الشعار مطلوب",
+        "manager_image": "صورة المدير مطلوبة",
+        "manager_phone": "رقم الجوال للمدير مطلوب",
+        "manager_email": "البريد الالكترونى للمدير مطلوب",
+        "manager_name": "الاسم الكامل للمدير مطلوب",
+        "manager_password": "كلمة المرور للمدير مطلوبة",
+        "manager_password_confirm": "تأكيد كلمة المرور للمدير مطلوبة",
+        "choose_one_ability": "اختر صلاحية واحدة على الاقل"
       },
 
     "Auth": {
@@ -81,7 +88,9 @@
         "enter_loaction" : "ادخل موقعك",
         "attach_file" : "إرفاق ملف",
         "add_logo" : "إضافة لوجو",
-        "view_profile" : "عرض الملف الشخصي"
+        "view_profile" : "عرض الملف الشخصي",
+        "name" : "الاسم",
+        "enter_name" : "الرجاء ادخال الاسم"
     },
 
     "Home": {
@@ -119,7 +128,8 @@
         "branch_managers" : "مديرين الفروع",
         "electronic_contract" : "العقد الإلكتروني",
         "privacy_policies" : "سياسات الخصوصية",
-        "who_are_we" : "من نحن"
+        "who_are_we" : "من نحن",
+        "employees" : "الموظفين"
     },
 
     "Global": {
@@ -289,7 +299,11 @@
         "car_model" : "موديل السيارة",
         "number" : "رقم",
         "branch_img" : "صورة الفرع",
-        "phone" : "الجوال"
+        "phone" : "الجوال",
+        "keywords" : "كلمات مفتاحية",
+        "username" : "اسم المستخدم",
+        "job" : "الوظيفة",
+        "date_added" : "تاريخ الإضافة"
     },
 
     "Cars": {
@@ -337,6 +351,13 @@
         "time_to": "الوقت الي",
         "from" : "من",
         "to" : "الي",
-        "day" : "اليوم"
+        "day" : "اليوم",
+        "closed" : "مغلق",
+        "branch_manager_account" : "إنشاء حساب مدير الفرع",
+        "abilities" : "الصلاحيات",
+        "please_enter_branch_name": "الرجاء ادخال اسم الفرع",
+        "add" : "اضافة",
+        "delete_branch" : "هل بالفعل تريد حذف الفرع؟",
+        "delete_employee" : "هل بالفعل تريد حذف الموظف؟"
     }
 }
