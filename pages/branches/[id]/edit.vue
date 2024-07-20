@@ -110,7 +110,7 @@
                                     </label>
                                     <div class="main_input pointer">
                                         <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon pointer validInputs" name="location_required" readonly  v-model="mainAddress"  :placeholder="$t('Auth.enter_loaction')">
+                                        <input type="text" class="custum-input-icon pointer validInputs" name="map_desc" readonly  v-model="mainAddress"  :placeholder="$t('Auth.enter_loaction')">
                                     </div>
                                 </div>
                             </div>
@@ -625,49 +625,6 @@
         passwordVisible.value[input] = !passwordVisible.value[input];
     };
 
-    // const createConfig = (index, type) => ({
-    //   enableTime: true,
-    //   noCalendar: true,
-    //   dateFormat: 'H:i',
-    //   time_24hr: true,
-    //   disableMobile: "true",
-    //   onChange: (selectedDates) => {
-    //     if (type === 'from') {
-    //       if (times.value[index].to && selectedDates[0] >= times.value[index].to) {
-    //         times.value[index].to = null;
-    //       }
-    //     } else if (type === 'to') {
-    //       if (times.value[index].from && selectedDates[0] <= times.value[index].from) {
-    //         times.value[index].from = null;
-    //       }
-    //     }
-    //   },
-    // });
-
-    // const getConfigFrom = (index) => createConfig(index, 'from');
-    // const getConfigTo = (index) => createConfig(index, 'to');
-
-    // watch(
-    //   () => times.value.map(item => item.from),
-    //   (newValues) => {
-    //     newValues.forEach((fromValue, index) => {
-    //       if (times.value[index].to && fromValue >= times.value[index].to) {
-    //         times.value[index].to = null;
-    //       }
-    //     });
-    //   }
-    // );
-
-    // watch(
-    //   () => times.value.map(item => item.to),
-    //   (newValues) => {
-    //     newValues.forEach((toValue, index) => {
-    //       if (times.value[index].from && toValue <= times.value[index].from) {
-    //         times.value[index].from = null;
-    //       }
-    //     });
-    //   }
-    // );
     
     // methods
 
@@ -792,7 +749,9 @@
                 branchCountry.value.key = res.data.data.country_code;
                 location.value.lat = +res.data.data.lat;
                 location.value.lng = +res.data.data.lng;
+                // this map address to appended value in autocomplete
                 mapAddress.value = res.data.data.map_desc;
+                // this map address to appended map_desc in input
                 mainAddress.value = res.data.data.map_desc;
                 times.value = res.data.data.times;
                 manager_image.value = res.data.data.manager.image;
@@ -813,7 +772,6 @@
         fd.append('abilities', JSON.stringify(abilitiesChecked.value));
         fd.append('lat', location.value.lat);
         fd.append('lng', location.value.lng);
-        fd.append('map_desc', mapAddress.value);
         fd.append('branch_id', id);
         fd.append('country_code', branchCountry.value.key);
         fd.append('managerCountry', managerCountry.value.key);

@@ -224,7 +224,7 @@
 
         <Dialog v-model:visible="editemployee" modal class="custum_dialog_width employee lg" :draggable="false">
             <div class="text-center">
-                <h1 class="main-title bold head-title pb-3">تعديل الموظف</h1>
+                <h1 class="main-title bold head-title pb-3">{{ $t('employees.edit_employee') }}</h1>
                 <form @submit.prevent="editemployeeFun" ref="editemployeeform">
                     <div class="inner p-3">
                         <div class="row">
@@ -401,7 +401,7 @@
         
                             <div class="col-12 text-center mb-4">
                                 <div class="form-group">
-                                    <div class="input_auth without-edit">
+                                    <div class="input_auth without-edit parent-remove">
                                         <img
                                             src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
                                             :class="{'hidden-default': uploadedImage_3.length !== 0,'default-class': true,}"/>
@@ -409,7 +409,7 @@
                                             acceptedFiles="image/*"
                                             name="image"
                                             @uploaded-images-updated="updateUploadedImages_3"
-                                            :newImages="viewobject.image"
+                                            :newImages="editobject.image"
                                         />
                                     </div>
                                 </div>
@@ -422,7 +422,7 @@
                                     </label>
                                     <div class="main_input">
                                         <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" name="name" v-model="viewobject.name" class="custum-input-icon validInputs" :placeholder="$t('Auth.enter_name')">
+                                        <input type="text" readonly v-model="editobject.name" class="custum-input-icon validInputs" :placeholder="$t('Auth.enter_name')">
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +434,7 @@
                                     </label>
                                     <div class="main_input">
                                         <i class="fa-solid fa-house sm-icon"></i>
-                                        <input type="text" name="job_title" v-model="viewobject.job_title" class="custum-input-icon validInputs" :placeholder="$t('employees.job_name')">
+                                        <input type="text" readonly  v-model="editobject.job_title" class="custum-input-icon validInputs" :placeholder="$t('employees.job_name')">
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@
                                     <div class="with_cun_select">
                                         <div class="main_input">
                                             <i class="fas fa-mobile-alt sm-icon"></i>
-                                            <input type="number" class="custum-input-icon validInputs" name="phone" v-model="viewobject.phone" :placeholder="$t('Auth.please_mobile_number')">
+                                            <input type="number" class="custum-input-icon validInputs" readonly v-model="editobject.phone" :placeholder="$t('Auth.please_mobile_number')">
                                         </div>
                                         <div class="card d-flex justify-content-center dropdown_card">
                                             <Dropdown
@@ -499,7 +499,7 @@
                                     </label>
                                     <div class="main_input">
                                         <i class="fas fa-envelope sm-icon"></i>
-                                        <input type="email" class="custum-input-icon validInputs" name="email" v-model="viewobject.email" :placeholder="$t('Auth.please_enter_email')">
+                                        <input type="email" class="custum-input-icon validInputs" readonly v-model="editobject.email" :placeholder="$t('Auth.please_enter_email')">
                                     </div>
                                 </div>
                             </div>
@@ -510,7 +510,7 @@
                                         {{ $t('Auth.password') }}
                                     </label>
                                     <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword_3')" name="password" v-model="viewobject.password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
+                                        <input :type="inputType('definitelyNewPassword_3')" readonly v-model="viewobject.password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
                                         <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_3')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_3 }">
                                         <i class="far fa-eye icon"></i>
                                         </button>
@@ -549,13 +549,6 @@
                                 </div>
                             </div>
                         </div>
-        
-                        
-                        <button class="custom-btn md m-auto">
-                            {{ $t('employees.edit_user') }}
-                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status"
-                            aria-hidden="true"></span>
-                        </button>
                     </div>
                 </form>
         </Dialog>
@@ -728,14 +721,17 @@ const abilities = ref([
 
     const editemployee = ref(false);
     const viewemployee = ref(false);
-// methods
+
+    // ************** methods  **************
+    
     // validation Function
     const validate = () => {
+        let imageUploaderInput = document.querySelector('.RemoveValid');
+        if (imageUploaderInput) {
+            imageUploaderInput.classList.remove('validInputs');
+        }
         let allInputs = document.querySelectorAll('.validInputs');
         for (let i = 0; i < allInputs.length; i++) {
-            if(editobject.value.image) {
-                return
-            }
             if (allInputs[i].value === '') {
                 errors.value.push(t(`validation.${allInputs[i].name}`));
             }
@@ -777,6 +773,7 @@ const deleteItem = async (id) => {
 const editItem = async (id) => {
     employee_id.value = id;
     editemployee.value = true
+    editobject.value.password = ''
    await getDetaile()
     
 }
@@ -785,6 +782,7 @@ const editItem = async (id) => {
 const viewItem = async (id) => {
     employee_id.value = id;
     viewemployee.value = true
+    await getDetaile()
 }
 
 
@@ -884,11 +882,19 @@ const getDetaile = async () => {
 }
 
 // fix bug image shown in dialog
+
 watch(editemployee, (newValue) => {
-  if (!newValue) {
-    editobject.value.image = [];
-  }
-});
+      if (!newValue) {
+        editobject.value.image = [];
+      }
+    });
+
+    // Watcher for viewemployee
+    watch(viewemployee, (newValue) => {
+      if (!newValue) {
+        editobject.value.image = [];
+      }
+    });
 
 
 const editEmployeeFun = async () => {

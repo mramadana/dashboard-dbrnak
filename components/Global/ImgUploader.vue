@@ -38,7 +38,7 @@
 
 <template>
   <input
-    class="validInputs"
+    class="validInputs RemoveValid"
     type="file"
     :multiple="IsMultible"
     ref="deleteVal"

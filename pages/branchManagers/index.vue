@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="with-plus-btn">
 
             <div class="main-text mb-0">
@@ -112,8 +113,7 @@ const columns = ref(
         { field: 'image', header: t('Table.user_photo') },
         { field: 'name', header: t('Table.username') },
         { field: 'phone', header: t('Auth.mobile_number') },
-        { field: 'phone', header: t('Table.date_added') },
-        { field: 'phone', header: t('Table.job_title') },
+        { field: 'created_at', header: t('Table.date_added') },
     ]
 );
 
@@ -134,9 +134,9 @@ const editItem = async (id) => {
 
 const getData = async () => {
     loading.value = true;
-  await axios.get(`provider/branches?page=${currentPage.value}`, config).then(res => {
+  await axios.get(`provider/managers?page=${currentPage.value}`, config).then(res => {
     if (response(res) == "success") {
-      products.value = res.data.data.branches;
+      products.value = res.data.data.managers;
       totalPage.value = res.data.data.pagination.total_items;
       pageLimit.value = res.data.data.pagination.per_page;
     }
