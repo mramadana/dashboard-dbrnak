@@ -77,7 +77,7 @@ export const useAuthStore = defineStore("auth", {
       };
 
       const resData = await axios.post(
-        "update-profile",
+        "update-profile?_method=put",
         formData,
         config
       );

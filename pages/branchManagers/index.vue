@@ -1,7 +1,5 @@
 <template>
-
     <div>
-        
         <div class="with-plus-btn">
 
             <div class="main-text mb-0">
@@ -14,7 +12,6 @@
                     <input type="text" class="custum-input-icon" v-model="filters['global'].value" :placeholder="$t('Table.keywords')">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
-                <nuxt-link to="/branches/addBranch" class="custom-btn plus sm"><i class="fas fa-plus"></i></nuxt-link>
             </div>
         </div>
 
@@ -26,69 +23,71 @@
             :sortable="true"
             :filters="filters"
             :showImage="true"
-            :DropDownbranches="true"
+            :DropDownManagers="DropDownManagers"
             @deleteItem="deleteItem"
             @editItem="editItem"
-            @viewItem="viewItem"
             />
         </div>
 
         <!-- ***** datatable skeleton ***** -->
-            <div v-if="loading">
-                <DatatableSkelton :SkeletonProducts="SkeletonProducts" />
-            </div>
+        <div v-if="loading">
+            <DatatableSkelton :SkeletonProducts="SkeletonProducts" />
+        </div>
 
         <!--***** Paginator *****-->
         <div class="paginate-parent" v-if="showPaginate">
             <Paginator :rows="pageLimit" @page="onPaginate" :totalRecords="totalPage" dir="ltr" />
         </div> 
 
-
         <!-- delete dialog -->
 
         <Dialog v-model:visible="deleteSuccessfully" modal class="custum_dialog_width" :draggable="false">
-                <div class="text-center">
-                    <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
-                    <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
-                    <div class="section-btns">
-                        <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
-                        <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
-                    </div>
+            <div class="text-center">
+                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
+                <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
+                <div class="section-btns">
+                    <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
+                    <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
                 </div>
+            </div>
         </Dialog>
-
 
     </div>
 </template>
 
-
 <script setup>
 
-    // import FilterMatchMode to get input search work
-    import { FilterMatchMode } from 'primevue/api';
+// import FilterMatchMode to get input search work
+import { FilterMatchMode } from 'primevue/api';
 
-    definePageMeta({
-        name: "Home.branches",
-        middleware: ['auth', 'check'],
-    });
+definePageMeta({
+    name: "employees.branch_managers",
+    middleware: ['auth', 'check'],
+});
 
-    const filters = ref({
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    });
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
 
-    // store
-    const store = useAuthStore();
-    const { token , user } = storeToRefs(store);
+// store
+const store = useAuthStore();
+const { token , user } = storeToRefs(store);
 
-    import { useI18n } from 'vue-i18n';
-    const { t } = useI18n({ useScope: 'global' });
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n({ useScope: 'global' });
 
-    // config
-    const config = {
-        headers: { Authorization: `Bearer ${token.value}` }
-    };
+// config
+const config = {
+    headers: { Authorization: `Bearer ${token.value}` }
+};
 
-    const deleteSuccessfully = ref(false);
+const deleteSuccessfully = ref(false);
+
+const DropDownManagers = ref({
+    path: 'branchManagers',
+    id: 'id',
+    subroute: 'edit',
+});
 
 // success response
 const { response } = responseApi();
@@ -110,15 +109,18 @@ const totalPage = ref();
 const columns = ref(
     [
         { field: 'id', header: t('Table.number') },
-        { field: 'image', header: t('Table.branch_img') },
-        { field: 'name', header: t('Cars.branch_name') },
-        { field: 'phone', header: t('Table.phone') },
+        { field: 'image', header: t('Table.user_photo') },
+        { field: 'name', header: t('Table.username') },
+        { field: 'phone', header: t('Auth.mobile_number') },
+        { field: 'phone', header: t('Table.date_added') },
+        { field: 'phone', header: t('Table.job_title') },
     ]
 );
 
 const SkeletonProducts = new Array(columns.value.length);
 
-// delete item
+// methods 
+
 const deleteItem = async (id) => {
     branch_id.value = id;
     deleteSuccessfully.value = true
@@ -127,31 +129,8 @@ const deleteItem = async (id) => {
 // edit item
 const editItem = async (id) => {
     branch_id.value = id;
-    localStorage.setItem('edit_branch_id', branch_id.value);
+    localStorage.setItem('branch_manager_id', branch_id.value);
 }
-
-// view item
-const viewItem = async (id) => {
-    branch_id.value = id;
-    localStorage.setItem('view_branch_id', branch_id.value);
-}
-
-const deleteSuccessfullyFun = () => {
-    console.log(branch_id.value, "branch_id");
-}
-
-// const deleteItem = async (id) => {
-//     loading.value = true;
-//     await axios.delete(`provider/branches/${id}`, config).then(res => {
-//         if (response(res) == "success") {
-//             successToast(res.data.msg);
-//             getData();
-//         } else {
-//             errorToast(res.data.msg);
-//         }
-//         loading.value = false;
-//     }).catch(err => console.log(err));
-// }
 
 const getData = async () => {
     loading.value = true;

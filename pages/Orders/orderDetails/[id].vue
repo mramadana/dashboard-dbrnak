@@ -176,7 +176,7 @@
                                 <div class="info">
                                     <span class="name">{{ $t("Global.place_of_delivery") }}</span>
                                     <div class="value d-flex align-items-center gap-1 cl-red pointer" @click="place_of_deliveryDialog = true">
-                                        <img src="@/assets/images/right_arrow.png" alt="arrow_img" loading="lazy">
+                                        
                                         {{ $t("order.Riyadh") }}
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@
                                     <span class="name">{{ $t("Global.return_location") }}</span>
                                     <span class="value">
                                         <div class="value d-flex align-items-center gap-1 cl-red pointer">
-                                        <img src="@/assets/images/right_arrow.png" alt="arrow_img" loading="lazy">
+                                        
                                         {{ $t("order.Riyadh") }}
                                     </div>
                                     </span>

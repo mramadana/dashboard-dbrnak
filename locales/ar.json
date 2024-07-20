@@ -49,7 +49,8 @@
         "manager_name": "الاسم الكامل للمدير مطلوب",
         "manager_password": "كلمة المرور للمدير مطلوبة",
         "manager_password_confirm": "تأكيد كلمة المرور للمدير مطلوبة",
-        "choose_one_ability": "اختر صلاحية واحدة على الاقل"
+        "choose_one_ability": "اختر صلاحية واحدة على الاقل",
+        "please_select_day_time_range": "الرجاء تحديد اليوم والوقت"
       },
 
     "Auth": {
@@ -303,7 +304,9 @@
         "keywords" : "كلمات مفتاحية",
         "username" : "اسم المستخدم",
         "job" : "الوظيفة",
-        "date_added" : "تاريخ الإضافة"
+        "date_added" : "تاريخ الإضافة",
+        "user_photo": "صورة المستخدم",
+        "job_title": "المسمى الوظيفي"
     },
 
     "Cars": {
@@ -359,5 +362,23 @@
         "add" : "اضافة",
         "delete_branch" : "هل بالفعل تريد حذف الفرع؟",
         "delete_employee" : "هل بالفعل تريد حذف الموظف؟"
+    },
+
+    "employees": {
+        "user_data": "بيانات المستخدم",
+        "job_name": "اسم الوظيفة",
+        "confirm_addition" : "تأكيد إضافة المستخدم",
+        "edit_user": "تعديل المستخدم",
+        "branch_managers": "مديرين الفروع",
+        "employee_details": "تفاصيل الموظف",
+        "branch_manager": "هل بالفعل تريد حذف مدير الفرع",
+        "edit_branch_manager": "تعديل مدير فرع",
+        "add_branch_manager": "اضافة مدير فرع",
+        "edit_employee": "تعديل الموظف",
+        "view_employee_data": "عرض بيانات الموظف",
+        "edit_branch" : "تعديل الفرع",
+        "location_determined" : "لم يتم تحديد الموقع بعد",
+        "no_times" : "لا يوجد أوقات عمل",
+        "current_location" : "الموقع الحالي"
     }
 }

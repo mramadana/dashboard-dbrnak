@@ -133,7 +133,6 @@
                                                     :config="getConfigFrom(index)"
                                                     class="select_date main_input custom-date"
                                                     :placeholder="$t('Branches.time_from')"
-                                                    name="from"
                                                     :disabled="item.isClosed"
                                                 />
                                                 </div>
@@ -147,7 +146,6 @@
                                                     :config="getConfigTo(index)"
                                                     class="select_date main_input custom-date"
                                                     :placeholder="$t('Branches.time_to')"
-                                                    name="to"
                                                     :disabled="item.isClosed"
                                                 />
                                                 </div>
@@ -336,6 +334,8 @@
             :isDraggable="true"
             :closeModal_btn="closeModal_btn"
             :title= "$t('Auth.location')"
+            :mapAddress="mapAddress"
+            :current_location_button="true"
         />
     </div>
 </template>
@@ -355,12 +355,15 @@
 
     const { t } = useI18n({ useScope: 'global' });
 
+    const addBranchform = ref(null);
+
     // store
     const store = useAuthStore();
 
     const { token , user } = storeToRefs(store);
 
     const abilitiesChecked = ref({});
+    const mapAddress = ref('');
 
     const abilities = ref([
     {id: 1, name: "إضافة سيارة", value: "manage-packages"},
@@ -526,6 +529,15 @@
     };
 
     const submitData = () => {
+      loading.value = true;
+      const fd = new FormData(addBranchform.value);
+        fd.append('times', JSON.stringify(times.value));
+        fd.append('abilities', JSON.stringify(abilitiesChecked.value));
+        fd.append('lat', location.value.lat);
+        fd.append('lng', location.value.lng);
+        fd.append('map_desc', mainAddress.value);
+        fd.append('country_code', branchCountry.value.key);
+        fd.append('managerCountry', managerCountry.value.key);
 
       validate();
       if (errors.value.length) {
@@ -533,12 +545,18 @@
             loading.value = false;
             errors.value = [];
         } else {
-            
-            console.log(times.value);
-            console.log(abilitiesChecked.value, "11111");
-            console.log(abilities.value, "22222222");
-            console.log(branchCountry.value, "33333333");
-            console.log(managerCountry.value, "44444444");
+            axios.post(`provider/add-branch?branch_id=${105}`, fd, config).then(res => {
+                if (response(res) == "success") {
+                    successToast(res.data.msg);
+                    getDetaile();
+                    setTimeout(() => {
+                        navigateTo('/branches');
+                    }, 500)
+                } else {
+                    errorToast(res.data.msg);
+                }
+                loading.value = false;
+            }).catch(err => console.log(err));
         }
 
     };
@@ -558,12 +576,11 @@
         await axios.get('countries').then(res => {
         if (response(res) == "success") {
             countries.value = res.data.data;
-            for (let i = 0; i < countries.value.length; i++) {
-                if (countries.value[i].id == 1) {
-                    branchCountry.value = countries.value[i];
-                    managerCountry.value = countries.value[i];
-                    }
-                }
+            const defaultCountry = countries.value.find(country => country.id == 1);
+            if (defaultCountry) {
+                branchCountry.value = { ...defaultCountry };
+                managerCountry.value = { ...defaultCountry };
+            }
             }
         }).catch(err => console.log(err));
     };

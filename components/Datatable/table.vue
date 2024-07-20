@@ -56,6 +56,14 @@
                 aria-expanded="false">
               </div>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                <li>
+                  <router-link :to="'/branches/'+ slotProps.data.id + '/edit'" class="table_link dropdown-item" @click="editItem(slotProps.data.id)">
+                    {{ $t("Cars.edit") }}
+                    <i class="far fa-edit custom-icon delete"></i>
+                  </router-link>
+                </li>
+
                 <li>
                   <button
                     class="dropdown-item"
@@ -66,13 +74,7 @@
                 </li>
 
                 <li>
-                  <router-link :to="'/branches/editBranch'" class="table_link dropdown-item" @click="editItem(slotProps.data.id)">
-                    {{ $t("Cars.edit") }}
-                    <i class="far fa-edit custom-icon delete"></i>
-                  </router-link>
-                </li>
-                <li>
-                    <router-link :to="'/branches/'+ slotProps.data.id" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
+                    <router-link :to="'/branches/branchdata'" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
                       {{ $t("Cars.view_data") }}
                       <i class="fas fa-eye custom-icon details"></i>
                   </router-link>
@@ -111,7 +113,50 @@
                   </button>
                 </li>
                 <li>
-                    <router-link :to="'/employees/'+ slotProps.data.id" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
+                    <button class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
+                      {{ $t("Cars.view_data") }}
+                      <i class="fas fa-eye custom-icon details"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </Column>
+
+        <!-- this dropdown have all routes inside brancheManagers page -->
+
+        <Column v-if="DropDownManagers" header="">
+          <template #body="slotProps">
+            <div class="dropdown drop-lang dropdown-table sort-table">
+              <div
+                class="dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+              </div>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                <li>
+
+                  <router-link :to="DropDownManagers.path + '/' + DropDownManagers.subroute" class="table_link dropdown-item" @click="editItem(slotProps.data.id)">
+                    {{ $t("Cars.edit") }}
+                    <i class="far fa-edit custom-icon delete"></i>
+                  </router-link>
+
+                </li>
+
+                <li>
+                  <button
+                    class="dropdown-item"
+                    @click="deleteItem(slotProps.data.id)">
+                    {{ $t("Cars.delete") }}
+                    <i class="fas fa-trash-alt custom-icon edit"></i>
+                  </button>
+                </li>
+
+                <li>
+                    <router-link :to="DropDownManagers.path + '/' + slotProps.data[DropDownManagers.id]" class="table_link dropdown-item" @click="viewItem(slotProps.data.id)">
                       {{ $t("Cars.view_data") }}
                       <i class="fas fa-eye custom-icon details"></i>
                   </router-link>
@@ -120,6 +165,10 @@
             </div>
           </template>
         </Column>
+
+        <!-- this dropdown have all dialogs inside employee page -->
+
+
 
         <!-- if i need to add Column for order id -->
 
@@ -186,6 +235,10 @@ const props = defineProps({
     },
 
     routeTable: {
+        type: Object, // pass object with path and header
+    },
+
+    DropDownManagers: {
         type: Object, // pass object with path and header
     },
 

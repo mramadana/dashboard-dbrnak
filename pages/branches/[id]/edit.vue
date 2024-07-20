@@ -1,14 +1,18 @@
 <template>
     <div>
+        <ClientOnly>
+            <Teleport to="#teleportDiv">
+                <div class="main-text mb-0">
+                    <h1 class="main-title">{{ $t('Cars.view_branch_data') }}</h1>
+                    <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
+                </div>
+            </Teleport>
+        </ClientOnly>
+
         <div class="container">
 
-            <div class="main-text mb-0">
-                <h1 class="main-title">{{ $t('Cars.edit_branch_data') }}</h1>
-                <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
-            </div>
-
-            <form @submit.prevent="addBranch" ref="addBranchform">
-
+            <form @submit.prevent="addBranch" ref="editBranchform">
+    
                 <div class="row">
                     <!-- first step form -->
                     <div class="custom-width text-start w-100 p-0">
@@ -24,12 +28,11 @@
                                             acceptedFiles="image/*"
                                             name="image"
                                             @uploaded-images-updated="updateUploadedImages_1"
-                                            class="validInputs"
                                             :newImages="image"
                                         />
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Cars.branch_name') }}
@@ -39,7 +42,7 @@
                                         <input type="text" class="custum-input-icon validInputs" name="name" v-model="name" :placeholder="$t('Branches.please_enter_branch_name')">
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.mobile_number') }}
@@ -90,7 +93,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.email') }}
@@ -100,7 +103,7 @@
                                         <input type="email" class="custum-input-icon validInputs" valid="email" name="email" v-model="email" :placeholder="$t('Auth.please_enter_email')">
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group" @click="openmodal">
                                     <label class="label">
                                         {{ $t('Auth.location') }}
@@ -113,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-
+    
                     <!-- add time work -->
                     <div class="custom-width text-start w-100 p-0">
                         <h1 class="main-title bold head-title">{{ $t("Branches.worktime") }}</h1>
@@ -121,10 +124,52 @@
                             <div class="col-12 col-xl-8 col-md-12">
                                 <div class="worktime">
 
+                                    <div class="addTimeSection mb-5">
+                                        <div class="time-section">
+
+                                            <div class="big_day">
+                                                <label class="label">{{ $t('Branches.day') }}</label>
+                                                <div class="flex justify-content-center dropdown_card main_input special-custom">
+                                                    <i class="fa-solid fa-city sm-icon"></i>
+                                                    <Dropdown v-model="day" :options="days" optionLabel="name" :placeholder="$t('Branches.day')" class="w-full md:w-14rem custum-dropdown" />
+                                                </div>
+                                            </div>
+
+                                            <div class="from">
+                                                <label class="label">{{ $t('Branches.from') }}</label>
+                                                <div class="main_input">
+                                                    <flat-pickr
+                                                    v-model="from"
+                                                    :config="getConfigFrom_append"
+                                                    class="select_date main_input custom-date"
+                                                    :placeholder="$t('Branches.time_from')"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div class="to">
+                                                <label class="label">{{ $t('Branches.to') }}</label>
+                                                <div class="main_input">
+                                                    <flat-pickr
+                                                    v-model="to"
+                                                    :config="getConfigTo_append"
+                                                    class="select_date main_input custom-date"
+                                                    :placeholder="$t('Branches.time_to')"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <button class="add-time-btn add" @click="addTime">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+    
                                     <div v-for="(item, index) in times" :key="index" class="time-section">
-                                        <div class="day">
+
+                                        <div class="day big_day">
                                             <label class="label">{{ $t('Branches.day') }}</label>
-                                            <input type="text" class="main_input" :placeholder="placeholders[index]" :class="{ 'closed_input': item.isClosed }" readonly/>
+                                            <input type="text" class="main_input" :value=" item.day.name? item.day.name : item.day" :class="{ 'closed_input': item.isClosed }" readonly />
                                         </div>
 
                                         <div class="from">
@@ -154,20 +199,23 @@
                                             />
                                             </div>
                                         </div>
+
                                         <div class="switch-parent">
                                             <label class="switch">
-                                                <input type="checkbox" value="0" v-model="item.isClosed">
-                                                <div class="slider round"></div>
+                                            <input type="checkbox" value="0" v-model="item.isClosed">
+                                            <div class="slider round"></div>
                                             </label>
                                             <span class="switch-text">{{$t('Branches.closed')}}</span>
                                         </div>
-                                    </div>
 
+                                        <button class="add-time-btn add remove" @click="removeTime(index)"><i class="fa-solid fa-xmark"></i></button>
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+    
                     <!-- second acount for Branch Manager -->
                     <div class="custom-width text-start w-100 p-0">
                         <h1 class="main-title bold head-title">{{ $t("Branches.branch_manager_account") }}</h1>
@@ -186,7 +234,7 @@
                                         />
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.name') }}
@@ -196,7 +244,7 @@
                                         <input type="text" name="manager_name" v-model="manager_name" class="custum-input-icon validInputs" :placeholder="$t('Auth.enter_name')">
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.mobile_number') }}
@@ -247,7 +295,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.email') }}
@@ -257,8 +305,8 @@
                                         <input type="email" class="custum-input-icon validInputs" valid="manager_email" name="manager_email" v-model="manager_email" :placeholder="$t('Auth.please_enter_email')">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
+    
+                                <!-- <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.password') }}
                                     </label>
@@ -269,7 +317,7 @@
                                         </button>
                                     </div>
                                 </div>
-
+    
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.confirm_password_sm') }}
@@ -280,13 +328,16 @@
                                         <i class="far fa-eye icon"></i>
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
+
+
                             </div>
                         </div>
                     </div>
-
+    
                     <!-- abilities form -->
-                    <div class="custom-width text-start w-100 p-0">
+                     
+                    <!-- <div class="custom-width text-start w-100 p-0">
                         <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
                         <div class="inner pt-5 p-3">
                             <div class="row">
@@ -311,23 +362,21 @@
                             </div>
                             </div>
                         </div>
-
-                    </div>
-
+    
+                    </div> -->
+    
                     <div class="p-0 mt-4">
                         <button type="submit" class="custom-btn xl" @click="submitData">
-                            {{ $t('Branches.add') }}
+                            {{ $t('Global.Saving_changes') }}
                             <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
-
+    
                 </div>
-
+    
             </form>
-
-        </div>
-
-        <GlobalGoogleMap
+    
+            <GlobalGoogleMap
             v-model:visible="visible"
             @closeModal="closeModal"
             @updateAddress="handleUpdateAddress"
@@ -339,7 +388,12 @@
             :isDraggable="true"
             :closeModal_btn="closeModal_btn"
             :title= "$t('Auth.location')"
-        />
+            :mapAddress="mapAddress"
+            :current_location_button="true"
+            />
+            
+        </div>
+
     </div>
 </template>
 
@@ -354,6 +408,8 @@
     import flatPickr from 'vue-flatpickr-component';
     import 'flatpickr/dist/flatpickr.css';
 
+    const editBranchform = ref(null);
+
     import { useI18n } from 'vue-i18n';
 
     const { t } = useI18n({ useScope: 'global' });
@@ -364,6 +420,9 @@
     const store = useAuthStore();
 
     const { token , user } = storeToRefs(store);
+
+    // Toast
+    const { successToast, errorToast } = toastMsg();
 
     const abilitiesChecked = ref({});
 
@@ -388,8 +447,110 @@
     // Axios
     const axios = useApi();
 
-    // variables get data
+    // append data to times
+    const day = ref('');
+    const to = ref(null);
+    const from = ref(null);
+    const days = ref([
+        {name: t(`Branches.saturday`), day: 'saturday'},
+        {name: t(`Branches.sunday`), day: 'sunday'},
+        {name: t(`Branches.monday`), day: 'monday'},
+        {name: t(`Branches.tuesday`), day: 'tuesday'},
+        {name: t(`Branches.wednesday`), day: 'wednesday'},
+        {name: t(`Branches.thursday`), day: 'thursday'},
+        {name: t(`Branches.friday`), day: 'friday'},
+    ]);
 
+    const addTime = () => {
+      if (day.value && from.value && to.value) {
+        const fromTime = new Date(`1970-01-01T${from.value}:00`);
+        const toTime = new Date(`1970-01-01T${to.value}:00`);
+
+        if (fromTime >= toTime) {
+          alert('The "from" time must be less than the "to" time.');
+          return;
+        }
+
+        // Check if the same day and time range already exists
+        const exists = times.value.some(item =>
+          item.day === day.value.name &&
+          item.from === from.value &&
+          item.to === to.value
+        );
+
+        if (exists) {
+          alert('The same day and time range has already been added.');
+          return;
+        }
+
+        times.value.push({
+        day: day.value.name, // Spread operator to ensure it's a new object
+          from: from.value,
+          to: to.value,
+          isClosed: false,
+        });
+
+        day.value = '';
+        from.value = null;
+        to.value = null;
+      } else {
+
+        errorToast(t(`validation.please_select_day_time_range`));
+      }
+    };
+
+    const getAmPm = (time) => {
+      const [hour] = time.split(':');
+      return hour >= 12 ? 'PM' : 'AM';
+    };
+
+    const removeTime = (index) => {
+      times.value.splice(index, 1);
+    };
+    
+
+    const showData = () => {
+      console.log(times.value)
+    };
+
+    const createConfig = (index, type) => ({
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true,
+      disableMobile: true,
+      onChange: (selectedDates) => {
+        if (type === 'from') {
+          if (times.value[index].to && selectedDates[0] >= times.value[index].to) {
+            times.value[index].to = null;
+          }
+        } else if (type === 'to') {
+          if (times.value[index].from && selectedDates[0] <= times.value[index].from) {
+            times.value[index].from = null;
+          }
+        }
+      },
+    });
+
+    const getConfigFrom = (index) => createConfig(index, 'from');
+    const getConfigTo = (index) => createConfig(index, 'to');
+
+    const getConfigFrom_append = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true,
+      disableMobile: true,
+    };
+
+    const getConfigTo_append = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true,
+      disableMobile: true,
+    }; 
+    const mapAddress = ref('');
     const image = ref('');
     const name = ref('');
     const email = ref('');
@@ -401,8 +562,7 @@
 
 
     // variables
-    // Toast
-    const { successToast, errorToast } = toastMsg();
+
     const uploadedImage = ref([]);
     const uploadedImage_2 = ref([]);
     const phone = ref('');
@@ -433,17 +593,17 @@
         lng : null
     });
 
-    // flatpicker configration
 
-    const times = ref([
-      { day: 'saturday', from: null, to: null, isClosed: false, },
-      { day: 'sunday', from: null, to: null, isClosed: false, },
-      { day: 'monday', from: null, to: null, isClosed: false, },
-      { day: 'tuesday', from: null, to: null, isClosed: false, },
-      { day: 'wednesday', from: null, to: null, isClosed: false, },
-      { day: 'thursday', from: null, to: null, isClosed: false, },
-      { day: 'friday', from: null, to: null, isClosed: false, },
-    ]);
+    // flatpicker configration
+    //   { day: 'saturday', from: null, to: null, isClosed: false, },
+    //   { day: 'sunday', from: null, to: null, isClosed: false, },
+    //   { day: 'monday', from: null, to: null, isClosed: false, },
+    //   { day: 'tuesday', from: null, to: null, isClosed: false, },
+    //   { day: 'wednesday', from: null, to: null, isClosed: false, },
+    //   { day: 'thursday', from: null, to: null, isClosed: false, },
+    //   { day: 'friday', from: null, to: null, isClosed: false, },
+
+    const times = ref([]);
 
     const placeholders = ref([
       t('Branches.saturday'),
@@ -465,49 +625,49 @@
         passwordVisible.value[input] = !passwordVisible.value[input];
     };
 
-    const createConfig = (index, type) => ({
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: 'H:i',
-      time_24hr: true,
-      disableMobile: "true",
-      onChange: (selectedDates) => {
-        if (type === 'from') {
-          if (times.value[index].to && selectedDates[0] >= times.value[index].to) {
-            times.value[index].to = null;
-          }
-        } else if (type === 'to') {
-          if (times.value[index].from && selectedDates[0] <= times.value[index].from) {
-            times.value[index].from = null;
-          }
-        }
-      },
-    });
+    // const createConfig = (index, type) => ({
+    //   enableTime: true,
+    //   noCalendar: true,
+    //   dateFormat: 'H:i',
+    //   time_24hr: true,
+    //   disableMobile: "true",
+    //   onChange: (selectedDates) => {
+    //     if (type === 'from') {
+    //       if (times.value[index].to && selectedDates[0] >= times.value[index].to) {
+    //         times.value[index].to = null;
+    //       }
+    //     } else if (type === 'to') {
+    //       if (times.value[index].from && selectedDates[0] <= times.value[index].from) {
+    //         times.value[index].from = null;
+    //       }
+    //     }
+    //   },
+    // });
 
-    const getConfigFrom = (index) => createConfig(index, 'from');
-    const getConfigTo = (index) => createConfig(index, 'to');
+    // const getConfigFrom = (index) => createConfig(index, 'from');
+    // const getConfigTo = (index) => createConfig(index, 'to');
 
-    watch(
-      () => times.value.map(item => item.from),
-      (newValues) => {
-        newValues.forEach((fromValue, index) => {
-          if (times.value[index].to && fromValue >= times.value[index].to) {
-            times.value[index].to = null;
-          }
-        });
-      }
-    );
+    // watch(
+    //   () => times.value.map(item => item.from),
+    //   (newValues) => {
+    //     newValues.forEach((fromValue, index) => {
+    //       if (times.value[index].to && fromValue >= times.value[index].to) {
+    //         times.value[index].to = null;
+    //       }
+    //     });
+    //   }
+    // );
 
-    watch(
-      () => times.value.map(item => item.to),
-      (newValues) => {
-        newValues.forEach((toValue, index) => {
-          if (times.value[index].from && toValue <= times.value[index].from) {
-            times.value[index].from = null;
-          }
-        });
-      }
-    );
+    // watch(
+    //   () => times.value.map(item => item.to),
+    //   (newValues) => {
+    //     newValues.forEach((toValue, index) => {
+    //       if (times.value[index].from && toValue <= times.value[index].from) {
+    //         times.value[index].from = null;
+    //       }
+    //     });
+    //   }
+    // );
     
     // methods
 
@@ -515,8 +675,13 @@
     const validate = () => {
         let allInputs = document.querySelectorAll('.validInputs');
         for (let i = 0; i < allInputs.length; i++) {
-            if (allInputs[i].value === '') {
-                errors.value.push(t(`validation.${allInputs[i].name}`));
+            if(image.value) {
+                return
+            } else {
+
+                if (allInputs[i].value === '') {
+                    errors.value.push(t(`validation.${allInputs[i].name}`));
+                }
             }
         }
 
@@ -542,24 +707,6 @@
       }
     };
 
-    const submitData = () => {
-
-      validate();
-      if (errors.value.length) {
-            errorToast(errors.value[0]);
-            loading.value = false;
-            errors.value = [];
-        } else {
-            
-            console.log(times.value);
-            console.log(abilitiesChecked.value, "11111");
-            console.log(abilities.value, "22222222");
-            console.log(branchCountry.value, "33333333");
-            console.log(managerCountry.value, "44444444");
-        }
-
-    };
-
 
     const updateUploadedImages_1 = (images) => {
         uploadedImage.value = images;
@@ -567,22 +714,6 @@
     
     const updateUploadedImages_2 = (images) => {
         uploadedImage_2.value = images;
-    };
-
-
-
-    const getCountries = async () => {
-        await axios.get('countries').then(res => {
-        if (response(res) == "success") {
-            countries.value = res.data.data;
-            for (let i = 0; i < countries.value.length; i++) {
-                if (countries.value[i].id == 1) {
-                    branchCountry.value = countries.value[i];
-                    managerCountry.value = countries.value[i];
-                    }
-                }
-            }
-        }).catch(err => console.log(err));
     };
 
     const closeModal = () => {
@@ -600,9 +731,6 @@
 
     const openmodal = () => {
         visible.value = true;
-        setTimeout(() => {
-            currentLocation.value = true;
-        }, 100);
     };
 
 
@@ -629,15 +757,91 @@
             }
         }
     });
-};
+    };
 
+
+
+    const getCountries = async () => {
+      try {
+        const res = await axios.get('countries');
+        if (response(res) == "success") {
+          countries.value = res.data.data;
+
+          // Create new objects for branchCountry and managerCountry
+          const defaultCountry = countries.value.find(country => country.id == 1);
+          if (defaultCountry) {
+            branchCountry.value = { ...defaultCountry };
+            managerCountry.value = { ...defaultCountry };
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    // get detailes of branch
+    const getDetaile = async () => {
+        await axios.get(`provider/branch-details?branch_id=${id}`, config).then(res => {
+            if (response(res) == "success") {
+                console.log(branchCountry.value.key, "branchCountry");
+                name.value = res.data.data.name;
+                email.value = res.data.data.email;
+                phone.value = res.data.data.phone;
+                image.value = res.data.data.image;
+                console.log(image.value, "image");
+                branchCountry.value.key = res.data.data.country_code;
+                location.value.lat = +res.data.data.lat;
+                location.value.lng = +res.data.data.lng;
+                mapAddress.value = res.data.data.map_desc;
+                mainAddress.value = res.data.data.map_desc;
+                times.value = res.data.data.times;
+                manager_image.value = res.data.data.manager.image;
+                manager_name.value = res.data.data.manager.name;
+                manager_email.value = res.data.data.manager.email;
+                manager_phone.value = res.data.data.manager.phone;
+                managerCountry.value.key = res.data.data.manager.country_code;
+            }
+        }).catch(err => console.log(err));
+
+    }
+
+    const submitData = () => {
+
+        loading.value = true;
+        const fd = new FormData(editBranchform.value);
+        fd.append('times', JSON.stringify(times.value));
+        fd.append('abilities', JSON.stringify(abilitiesChecked.value));
+        fd.append('lat', location.value.lat);
+        fd.append('lng', location.value.lng);
+        fd.append('map_desc', mapAddress.value);
+        fd.append('branch_id', id);
+        fd.append('country_code', branchCountry.value.key);
+        fd.append('managerCountry', managerCountry.value.key);
+      validate();
+      if (errors.value.length) {
+            errorToast(errors.value[0]);
+            loading.value = false;
+            errors.value = [];
+        } else {
+            axios.post("provider/edit-branch", fd, config).then(res => {
+                if (response(res) == "success") {
+                    successToast(res.data.msg);
+                    getDetaile();
+                    setTimeout(() => {
+                        navigateTo('/branches');
+                    }, 500)
+                } else {
+                    errorToast(res.data.msg);
+                }
+                loading.value = false;
+            }).catch(err => console.log(err));
+        }
+    };
 
     onMounted( async () => {
        await getCountries();
-
+       await getDetaile();
        loadGoogleMaps().then((google) => {
-        console.log('Google Maps API loaded:', google);
-        
         }).catch((error) => {
             console.error('Error loading Google Maps API:', error);
         });
@@ -747,6 +951,3 @@
     }
 
 </style>
-
-
-

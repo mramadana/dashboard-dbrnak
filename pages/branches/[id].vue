@@ -2,343 +2,31 @@
     <div>
         <div class="container">
 
-            <div class="main-text mb-0">
-                <h1 class="main-title">{{ $t('Cars.view_branch_data') }}</h1>
-                <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
+            <div id="teleportDiv" class="with-plus-btn"></div>
+
+            <div class="section-btns mb-5">
+        
+                <nuxt-link :to="'/branches/'+ id + '/edit'" class="custom-btn order-btn sm">{{ $t('employees.edit_branch') }}</nuxt-link>
+        
+                <nuxt-link :to="'/branches/'+ id + '/employees'" class="custom-btn order-btn sm">{{ $t('Home.employees') }}</nuxt-link>
             </div>
 
-            <form @submit.prevent="addBranch" ref="addBranchform">
 
-                <div class="row">
-                    <!-- first step form -->
-                    <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Titles.branch_data") }}</h1>
-                        <div class="inner p-3">
-                            <div class="col-12 col-xl-6 col-md-8">
-                                <div class="form-group">
-                                    <div class="input_auth without-edit">
-                                        <img
-                                            src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
-                                            :class="{'hidden-default': uploadedImage.length !== 0,'default-class': true,}"/>
-                                        <GlobalImgUploader
-                                            acceptedFiles="image/*"
-                                            name="image"
-                                            @uploaded-images-updated="updateUploadedImages_1"
-                                            class="validInputs"
-                                            :newImages="image"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Cars.branch_name') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon validInputs" name="name" v-model="name" :placeholder="$t('Branches.please_enter_branch_name')">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.mobile_number') }}
-                                    </label>
-                                    <div class="with_cun_select">
-                                        <div class="main_input">
-                                            <i class="fas fa-mobile-alt sm-icon"></i>
-                                            <input type="number" class="custum-input-icon validInputs" v-model="phone" name="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
-                                        </div>
-                                        <div class="card d-flex justify-content-center dropdown_card">
-                                            <Dropdown
-                                            v-model="branchCountry"
-                                            :options="countries"
-                                            filter
-                                            optionLabel="name"
-                                            :emptyMessage="$t('Home.no_available_options')"
-                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
-                                            >
-                                            <template #value="slotProps">
-                                                <div v-if="slotProps.value" class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.value.label"
-                                                    :src="slotProps.value.image"
-                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.value.key }}</div>
-                                                </div>
-                                                <span v-else>
-                                                {{ slotProps.placeholder }}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.option.label"
-                                                    :src="slotProps.option.image"
-                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.option.name }}</div>
-                                                <div>{{ slotProps.option.key }}</div>
-                                                </div>
-                                            </template>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.email') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-envelope sm-icon"></i>
-                                        <input type="email" class="custum-input-icon validInputs" valid="email" name="email" v-model="email" :placeholder="$t('Auth.please_enter_email')">
-                                    </div>
-                                </div>
-
-                                <div class="form-group" @click="openmodal">
-                                    <label class="label">
-                                        {{ $t('Auth.location') }}
-                                    </label>
-                                    <div class="main_input pointer">
-                                        <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon pointer validInputs" name="location_required" readonly  v-model="mainAddress"  :placeholder="$t('Auth.enter_loaction')">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- add time work -->
-                    <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Branches.worktime") }}</h1>
-                        <div class="inner p-3">
-                            <div class="col-12 col-xl-8 col-md-12">
-                                <div class="worktime">
-
-                                    <div v-for="(item, index) in times" :key="index" class="time-section">
-                                        <div class="day">
-                                            <label class="label">{{ $t('Branches.day') }}</label>
-                                            <input type="text" class="main_input" :placeholder="placeholders[index]" :class="{ 'closed_input': item.isClosed }" readonly/>
-                                        </div>
-
-                                        <div class="from">
-                                            <label class="label">{{ $t('Branches.from') }}</label>
-                                            <div class="main_input" :class="{ 'closed_input': item.isClosed }">
-                                            <flat-pickr
-                                                v-model="item.from"
-                                                :config="getConfigFrom(index)"
-                                                class="select_date main_input custom-date"
-                                                :placeholder="$t('Branches.time_from')"
-                                                name="from"
-                                                :disabled="item.isClosed"
-                                            />
-                                            </div>
-                                        </div>
-
-                                        <div class="to">
-                                            <label class="label">{{ $t('Branches.to') }}</label>
-                                            <div class="main_input" :class="{ 'closed_input': item.isClosed }">
-                                            <flat-pickr
-                                                v-model="item.to"
-                                                :config="getConfigTo(index)"
-                                                class="select_date main_input custom-date"
-                                                :placeholder="$t('Branches.time_to')"
-                                                name="to"
-                                                :disabled="item.isClosed"
-                                            />
-                                            </div>
-                                        </div>
-                                        <div class="switch-parent">
-                                            <label class="switch">
-                                                <input type="checkbox" value="0" v-model="item.isClosed">
-                                                <div class="slider round"></div>
-                                            </label>
-                                            <span class="switch-text">{{$t('Branches.closed')}}</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- second acount for Branch Manager -->
-                    <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Branches.branch_manager_account") }}</h1>
-                        <div class="inner p-3">
-                            <div class="col-12 col-xl-6 col-md-8">
-                                <div class="form-group">
-                                    <div class="input_auth without-edit">
-                                        <img
-                                            src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
-                                            :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
-                                        <GlobalImgUploader
-                                            acceptedFiles="image/*"
-                                            name="manager_image"
-                                            @uploaded-images-updated="updateUploadedImages_2"
-                                            :newImages="manager_image"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.name') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" name="manager_name" v-model="manager_name" class="custum-input-icon validInputs" :placeholder="$t('Auth.enter_name')">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.mobile_number') }}
-                                    </label>
-                                    <div class="with_cun_select">
-                                        <div class="main_input">
-                                            <i class="fas fa-mobile-alt sm-icon"></i>
-                                            <input type="number" class="custum-input-icon validInputs" v-model="manager_phone" name="manager_phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
-                                        </div>
-                                        <div class="card d-flex justify-content-center dropdown_card">
-                                            <Dropdown
-                                            v-model="managerCountry"
-                                            :options="countries"
-                                            filter
-                                            optionLabel="name"
-                                            :emptyMessage="$t('Home.no_available_options')"
-                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
-                                            >
-                                            <template #value="slotProps">
-                                                <div v-if="slotProps.value" class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.value.label"
-                                                    :src="slotProps.value.image"
-                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.value.key }}</div>
-                                                </div>
-                                                <span v-else>
-                                                {{ slotProps.placeholder }}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.option.label"
-                                                    :src="slotProps.option.image"
-                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.option.name }}</div>
-                                                <div>{{ slotProps.option.key }}</div>
-                                                </div>
-                                            </template>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.email') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-envelope sm-icon"></i>
-                                        <input type="email" class="custum-input-icon validInputs" valid="manager_email" name="manager_email" v-model="manager_email" :placeholder="$t('Auth.please_enter_email')">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.password') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword')" name="manager_password" v-model="manager_password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.confirm_password_sm') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword_2')" name="manager_password_confirm" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- abilities form -->
-                    <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
-                        <div class="inner pt-5 p-3">
-                            <div class="row">
-                                <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
-                                <div class="radios form-group">
-                                    <div class="d-flex gap-3">
-                                    <label class="custom-radio custom-check">
-                                        <input
-                                        type="checkbox"
-                                        name="opinion"
-                                        value="true"
-                                        v-model="abilitiesChecked['ability'+ ability.id]"
-                                        class="d-none"
-                                        />
-                                        <span class="mark">
-                                        <i class="fas fa-check icon"></i>
-                                        </span>
-                                        <p class="hint">{{ ability.name }}</p>
-                                    </label>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </form>
+            
         </div>
+        <NuxtPage :page-key="route => route.fullPath"/>
 
-        <GlobalGoogleMap
-            v-model:visible="visible"
-            @closeModal="closeModal"
-            @updateAddress="handleUpdateAddress"
-            @handleClose="handleClose"
-            :show_inputs="show_inputs"
-            :lat="location.lat"
-            :lng="location.lng"
-            :current_location="currentLocation"
-            :isDraggable="false"
-            :closeModal_btn="closeModal_btn"
-            :title= "$t('Auth.location')"
-        />
     </div>
 </template>
 
 <script setup>
+    const id = useRoute().params.id
+</script>
+
+<!-- <script setup>
 
 definePageMeta({
-        name: "Titles.branch_data",
+        name: "Cars.edit_branch_data",
         middleware: ['auth', 'check'],
     });
 
@@ -736,5 +424,107 @@ definePageMeta({
         font-size: 12px;
     }
 
-</style>
+</style> -->
 
+<style lang="scss" scoped>
+
+    .closed_input {
+        background-color: #e2e2e2;
+    }
+
+    .custom-date {
+        &:disabled {
+            background-color: #e2e2e2;
+        }
+    }
+
+    .time-section {
+        display: flex;
+        align-items: end;
+        gap: 15px;
+        margin-bottom: 25px;
+        @media (max-width: 550px) {
+            flex-wrap: wrap;
+        }
+        .input {
+            width: 100%;
+        }
+        > div {
+            flex-grow: 1;
+        }
+    }
+    .switch-parent {
+        display: flex;
+        align-items: center;
+        padding: 11px 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 2px #d9d9d9;
+        border-radius: 6px;
+        gap: 10px;
+        flex-grow: 0 !important;
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 35px;
+        height: 15px;
+    }
+
+    .switch input {
+    display: none;
+    }
+
+    .slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #d8d8d8;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border: 1px solid var(--main);
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 0px;
+        top: 50%;
+        background-color: var(--main);
+        transition: 0.4s;
+        transform: translateY(-50%);
+    }
+
+    input:checked + .slider {
+    background-color: var(--main);
+    border-color: var(--main);
+    }
+
+    input:focus + .slider {
+    box-shadow: 0 0 1px #101010;
+    }
+
+    input:checked + .slider:before {
+    -webkit-transform: translate(20px, -50%);
+    -ms-transform: translate(20px, -50%);
+    transform: translate(20px, -50%);
+    background-color: #fff;
+    }
+
+    .slider.round {
+    border-radius: 34px;
+    }
+
+    .slider.round:before {
+    border-radius: 50%;
+    }
+
+    .switch-text {
+        font-size: 12px;
+    }
+
+</style> 

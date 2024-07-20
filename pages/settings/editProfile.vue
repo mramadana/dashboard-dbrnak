@@ -263,7 +263,7 @@ const handleUpdateAddress = (newAddress) => {
             mainAddress.value = res.data.data.map_desc;
             lat.value = res.data.data.lat;
             lng.value = res.data.data.lng;
-            // logo.value = res.data.data.logo;
+            logo.value = res.data.data.logo;
             // file.value = res.data.data.file;
             commercial_image.value = res.data.data.commercial_image;
         }).catch(err => console.log(err));
@@ -272,11 +272,10 @@ const handleUpdateAddress = (newAddress) => {
     const editProfile = async () => {
         loading.value = true;
         const fd = new FormData(editProfileform.value);
-        fd.append('country_code', selectedCountry.value.key);
-        fd.append('city_id', city.value.id);
+        if(city.value) {
+            fd.append('city_id', city.value.id);
+        }
         fd.append('map_desc', mainAddress.value);
-
-        loading.value = true;
 
         validate();
 

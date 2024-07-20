@@ -135,7 +135,7 @@
                                                 :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
                                             <span :class="{'hidden-default': uploadedImage_2.length !== 0}">{{ $t("Auth.attach_file") }}</span>
                                             <GlobalImgUploader
-                                                acceptedFiles="application/*,image/*"
+                                                acceptedFiles="image/*"
                                                 name="file"
                                                 v-model="file"
                                                 @uploaded-images-updated="updateUploadedImages_2"
@@ -389,8 +389,15 @@
 
         const fd = new FormData(signUpForm.value);
         fd.append('country_code', selectedCountry.value.key);
-        fd.append('city_id', city.value.id);
+        fd.append('lat', location.value.lat);
+        fd.append('lng', location.value.lng);
+        fd.append('map_desc', location.value.address);
+        fd.append('device_type', "web");
+        if(city.value) {
+            fd.append('city_id', city.value.id);
+        }
         fd.append('map_desc', mainAddress.value);
+        fd.append('device_id', '1111');
         // append lang
         if (localStorage.getItem('lang') == null) {
                 fd.append('lang', 'ar');

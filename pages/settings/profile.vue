@@ -276,7 +276,7 @@ const editProfileform = ref(null);
             name.value = res.data.data.name;
             phone.value = res.data.data.phone;
             email.value = res.data.data.email;
-            selectedCountry.value = res.data.data.country_code;
+            selectedCountry.value.key = res.data.data.country_code;
             image.value = res.data.data.image;
             mainAddress.value = res.data.data.map_desc;
             lat.value = res.data.data.lat;
@@ -322,12 +322,5 @@ const editProfileform = ref(null);
     }
 </style>
 
-<style lang="scss">
-    .parent-remove {
-        .remove-btn {
-            display: none;
-        }
-    }
-</style>
 
 

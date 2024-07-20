@@ -49,7 +49,8 @@
         "manager_name": "The manager name is required",
         "manager_password": "The manager password is required",
         "manager_confirm_password": "The manager confirm password is required",
-        "choose_one_ability": "Choose at least one ability"
+        "choose_one_ability": "Choose at least one ability",
+        "please_select_day_time_range.": "Please select day and time"
       },
 
     "Auth": {
@@ -302,7 +303,9 @@
         "keywords" : "Keywords",
         "username" : "Username",
         "job" : "Job",
-        "date_added" : "Date added"
+        "date_added" : "Date added",
+        "user_photo": "User photo",
+        "job_title": "Job title"
     },
 
     "Cars": {
@@ -358,5 +361,22 @@
         "add" : "Add",
         "delete_branch" : "Are you sure you want to delete the branch?",
         "delete_employee" : "Are you sure you want to delete the employee?"
+    },
+
+    "employees": {
+        "user_data": "User data",
+        "job_name": "Job name",
+        "confirm_addition" : "Confirm user addition",
+        "edit_user": "Edit user",
+        "branch_managers": "Branch managers",
+        "employee_details": "Employee details",
+        "branch_manager": "Do you really want to delete the branch manager?",
+        "edit_branch_manager": "Edit branch manager",
+        "edit_employee": "Edit employee",
+        "view_employee_data": "View employee data",
+        "edit_branch" : "Edit branch",
+        "location_determined" : "The location has not been determined yet",
+        "no_times" : "No times of work",
+        "current_location" : "Current location"
     }
 }

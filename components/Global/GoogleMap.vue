@@ -44,7 +44,7 @@
                     @click="getCurrentLocatoin"
                     v-if="props.show_inputs || props.current_location_button"
                 >
-                    {{ $t("Global.current_location") }}
+                    {{ $t("employees.current_location") }}
                 </button>
             </div>
             <GMapMap
