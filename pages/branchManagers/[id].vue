@@ -13,7 +13,7 @@
     
                         <div class="col-12 text-center">
                             <div class="form-group">
-                                <div class="input_auth without-edit">
+                                <div class="input_auth without-edit parent-remove">
                                     <img
                                         src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
                                         :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
@@ -104,45 +104,31 @@
                             </div>
                         </div>
     
-                        <!-- <div class="col-12 col-md-6">
-                            <div class="form-group">
-                                <label class="label">
-                                    {{ $t('Auth.password') }}
-                                </label>
-                                <div class="main_input with_icon">
-                                    <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
-                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                    <i class="far fa-eye icon"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> -->
-    
+
                         <div class="col-12">
-                            <!-- abilities form -->
-                            <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
-                            <div class="inner pt-5 p-3">
-                                <div class="row">
-                                    <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
-                                    <div class="radios form-group">
-                                        <div class="d-flex gap-3">
-                                            <label class="custom-radio custom-check">
-                                                <input
-                                                type="checkbox"
-                                                name="opinion"
-                                                value="true"
-                                                v-model="abilitiesChecked['ability'+ ability.id]"
-                                                class="d-none"
-                                                />
-                                                <span class="mark">
-                                                <i class="fas fa-check icon"></i>
-                                                </span>
-                                                <p class="hint">{{ ability.name }}</p>
-                                            </label>
+                            <div class="custom-width text-start w-100 p-0" v-if="abilitiesList">
+                                <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
+                                <div class="inner pt-5 p-3">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4" v-for="(ability) in abilitiesList" :key="ability.id">
+                                            <div class="radios form-group">
+                                                <div class="d-flex gap-3">
+                                                    <label class="custom-radio custom-check">
+                                                        <input type="checkbox" name="opinion" value="true" v-model="abilitiesCheckededit[ability.id]" 
+                                                        class="d-none"
+                                                        disabled
+                                                        />
+                                                        <span class="mark">
+                                                        <i class="fas fa-check icon"></i>
+                                                        </span>
+                                                        <p class="hint">{{ ability.name }}</p>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                </div>
+        
                             </div>
                         </div>
                     </div>
@@ -200,27 +186,42 @@
     const errors = ref([]);
     const loading = ref(false);
 
-    const abilitiesChecked = ref({});
-
-    const abilities = ref([
-        {id: 1, name: "إضافة سيارة", value: "manage-packages"},
-
-        {id: 2, name: "حذف سيارة", value: "manage-services"},
-
-        {id: 3, name: "تعديل سيارة", value: "manage-orders"},
-
-        {id: 4, name: "انهاء الطلب", value: "manage-appoinments"},
-    ]);
+    const abilitiesList = ref([]);
+    const receivedEditData = ref([]);
 
     // methods
 
-    const inputType = (input) => {
-        return passwordVisible.value[input] ? 'text' : 'password';
+    // Initialize abilitiesChecked with false for each ability
+    abilitiesList.value.forEach((ability) => {
+        abilitiesCheckededit.value[ability.id] = false;
+    });
+
+    const initializeAbilitiesChecked = (abilities) => {
+        abilitiesCheckededit.value = {}; // Reset the state
+        abilities.forEach((ability) => {
+            abilitiesCheckededit.value[ability.id] = false;
+        });
     };
 
-    const togglePasswordVisibility = (input) => {
-        passwordVisible.value[input] = !passwordVisible.value[input];
+    const selectedAbilitiesEdit = computed(() => {
+        return Object.keys(abilitiesCheckededit.value).filter(key => abilitiesCheckededit.value[key]);
+    });
+    
+    const noSelectionWarning = ref(false);
+
+    const checkSelections = () => {
+      // Check if none of the abilities are selected
+      const editSelected = selectedAbilitiesEdit.value.length > 0;
+    // Check if none of the abilities are selected in either edit or add
+        noSelectionWarning.value = !(editSelected);
+      if (noSelectionWarning.value) {
+        errors.value.push(t(`validation.choose_one_ability`));
+      }
     };
+
+    // methods
+
+
 
     const updateUploadedImages_2 = (images) => {
         uploadedImage_2.value = images;
@@ -249,12 +250,23 @@
             phone.value = res.data.data.phone;
             image.value = res.data.data.image;
             selectedCountry.value.key = res.data.data.country_code;
+            receivedEditData.value = res.data.data.abilities;
+                initializeAbilitiesChecked(abilitiesList.value); // Reset before setting new values
+                receivedEditData.value.forEach((ability) => {
+                    if (abilitiesCheckededit.value.hasOwnProperty(ability.id)) {
+                    abilitiesCheckededit.value[ability.id] = true;
+                    }
+                });
         }
         loading.value = false;
     }).catch(err => console.log(err));
     }
 
     onMounted( async () => {
+
+        await store.getAbilities();
+
+        abilitiesList.value = store.abilities_list;
 
         // get detailes of manager
         await getDetaile();

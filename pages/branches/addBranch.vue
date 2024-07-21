@@ -119,10 +119,52 @@
                                 <div class="col-12 col-xl-8 col-md-12">
                                     <div class="worktime">
 
+                                        <div class="addTimeSection mb-5">
+                                            <div class="time-section">
+
+                                                <div class="big_day">
+                                                    <label class="label">{{ $t('Branches.day') }}</label>
+                                                    <div class="flex justify-content-center dropdown_card main_input special-custom">
+                                                        <i class="fa-solid fa-city sm-icon"></i>
+                                                        <Dropdown v-model="day" :options="days" optionLabel="name" :placeholder="$t('Branches.day')" class="w-full md:w-14rem custum-dropdown" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="from">
+                                                    <label class="label">{{ $t('Branches.from') }}</label>
+                                                    <div class="main_input">
+                                                        <flat-pickr
+                                                        v-model="from"
+                                                        :config="getConfigFrom_append"
+                                                        class="select_date main_input custom-date"
+                                                        :placeholder="$t('Branches.time_from')"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div class="to">
+                                                    <label class="label">{{ $t('Branches.to') }}</label>
+                                                    <div class="main_input">
+                                                        <flat-pickr
+                                                        v-model="to"
+                                                        :config="getConfigTo_append"
+                                                        class="select_date main_input custom-date"
+                                                        :placeholder="$t('Branches.time_to')"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <button class="add-time-btn add" @click="addTime">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
                                         <div v-for="(item, index) in times" :key="index" class="time-section">
-                                            <div class="day">
+
+                                            <div class="day big_day">
                                                 <label class="label">{{ $t('Branches.day') }}</label>
-                                                <input type="text" class="main_input" :placeholder="placeholders[index]" :class="{ 'closed_input': item.isClosed }" readonly/>
+                                                <input type="text" class="main_input" :value=" item.day.name? item.day.name : item.day" :class="{ 'closed_input': item.isClosed }" readonly />
                                             </div>
 
                                             <div class="from">
@@ -133,6 +175,7 @@
                                                     :config="getConfigFrom(index)"
                                                     class="select_date main_input custom-date"
                                                     :placeholder="$t('Branches.time_from')"
+                                                    name="from"
                                                     :disabled="item.isClosed"
                                                 />
                                                 </div>
@@ -146,19 +189,23 @@
                                                     :config="getConfigTo(index)"
                                                     class="select_date main_input custom-date"
                                                     :placeholder="$t('Branches.time_to')"
+                                                    name="to"
                                                     :disabled="item.isClosed"
                                                 />
                                                 </div>
                                             </div>
+
                                             <div class="switch-parent">
                                                 <label class="switch">
-                                                    <input type="checkbox" value="0" v-model="item.isClosed">
-                                                    <div class="slider round"></div>
+                                                <input type="checkbox" value="0" v-model="item.isClosed">
+                                                <div class="slider round"></div>
                                                 </label>
                                                 <span class="switch-text">{{$t('Branches.closed')}}</span>
                                             </div>
-                                        </div>
 
+                                            <button class="add-time-btn add remove" @click="removeTime(index)"><i class="fa-solid fa-xmark"></i></button>
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -284,16 +331,16 @@
                          <div class="custom-width text-start w-100 p-0">
                             <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
                             <div class="inner pt-5 p-3">
-                                <div class="row">
-                                    <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
+                                <div class="row" v-if="abilitiesList">
+                                    <div class="col-12 col-md-4" v-for="(ability) in abilitiesList" :key="ability.id">
                                        <div class="radios form-group">
                                            <div class="d-flex gap-3">
                                            <label class="custom-radio custom-check">
                                                <input
                                                type="checkbox"
                                                name="opinion"
-                                               value="true"
-                                               v-model="abilitiesChecked['ability'+ ability.id]"
+                                               :value="ability.id"
+                                               v-model="abilitiesChecked[ability.id]"
                                                class="d-none"
                                                />
                                                <span class="mark">
@@ -306,7 +353,6 @@
                                    </div>
                                 </div>
                             </div>
-
                          </div>
 
                          <div class="p-0 mt-4">
@@ -363,17 +409,8 @@
     const { token , user } = storeToRefs(store);
 
     const abilitiesChecked = ref({});
+
     const mapAddress = ref('');
-
-    const abilities = ref([
-    {id: 1, name: "إضافة سيارة", value: "manage-packages"},
-
-    {id: 2, name: "حذف سيارة", value: "manage-services"},
-
-    {id: 3, name: "تعديل سيارة", value: "manage-orders"},
-    
-    {id: 4, name: "انهاء الطلب", value: "manage-appoinments"},
-    ]);
 
     // config
     const config = {
@@ -421,34 +458,62 @@
 
     // flatpicker configration
 
-    const times = ref([
-      { day: 'saturday', from: null, to: null, isClosed: false, },
-      { day: 'sunday', from: null, to: null, isClosed: false, },
-      { day: 'monday', from: null, to: null, isClosed: false, },
-      { day: 'tuesday', from: null, to: null, isClosed: false, },
-      { day: 'wednesday', from: null, to: null, isClosed: false, },
-      { day: 'thursday', from: null, to: null, isClosed: false, },
-      { day: 'friday', from: null, to: null, isClosed: false, },
+    // append data to times
+    const times = ref([]);
+    const day = ref('');
+    const to = ref(null);
+    const from = ref(null);
+    const days = ref([
+        {name: t(`Branches.saturday`), day: 'saturday'},
+        {name: t(`Branches.sunday`), day: 'sunday'},
+        {name: t(`Branches.monday`), day: 'monday'},
+        {name: t(`Branches.tuesday`), day: 'tuesday'},
+        {name: t(`Branches.wednesday`), day: 'wednesday'},
+        {name: t(`Branches.thursday`), day: 'thursday'},
+        {name: t(`Branches.friday`), day: 'friday'},
     ]);
 
-    const placeholders = ref([
-      t('Branches.saturday'),
-      t('Branches.sunday'),
-      t('Branches.monday'),
-      t('Branches.tuesday'),
-      t('Branches.wednesday'),
-      t('Branches.thursday'),
-      t('Branches.friday'),
-    ]);
+    const addTime = () => {
+      if (day.value && from.value && to.value) {
+        const fromTime = new Date(`1970-01-01T${from.value}:00`);
+        const toTime = new Date(`1970-01-01T${to.value}:00`);
 
-    // start to methods
+        if (fromTime >= toTime) {
+        //   alert('The "from" time must be less than the "to" time.');
+          errorToast(t(`Auth.time_should_be_more`));
+          return;
+        }
 
-    const inputType = (input) => {
-        return passwordVisible.value[input] ? 'text' : 'password';
+        // Check if the same day and time range already exists
+        const exists = times.value.some(item =>
+          item.day === day.value.name &&
+          item.from === from.value &&
+          item.to === to.value
+        );
+
+        if (exists) {
+          alert('The same day and time range has already been added.');
+          return;
+        }
+
+        times.value.push({
+        day: day.value.name, // Spread operator to ensure it's a new object
+          from: from.value,
+          to: to.value,
+          isClosed: false,
+        });
+
+        day.value = '';
+        from.value = null;
+        to.value = null;
+      } else {
+
+        errorToast(t(`validation.please_select_day_time_range`));
+      }
     };
 
-    const togglePasswordVisibility = (input) => {
-        passwordVisible.value[input] = !passwordVisible.value[input];
+    const removeTime = (index) => {
+      times.value.splice(index, 1);
     };
 
     const createConfig = (index, type) => ({
@@ -456,7 +521,7 @@
       noCalendar: true,
       dateFormat: 'H:i',
       time_24hr: true,
-      disableMobile: "true",
+      disableMobile: true,
       onChange: (selectedDates) => {
         if (type === 'from') {
           if (times.value[index].to && selectedDates[0] >= times.value[index].to) {
@@ -473,28 +538,34 @@
     const getConfigFrom = (index) => createConfig(index, 'from');
     const getConfigTo = (index) => createConfig(index, 'to');
 
-    watch(
-      () => times.value.map(item => item.from),
-      (newValues) => {
-        newValues.forEach((fromValue, index) => {
-          if (times.value[index].to && fromValue >= times.value[index].to) {
-            times.value[index].to = null;
-          }
-        });
-      }
-    );
+    const getConfigFrom_append = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true,
+      disableMobile: true,
+    };
 
-    watch(
-      () => times.value.map(item => item.to),
-      (newValues) => {
-        newValues.forEach((toValue, index) => {
-          if (times.value[index].from && toValue <= times.value[index].from) {
-            times.value[index].from = null;
-          }
-        });
-      }
-    );
-    
+    const getConfigTo_append = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true,
+      disableMobile: true,
+    };    
+
+    const abilitiesList = ref([]);
+
+    // start to methods
+
+    const inputType = (input) => {
+        return passwordVisible.value[input] ? 'text' : 'password';
+    };
+
+    const togglePasswordVisibility = (input) => {
+        passwordVisible.value[input] = !passwordVisible.value[input];
+    };
+
     // methods
 
     // validation Function
@@ -514,18 +585,21 @@
     }
 
     // Initialize abilitiesChecked with false for each ability
-    abilities.value.forEach((ability) => {
-      abilitiesChecked.value['ability' + ability.id] = false;
+    abilitiesList.value.forEach((ability) => {
+      abilitiesChecked.value[ability.id] = false;
     });
 
     const noSelectionWarning = ref(false);
 
+    const selectedAbilities = computed(() => {
+        return Object.keys(abilitiesChecked.value).filter(key => abilitiesChecked.value[key]);
+    });
+
     const checkSelections = () => {
-      // Check if none of the abilities are selected
-      noSelectionWarning.value = !Object.values(abilitiesChecked.value).some((checked) => checked);
-      if (noSelectionWarning.value) {
-        errors.value.push(t(`validation.choose_one_ability`));
-      }
+        noSelectionWarning.value = selectedAbilities.value.length === 0;
+        if (noSelectionWarning.value) {
+            errors.value.push(t("validation.choose_one_ability"));
+        }
     };
 
     const submitData = () => {
@@ -537,7 +611,7 @@
         fd.append('lng', location.value.lng);
         fd.append('map_desc', mainAddress.value);
         fd.append('country_code', branchCountry.value.key);
-        fd.append('managerCountry', managerCountry.value.key);
+        fd.append('manager_country_code', managerCountry.value.key);
 
       validate();
       if (errors.value.length) {
@@ -545,10 +619,9 @@
             loading.value = false;
             errors.value = [];
         } else {
-            axios.post(`provider/add-branch?branch_id=${105}`, fd, config).then(res => {
+            axios.post(`provider/add-branch`, fd, config).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
-                    getDetaile();
                     setTimeout(() => {
                         navigateTo('/branches');
                     }, 500)
@@ -641,6 +714,10 @@
         }).catch((error) => {
             console.error('Error loading Google Maps API:', error);
         });
+
+        // Get all abilities form store
+        await store.getAbilities();
+        abilitiesList.value = store.abilities_list;
     });
 </script>
 

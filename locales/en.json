@@ -91,7 +91,8 @@
         "add_logo" : "Add logo",
         "view_profile" : "View profile",
         "name" : "Name",
-        "enter_name" : "Please enter your name"
+        "enter_name" : "Please enter your name",
+        "time_should_be_more" : "The time should be from less than the time to"
     },
 
     "Home": {
@@ -264,7 +265,8 @@
         "new": "New",
         "delivery_date" : "delivery date",
         "car_count" : "Car count",
-        "privacy_policy" : "Privacy policy"
+        "privacy_policy" : "Privacy policy",
+        "personal_photo" : "Personal photo"
     },
 
     "order": {
@@ -298,7 +300,9 @@
         "rental_cost" : "Rental cost",
         "rs" : "RS",
         "choose_payment" : "Choose payment",
-        "customer_data" : "Customer data"
+        "customer_data" : "Customer data",
+        "cancel" : "Cancel",
+        "refused" : "Refused"
     },
     
     "Table" : {

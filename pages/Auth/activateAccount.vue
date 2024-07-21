@@ -43,10 +43,10 @@
 
         <!-- request successfully -->
         <Dialog v-model:visible="sent_Successfully" modal class="custum_dialog_width without-close" :draggable="false">
-                <div class="text-center">
-                    <img src="@/assets/images/check.png" alt="check-img" class="check-img">
-                    <h1 class="main-title bold mb-4">{{ $t('Global.send_request_successfully') }}</h1>
-                </div>
+            <div class="text-center">
+                <img src="@/assets/images/check.png" alt="check-img" class="check-img">
+                <h1 class="main-title bold mb-4">{{ $t('Global.send_request_successfully') }}</h1>
+            </div>
         </Dialog>
     </div>
 </template>
@@ -87,7 +87,7 @@ const loading = ref(false);
 const otpInput = ref(null);
 const bindModal = ref("");
 
-const sent_Successfully = ref(true);
+const sent_Successfully = ref(false);
 
 /******************* Methods *******************/
 
@@ -122,7 +122,10 @@ const verificationCode = async () => {
 
     if (res.status == "success") {
         successToast(res.msg);
-        openmodal();
+        sent_Successfully.value = true;
+        setTimeout(() => {
+            navigateTo('/Auth/login');
+        }, 2000);
         } else {
             errorToast(res.msg);
         }
@@ -133,7 +136,7 @@ const verificationCode = async () => {
 
 // resendCode Function
 const resendCode = async () => {
-    await axios.get(`resend-code?country_code=${user.value.country_code}&phone=${user.value.phone}`).then(res => {
+    await axios.get(`provider/resend-code?country_code=${user.value.country_code}&phone=${user.value.phone}`).then(res => {
         if (response(res) == "success") {
             successToast(res.data.msg);
             countStatus.value = true;

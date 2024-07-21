@@ -161,6 +161,24 @@
                                             />
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <div class="input_auth without-edit">
+                                            <img
+                                                src="@/assets/images/upload_img.png"
+                                                loading="lazy"
+                                                alt="default-img"
+                                                :class="{'hidden-default': uploadedImage_4.length !== 0,'default-class': true,}"/>
+                                            <span :class="{'hidden-default': uploadedImage_4.length !== 0}">{{ $t("Global.personal_photo") }}</span>
+                                            <GlobalImgUploader
+                                                acceptedFiles="image/*"
+                                                name="image"
+                                                v-model="image"
+                                                @uploaded-images-updated="updateUploadedImages_4"
+                                                class="validInputs"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
         
@@ -190,7 +208,7 @@
                                             </span>
                                             <p class="check-text hint">
                                             {{ $t("Auth.agree_to") }}
-                                            <NuxtLink to="/terms" target="_blank" class="anchor">
+                                            <NuxtLink to="/electronicContract" target="_blank" class="anchor">
                                                 {{ $t("Home.electronic_contract") }}
                                             </NuxtLink >
                                             </p>
@@ -261,7 +279,7 @@
     const { signUpHandler } = store;
 
     // google map
-    const { lat, lng, address} = storeToRefs(store);
+    const { lat, lng} = storeToRefs(store);
 
     const mainAddress = ref("");
 
@@ -293,6 +311,8 @@
     const uploadedImage = ref([]);
     const uploadedImage_2 = ref([]);
     const uploadedImage_3 = ref([]);
+    const uploadedImage_4 = ref([]);
+
     const updateUploadedImages_1 = (images) => {
         uploadedImage.value = images;
     };
@@ -304,9 +324,13 @@
         uploadedImage_3.value = images;
     }
 
+    const updateUploadedImages_4 = (images) => {
+        uploadedImage_4.value = images;
+    }
+
     const closeModal = () => {
         visible.value = false
-        mainAddress.value = address.value
+        mainAddress.value = location.value.address
     }
 
     const handleClose = () => {
@@ -396,7 +420,6 @@
         if(city.value) {
             fd.append('city_id', city.value.id);
         }
-        fd.append('map_desc', mainAddress.value);
         fd.append('device_id', '1111');
         // append lang
         if (localStorage.getItem('lang') == null) {

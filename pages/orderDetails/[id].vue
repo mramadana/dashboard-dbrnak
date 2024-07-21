@@ -13,6 +13,8 @@
                         <h6 class="text" v-if="!loading && orderData.status == 0">{{ $t("order.new") }}</h6>
                         <h6 class="text" v-if="!loading && orderData.status == 1">{{ $t("order.current") }}</h6>
                         <h6 class="text" v-if="!loading && orderData.status == 4">{{ $t("order.rented") }}</h6>
+                        <h6 class="text" v-if="!loading && orderData.status == 3">{{ $t("order.cancel") }}</h6>
+                        <h6 class="text" v-if="!loading && orderData.status == 2">{{ $t("order.refused") }}</h6>
                         <skeleton v-if="loading" width="100px" height="10px"/>
                     </div>
                     
@@ -24,7 +26,7 @@
 
                     <div class="item-details">
                         <h6 class="text">{{ $t("Global.received_date") }}</h6>
-                        <h6 class="text" v-if="!loading">{{ orderData.receive_date }}</h6>
+                        <h6 class="text" v-if="!loading">{{ orderData.return_date }}</h6>
                         <skeleton v-if="loading" width="100px" height="10px"/>
                     </div>
 
@@ -32,7 +34,7 @@
 
                     <div class="item-details"> 
                         <h6 class="text">{{ $t("Global.delivery_date") }}</h6>
-                        <h6 class="text" v-if="!loading">{{ orderData.return_date }}</h6>
+                        <h6 class="text" v-if="!loading">{{ orderData.receive_date }}</h6>
                         <skeleton v-if="loading" width="100px" height="10px"/>
                     </div>
 

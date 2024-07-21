@@ -91,7 +91,8 @@
         "add_logo" : "إضافة لوجو",
         "view_profile" : "عرض الملف الشخصي",
         "name" : "الاسم",
-        "enter_name" : "الرجاء ادخال الاسم"
+        "enter_name" : "الرجاء ادخال الاسم",
+        "time_should_be_more" : "يجب أن يكون الوقت من أقل من الوقت إلى"
     },
 
     "Home": {
@@ -265,7 +266,8 @@
         "new": "الجديدة",
         "delivery_date" : "تاريخ التسليم",
         "car_count" : "عدد السيارات",
-        "privacy_policy" : "سياسة الخصوصية"
+        "privacy_policy" : "سياسة الخصوصية",
+        "personal_photo" : "صورة شخصية"
     },
 
     "order": {
@@ -299,7 +301,9 @@
         "rental_cost" : "تكلفة اليوم",
         "rs" : "ر.س",
         "choose_payment" : "طريقة الدفع",
-        "customer_data" : "بيانات العميل"
+        "customer_data" : "بيانات العميل",
+        "cancel" : "ملغى",
+        "refused" : "مرفوض"
     },
     
     "Table" : {

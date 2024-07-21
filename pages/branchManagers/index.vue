@@ -93,6 +93,9 @@ const DropDownManagers = ref({
 // success response
 const { response } = responseApi();
 
+// Toast
+const { successToast, errorToast } = toastMsg();
+
 // Axios
 const axios = useApi();
 

@@ -6,15 +6,15 @@
                 <div class="row pb-4">
                     <div class="col-12 col-md-6">
 
-                        <!-- <div class="form-group text-center">
+                        <div class="form-group text-center">
                             <div class="input_auth without_label">
                                 <div class="edit-label">
                                     <i class="fas fa-edit"></i>
                                 </div>
-                                <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
-                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_4.length > 0, 'default-class': true}">
+                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_4" />
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group">
                             <label class="label">
@@ -242,6 +242,7 @@ const lng = ref(null);
 const uploadedImage = ref([]);
 const uploadedImage_2 = ref([]);
 const uploadedImage_3 = ref([]);
+const uploadedImage_4 = ref([]);
 
 const openMapModal = () => {
     if(lat.value == 0 || lng.value == 0) {

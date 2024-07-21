@@ -1,9 +1,8 @@
 <template>
-
     <div>
         
         <div class="with-plus-btn">
-
+            
             <div class="main-text mb-0">
                 <h1 class="main-title">{{ $t('Home.branches') }}</h1>
                 <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
@@ -47,14 +46,17 @@
         <!-- delete dialog -->
 
         <Dialog v-model:visible="deleteSuccessfully" modal class="custum_dialog_width" :draggable="false">
-                <div class="text-center">
-                    <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
-                    <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
-                    <div class="section-btns">
-                        <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
-                        <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
-                    </div>
+            <div class="text-center">
+                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
+                <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
+                <div class="section-btns">
+                    <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">
+                        {{ $t('Global.yes') }}
+                        <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
+                    </button>
+                    <button class="custom-btn sm d-inline-flex" @click="deleteSuccessfully = false">{{ $t('Global.no') }}</button>
                 </div>
+            </div>
         </Dialog>
 
 
@@ -102,6 +104,8 @@ const loading = ref(true);
 
 const branch_id = ref('');
 
+const { successToast, errorToast } = toastMsg();
+
 // Paginator
 const currentPage = ref(1);
 const pageLimit = ref();
@@ -142,9 +146,7 @@ const deleteSuccessfullyFun = () => {
 
 const deleteBranch = async () => {
     loading.value = true;
-    const fd = new FormData();
-    fd.append('branch_id', branch_id.value);
-    await axios.delete(`provider/delete-branch`, config).then(res => {
+    await axios.delete(`provider/delete-branch/${branch_id.value}`, config).then(res => {
         if (response(res) == "success") {
             successToast(res.data.msg);
             deleteSuccessfully.value = false;

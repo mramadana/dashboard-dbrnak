@@ -262,63 +262,36 @@
                                         <input type="email" class="custum-input-icon validInputs" readonly valid="manager_email" name="manager_email" v-model="manager_email" :placeholder="$t('Auth.please_enter_email')">
                                     </div>
                                 </div>
-
-                                <!-- <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.password') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword')" name="manager_password" v-model="manager_password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.confirm_password_sm') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword_2')" name="manager_password_confirm" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div> -->
-
-
                             </div>
                         </div>
                     </div>
 
                     <!-- abilities form -->
-                    <div class="custom-width text-start w-100 p-0">
+                    <div class="custom-width text-start w-100 p-0" v-if="abilitiesList">
                         <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
                         <div class="inner pt-5 p-3">
                             <div class="row">
-                                <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
-                                <div class="radios form-group">
-                                    <div class="d-flex gap-3">
-                                    <label class="custom-radio custom-check">
-                                        <input
-                                        type="checkbox"
-                                        name="opinion"
-                                        value="true"
-                                        v-model="abilitiesChecked['ability'+ ability.id]"
-                                        class="d-none"
-                                        />
-                                        <span class="mark">
-                                        <i class="fas fa-check icon"></i>
-                                        </span>
-                                        <p class="hint">{{ ability.name }}</p>
-                                    </label>
+                                <div class="col-12 col-md-4" v-for="(ability) in abilitiesList" :key="ability.id">
+                                    <div class="radios form-group">
+                                        <div class="d-flex gap-3">
+                                            <label class="custom-radio custom-check">
+                                                <input
+                                                type="checkbox"
+                                                name="opinion"
+                                                value="true"
+                                                v-model="abilitiesChecked[ability.id]"
+                                                class="d-none"
+                                                />
+                                                <span class="mark">
+                                                <i class="fas fa-check icon"></i>
+                                                </span>
+                                                <p class="hint">{{ ability.name }}</p>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -349,7 +322,6 @@
                 </h1>
             </div>
         </Dialog>
-
 
     </div>
 </template>
@@ -450,15 +422,7 @@
 
     // flatpicker configration
 
-    const times = ref([
-    //   { day: 'saturday', from: null, to: null, isClosed: false, },
-    //   { day: 'sunday', from: null, to: null, isClosed: false, },
-    //   { day: 'monday', from: null, to: null, isClosed: false, },
-    //   { day: 'tuesday', from: null, to: null, isClosed: false, },
-    //   { day: 'wednesday', from: null, to: null, isClosed: false, },
-    //   { day: 'thursday', from: null, to: null, isClosed: false, },
-    //   { day: 'friday', from: null, to: null, isClosed: false, },
-    ]);
+    const times = ref([]);
 
     const placeholders = ref([
       t('Branches.saturday'),
@@ -573,16 +537,34 @@
     // methods
 
 
+    const abilitiesList = ref([]);
+    const receivedEditData = ref([]);
+
+    // methods
+
     // Initialize abilitiesChecked with false for each ability
-    abilities.value.forEach((ability) => {
-      abilitiesChecked.value['ability' + ability.id] = false;
+    abilitiesList.value.forEach((ability) => {
+        abilitiesChecked.value[ability.id] = false;
     });
 
+    const initializeAbilitiesChecked = (abilities) => {
+        abilitiesChecked.value = {}; // Reset the state
+        abilities.forEach((ability) => {
+            abilitiesChecked.value[ability.id] = false;
+        });
+    };
+
+    const selectedAbilitiesEdit = computed(() => {
+        return Object.keys(abilitiesChecked.value).filter(key => abilitiesChecked.value[key]);
+    });
+    
     const noSelectionWarning = ref(false);
 
     const checkSelections = () => {
       // Check if none of the abilities are selected
-      noSelectionWarning.value = !Object.values(abilitiesChecked.value).some((checked) => checked);
+      const editSelected = selectedAbilitiesEdit.value.length > 0;
+    // Check if none of the abilities are selected in either edit or add
+        noSelectionWarning.value = !(editSelected);
       if (noSelectionWarning.value) {
         errors.value.push(t(`validation.choose_one_ability`));
       }
@@ -608,6 +590,14 @@
                 manager_email.value = res.data.data.manager.email;
                 manager_phone.value = res.data.data.manager.phone;
                 managerCountry.value.key = res.data.data.manager.country_code;
+
+                receivedEditData.value = res.data.data.manager.abilities;
+                initializeAbilitiesChecked(abilitiesList.value); // Reset before setting new values
+                receivedEditData.value.forEach((ability) => {
+                    if (abilitiesChecked.value.hasOwnProperty(ability.id)) {
+                    abilitiesChecked.value[ability.id] = true;
+                    }
+                });
             }
         }).catch(err => console.log(err));
 
@@ -642,6 +632,11 @@
 
 
     onMounted( async () => {
+
+        await store.getAbilities();
+
+        abilitiesList.value = store.abilities_list;
+
        await getCountries();
        branch_id.value = localStorage.getItem('view_branch_id')
        await getDetaile();

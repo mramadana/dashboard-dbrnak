@@ -118,28 +118,30 @@
     
                         <div class="col-12">
                             <!-- abilities form -->
-                            <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
-                            <div class="inner pt-5 p-3">
-                                <div class="row">
-                                    <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
-                                    <div class="radios form-group">
-                                        <div class="d-flex gap-3">
-                                        <label class="custom-radio custom-check">
-                                            <input
-                                            type="checkbox"
-                                            name="opinion"
-                                            value="true"
-                                            v-model="abilitiesChecked['ability'+ ability.id]"
-                                            class="d-none"
-                                            />
-                                            <span class="mark">
-                                            <i class="fas fa-check icon"></i>
-                                            </span>
-                                            <p class="hint">{{ ability.name }}</p>
-                                        </label>
+                            <div class="custom-width text-start w-100 p-0" v-if="abilitiesList">
+                                <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
+                                <div class="inner pt-5 p-3">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4" v-for="(ability) in abilitiesList" :key="ability.id">
+                                            <div class="radios form-group">
+                                                <div class="d-flex gap-3">
+                                                    <label class="custom-radio custom-check">
+                                                        <input
+                                                        type="checkbox"
+                                                        name="opinion"
+                                                        value="true"
+                                                        v-model="abilitiesCheckededit[ability.id]"
+                                                        class="d-none"
+                                                        />
+                                                        <span class="mark">
+                                                        <i class="fas fa-check icon"></i>
+                                                        </span>
+                                                        <p class="hint">{{ ability.name }}</p>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
@@ -167,6 +169,7 @@
     });
 
     import { useI18n } from 'vue-i18n';
+    import { useAuthStore } from '@/stores/auth';
     const { t } = useI18n({ useScope: 'global' });
 
     // Axios
@@ -205,32 +208,38 @@
     const errors = ref([]);
     const loading = ref(false);
     const editmanagerform = ref(null);
-    const abilitiesChecked = ref({});
+
     // Toast
     const { successToast, errorToast } = toastMsg();
 
-    const abilities = ref([
-        {id: 1, name: "إضافة سيارة", value: "manage-packages"},
-
-        {id: 2, name: "حذف سيارة", value: "manage-services"},
-
-        {id: 3, name: "تعديل سيارة", value: "manage-orders"},
-
-        {id: 4, name: "انهاء الطلب", value: "manage-appoinments"},
-    ]);
+    const abilitiesList = ref([]);
+    const receivedEditData = ref([]);
 
     // methods
 
     // Initialize abilitiesChecked with false for each ability
-    abilities.value.forEach((ability) => {
-      abilitiesChecked.value['ability' + ability.id] = false;
+    abilitiesList.value.forEach((ability) => {
+        abilitiesCheckededit.value[ability.id] = false;
     });
 
+    const initializeAbilitiesChecked = (abilities) => {
+        abilitiesCheckededit.value = {}; // Reset the state
+        abilities.forEach((ability) => {
+            abilitiesCheckededit.value[ability.id] = false;
+        });
+    };
+
+    const selectedAbilitiesEdit = computed(() => {
+        return Object.keys(abilitiesCheckededit.value).filter(key => abilitiesCheckededit.value[key]);
+    });
+    
     const noSelectionWarning = ref(false);
 
     const checkSelections = () => {
       // Check if none of the abilities are selected
-      noSelectionWarning.value = !Object.values(abilitiesChecked.value).some((checked) => checked);
+      const editSelected = selectedAbilitiesEdit.value.length > 0;
+    // Check if none of the abilities are selected in either edit or add
+        noSelectionWarning.value = !(editSelected);
       if (noSelectionWarning.value) {
         errors.value.push(t(`validation.choose_one_ability`));
       }
@@ -264,9 +273,8 @@
         checkSelections()
     }
 
-    // get detailes of manager
     const getDetaile = async () => {
-    loading.value = true;
+    // loading.value = true;
     await axios.get(`provider/manager-details?manager_id=${manager_id.value}`, config).then(res => {
         if (response(res) == "success") {
             name.value = res.data.data.name;
@@ -274,6 +282,13 @@
             phone.value = res.data.data.phone;
             image.value = res.data.data.image;
             selectedCountry.value.key = res.data.data.country_code;
+            receivedEditData.value = res.data.data.abilities;
+                initializeAbilitiesChecked(abilitiesList.value); // Reset before setting new values
+                receivedEditData.value.forEach((ability) => {
+                    if (abilitiesCheckededit.value.hasOwnProperty(ability.id)) {
+                    abilitiesCheckededit.value[ability.id] = true;
+                    }
+                });
         }
         loading.value = false;
     }).catch(err => console.log(err));
@@ -284,6 +299,7 @@
         const fd = new FormData(editmanagerform.value);
         fd.append('manager_id', manager_id.value);
         fd.append('country_code', selectedCountry.value.key);
+        fd.append('abilities', JSON.stringify(selectedAbilitiesEdit.value));
         validate();
         if (errors.value.length) {
             errorToast(errors.value[0]);
@@ -304,8 +320,7 @@
     }
 
     //  Get All countries
-    
-    
+
     const getCountries = async () => {
         await axios.get('countries').then(res => {
             if (response(res) == "success") {
@@ -319,13 +334,23 @@
         }).catch(err => console.log(err));
     };
 
+        // get detailes of manager
+
+
     onMounted( async () => {
+
         manager_id.value = localStorage.getItem('manager_id');
-        console.log(manager_id.value, "manager_id");
+
         // Get All countries
        await getCountries();
 
+       await store.getAbilities();
+
+        abilitiesList.value = store.abilities_list;
+
        await getDetaile();
+
+        // Get all abilities form store
     });
 
 </script>

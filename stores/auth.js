@@ -1,3 +1,4 @@
+
 import { defineStore } from "pinia";
 
 // Axios
@@ -24,6 +25,7 @@ export const useAuthStore = defineStore("auth", {
     lng: null,
     address: null,
     selectedAddress: null,
+    abilities_list: [],
   }),
   actions: {
     // Sign In
@@ -59,11 +61,10 @@ export const useAuthStore = defineStore("auth", {
 
     // Verification Code
     async verificationHandler(formData) {
-      const resData = await axios.post("activate?_method=patch", formData);
+      const resData = await axios.post("provider/activate?_method=patch", formData);
       if (response(resData) == "success") {
         this.token = resData.data.data.token;
         this.isLoggedIn = true;
-        navigateTo("/");
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };
@@ -181,6 +182,19 @@ export const useAuthStore = defineStore("auth", {
         this.currentPasword = currentPasword;
         navigateTo('/settings/emailActivateCode');
         return { status: "success", msg: resData.data.msg };
+      } else {
+        return { status: "error", msg: resData.data.msg };
+      }
+    },
+
+    // get abilities
+    async getAbilities() {
+      const config = {
+        headers: { Authorization: `Bearer ${this.token}` },
+      };
+      const resData = await axios.get("provider/abilities-list", config);
+      if (response(resData) == "success") {
+        this.abilities_list = resData.data.data;
       } else {
         return { status: "error", msg: resData.data.msg };
       }

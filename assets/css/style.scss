@@ -1075,6 +1075,7 @@ input.p-inputtext.p-component {
 }
 
 .parent-remove {
+  pointer-events: none;
   .remove-btn {
       display: none;
   }

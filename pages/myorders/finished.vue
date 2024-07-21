@@ -5,6 +5,6 @@
 </script>
 <template>
     <div class="container">
-        <OrdersMainOrderContent ordersName="finished-orders"/>
+        <OrdersMainOrderContent ordersName="provider/orders?status=4"/>
     </div>
 </template>

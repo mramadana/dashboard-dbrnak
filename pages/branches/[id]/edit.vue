@@ -216,155 +216,6 @@
                         </div>
                     </div>
     
-                    <!-- second acount for Branch Manager -->
-                    <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Branches.branch_manager_account") }}</h1>
-                        <div class="inner p-3">
-                            <div class="col-12 col-xl-6 col-md-8">
-                                <div class="form-group">
-                                    <div class="input_auth without-edit">
-                                        <img
-                                            src="@/assets/images/upload_img.png" loading="lazy" alt="default-img"
-                                            :class="{'hidden-default': uploadedImage_2.length !== 0,'default-class': true,}"/>
-                                        <GlobalImgUploader
-                                            acceptedFiles="image/*"
-                                            name="manager_image"
-                                            @uploaded-images-updated="updateUploadedImages_2"
-                                            :newImages="manager_image"
-                                        />
-                                    </div>
-                                </div>
-    
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.name') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" name="manager_name" v-model="manager_name" class="custum-input-icon validInputs" :placeholder="$t('Auth.enter_name')">
-                                    </div>
-                                </div>
-    
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.mobile_number') }}
-                                    </label>
-                                    <div class="with_cun_select">
-                                        <div class="main_input">
-                                            <i class="fas fa-mobile-alt sm-icon"></i>
-                                            <input type="number" class="custum-input-icon validInputs" v-model="manager_phone" name="manager_phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
-                                        </div>
-                                        <div class="card d-flex justify-content-center dropdown_card">
-                                            <Dropdown
-                                            v-model="managerCountry"
-                                            :options="countries"
-                                            filter
-                                            optionLabel="name"
-                                            :emptyMessage="$t('Home.no_available_options')"
-                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
-                                            >
-                                            <template #value="slotProps">
-                                                <div v-if="slotProps.value" class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.value.label"
-                                                    :src="slotProps.value.image"
-                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.value.key }}</div>
-                                                </div>
-                                                <span v-else>
-                                                {{ slotProps.placeholder }}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="flex-group-me">
-                                                <img
-                                                    loading="lazy"
-                                                    :alt="slotProps.option.label"
-                                                    :src="slotProps.option.image"
-                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.option.name }}</div>
-                                                <div>{{ slotProps.option.key }}</div>
-                                                </div>
-                                            </template>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.email') }}
-                                    </label>
-                                    <div class="main_input">
-                                        <i class="fas fa-envelope sm-icon"></i>
-                                        <input type="email" class="custum-input-icon validInputs" valid="manager_email" name="manager_email" v-model="manager_email" :placeholder="$t('Auth.please_enter_email')">
-                                    </div>
-                                </div>
-    
-                                <!-- <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.password') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword')" name="manager_password" v-model="manager_password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-    
-                                <div class="form-group">
-                                    <label class="label">
-                                        {{ $t('Auth.confirm_password_sm') }}
-                                    </label>
-                                    <div class="main_input with_icon">
-                                        <input :type="inputType('definitelyNewPassword_2')" name="manager_password_confirm" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
-                                        <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
-                                        <i class="far fa-eye icon"></i>
-                                        </button>
-                                    </div>
-                                </div> -->
-
-
-                            </div>
-                        </div>
-                    </div>
-    
-                    <!-- abilities form -->
-                     
-                    <!-- <div class="custom-width text-start w-100 p-0">
-                        <h1 class="main-title bold head-title">{{ $t("Branches.abilities") }}</h1>
-                        <div class="inner pt-5 p-3">
-                            <div class="row">
-                                <div class="col-12 col-md-4" v-for="(ability) in abilities" :key="ability.id">
-                                <div class="radios form-group">
-                                    <div class="d-flex gap-3">
-                                    <label class="custom-radio custom-check">
-                                        <input
-                                        type="checkbox"
-                                        name="opinion"
-                                        value="true"
-                                        v-model="abilitiesChecked['ability'+ ability.id]"
-                                        class="d-none"
-                                        />
-                                        <span class="mark">
-                                        <i class="fas fa-check icon"></i>
-                                        </span>
-                                        <p class="hint">{{ ability.name }}</p>
-                                    </label>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-    
-                    </div> -->
-    
                     <div class="p-0 mt-4">
                         <button type="submit" class="custom-btn xl" @click="submitData">
                             {{ $t('Global.Saving_changes') }}
@@ -423,18 +274,6 @@
 
     // Toast
     const { successToast, errorToast } = toastMsg();
-
-    const abilitiesChecked = ref({});
-
-    const abilities = ref([
-    {id: 1, name: "إضافة سيارة", value: "manage-packages"},
-
-    {id: 2, name: "حذف سيارة", value: "manage-services"},
-
-    {id: 3, name: "تعديل سيارة", value: "manage-orders"},
-    
-    {id: 4, name: "انهاء الطلب", value: "manage-appoinments"},
-    ]);
 
     // config
     const config = {
@@ -499,11 +338,6 @@
       }
     };
 
-    const getAmPm = (time) => {
-      const [hour] = time.split(':');
-      return hour >= 12 ? 'PM' : 'AM';
-    };
-
     const removeTime = (index) => {
       times.value.splice(index, 1);
     };
@@ -552,7 +386,6 @@
     const manager_image = ref('');
     const manager_name = ref('');
     const manager_email = ref('');
-    const manager_password = ref('');
     const manager_phone = ref('');
 
 
@@ -588,27 +421,7 @@
         lng : null
     });
 
-
-    // flatpicker configration
-    //   { day: 'saturday', from: null, to: null, isClosed: false, },
-    //   { day: 'sunday', from: null, to: null, isClosed: false, },
-    //   { day: 'monday', from: null, to: null, isClosed: false, },
-    //   { day: 'tuesday', from: null, to: null, isClosed: false, },
-    //   { day: 'wednesday', from: null, to: null, isClosed: false, },
-    //   { day: 'thursday', from: null, to: null, isClosed: false, },
-    //   { day: 'friday', from: null, to: null, isClosed: false, },
-
     const times = ref([]);
-
-    const placeholders = ref([
-      t('Branches.saturday'),
-      t('Branches.sunday'),
-      t('Branches.monday'),
-      t('Branches.tuesday'),
-      t('Branches.wednesday'),
-      t('Branches.thursday'),
-      t('Branches.friday'),
-    ]);
 
     // start to methods
 
@@ -640,24 +453,7 @@
         if (password.value !== confirmPassword.value) {
             errors.value.push(t(`validation.confirmPassword`));
         }
-
-        checkSelections()
     }
-
-    // Initialize abilitiesChecked with false for each ability
-    abilities.value.forEach((ability) => {
-      abilitiesChecked.value['ability' + ability.id] = false;
-    });
-
-    const noSelectionWarning = ref(false);
-
-    const checkSelections = () => {
-      // Check if none of the abilities are selected
-      noSelectionWarning.value = !Object.values(abilitiesChecked.value).some((checked) => checked);
-      if (noSelectionWarning.value) {
-        errors.value.push(t(`validation.choose_one_ability`));
-      }
-    };
 
 
     const updateUploadedImages_1 = (images) => {
@@ -762,7 +558,6 @@
         loading.value = true;
         const fd = new FormData(editBranchform.value);
         fd.append('times', JSON.stringify(times.value));
-        fd.append('abilities', JSON.stringify(abilitiesChecked.value));
         fd.append('lat', location.value.lat);
         fd.append('lng', location.value.lng);
         fd.append('branch_id', id);

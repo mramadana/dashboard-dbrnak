@@ -50,7 +50,7 @@
                     {{ $t('Home.branch_managers') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="">
+                <nuxt-link class="link" to="/electronicContract" :class="{ 'active': isActiveLink('/electronicContract') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/later.png" alt="hint-img">
                     </div>
