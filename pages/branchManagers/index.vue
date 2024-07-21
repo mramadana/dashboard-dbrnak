@@ -4,7 +4,7 @@
         <div class="with-plus-btn">
 
             <div class="main-text mb-0">
-                <h1 class="main-title">{{ $t('Home.branches') }}</h1>
+                <h1 class="main-title">{{ $t('Home.branch_managers') }}</h1>
                 <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
             </div>
 
@@ -44,7 +44,7 @@
 
         <Dialog v-model:visible="deleteSuccessfully" modal class="custum_dialog_width" :draggable="false">
             <div class="text-center">
-                <h1 class="main-title bold mb-4">{{ $t('Branches.delete_branch') }}</h1>
+                <h1 class="main-title bold mb-4">{{ $t('employees.delete_branch_manager') }}</h1>
                 <img src="@/assets/images/delete.png" alt="check-img" class="check-img">
                 <div class="section-btns">
                     <button class="custom-btn sm bg-red d-inline-flex" @click="deleteSuccessfullyFun">{{ $t('Global.yes') }}</button>
@@ -100,7 +100,7 @@ const products = ref([]);
 
 const loading = ref(true);
 
-const branch_id = ref('');
+const manager_id = ref('');
 
 // Paginator
 const currentPage = ref(1);
@@ -122,27 +122,48 @@ const SkeletonProducts = new Array(columns.value.length);
 // methods 
 
 const deleteItem = async (id) => {
-    branch_id.value = id;
+    manager_id.value = id;
     deleteSuccessfully.value = true
 }
 
 // edit item
 const editItem = async (id) => {
-    branch_id.value = id;
-    localStorage.setItem('branch_manager_id', branch_id.value);
+    manager_id.value = id;
+    localStorage.setItem('manager_id', manager_id.value);
 }
 
-const getData = async () => {
-    loading.value = true;
-  await axios.get(`provider/managers?page=${currentPage.value}`, config).then(res => {
-    if (response(res) == "success") {
-      products.value = res.data.data.managers;
-      totalPage.value = res.data.data.pagination.total_items;
-      pageLimit.value = res.data.data.pagination.per_page;
+// delete successfully
+    const deleteSuccessfullyFun = () => {
+        deletemanager()
     }
-    loading.value = false;
-  }).catch(err => console.log(err));
-}
+
+    const deletemanager = async () => {
+    const fd = new FormData();
+    fd.append('manager_id', manager_id.value);
+    loading.value = true;
+        await axios.post(`provider/delete-manager`, fd, config).then(res => {
+            if (response(res) == "success") {
+                successToast(res.data.msg);
+                deleteSuccessfully.value = false;
+                getData();
+            } else {
+                errorToast(res.data.msg);
+            }
+            loading.value = false;
+        }).catch(err => console.log(err));
+    }
+
+    const getData = async () => {
+        loading.value = true;
+    await axios.get(`provider/managers?page=${currentPage.value}`, config).then(res => {
+        if (response(res) == "success") {
+        products.value = res.data.data.managers;
+        totalPage.value = res.data.data.pagination.total_items;
+        pageLimit.value = res.data.data.pagination.per_page;
+        }
+        loading.value = false;
+    }).catch(err => console.log(err));
+    }
 
 // Paginate Function
 const onPaginate = (e) => {

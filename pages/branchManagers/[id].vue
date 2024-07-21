@@ -2,12 +2,12 @@
     <div>
 
         <div class="main-text mb-0">
-            <h1 class="main-title">{{ $t('employees.employee_details') }}</h1>
+            <h1 class="main-title">{{ $t('employees.branch_manager_data') }}</h1>
             <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
         </div>
 
         <div class="custom-width text-start w-100">
-            <form @submit.prevent="editemployee" ref="editemployeeform">
+            <form @submit.prevent="submitData" ref="editmanagerform">
                 <div class="inner p-3">
                     <div class="row">
     
@@ -34,7 +34,7 @@
                                 </label>
                                 <div class="main_input">
                                     <i class="fas fa-user sm-icon"></i>
-                                    <input type="text" name="username" v-model="username" class="custum-input-icon validInputs" :placeholder="$t('Table.username')">
+                                    <input type="text" name="name" v-model="name" class="custum-input-icon validInputs" :placeholder="$t('Table.username')">
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
     
-                        <div class="col-12 col-md-6">
+                        <!-- <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.password') }}
@@ -116,7 +116,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
     
                         <div class="col-12">
                             <!-- abilities form -->
@@ -157,7 +157,7 @@
 <script setup>
 
     definePageMeta({
-        name: "employees.employee_details",
+        name: "employees.branch_manager_data",
         middleware: ['auth', 'check'],
     });
     const { id } = useRoute().params
@@ -196,7 +196,9 @@
     const email = ref('');
     const password = ref('');
     const phone = ref('');
-    const username = ref('');
+    const image = ref('');
+    const errors = ref([]);
+    const loading = ref(false);
 
     const abilitiesChecked = ref({});
 
@@ -211,21 +213,6 @@
     ]);
 
     // methods
-
-    // Initialize abilitiesChecked with false for each ability
-    abilities.value.forEach((ability) => {
-      abilitiesChecked.value['ability' + ability.id] = false;
-    });
-
-    const noSelectionWarning = ref(false);
-
-    const checkSelections = () => {
-      // Check if none of the abilities are selected
-      noSelectionWarning.value = !Object.values(abilitiesChecked.value).some((checked) => checked);
-      if (noSelectionWarning.value) {
-        errors.value.push(t(`validation.choose_one_ability`));
-      }
-    };
 
     const inputType = (input) => {
         return passwordVisible.value[input] ? 'text' : 'password';
@@ -253,7 +240,25 @@
         }).catch(err => console.log(err));
     };
 
+    const getDetaile = async () => {
+    loading.value = true;
+    await axios.get(`provider/manager-details?manager_id=${id}`, config).then(res => {
+        if (response(res) == "success") {
+            name.value = res.data.data.name;
+            email.value = res.data.data.email;
+            phone.value = res.data.data.phone;
+            image.value = res.data.data.image;
+            selectedCountry.value.key = res.data.data.country_code;
+        }
+        loading.value = false;
+    }).catch(err => console.log(err));
+    }
+
     onMounted( async () => {
+
+        // get detailes of manager
+        await getDetaile();
+
         // Get All countries
        await getCountries();
     });

@@ -61,7 +61,7 @@
 <script setup>
     definePageMeta({
         name: "Global.change_password",
-        middleware: 'auth',
+        middleware: ['auth', 'check'],
     });
 
     const { t } = useI18n({ useScope: 'global' });

@@ -260,7 +260,11 @@
         "daily" : "Daily",
         "monthly" : "Monthly",
         "yearly" : "Yearly",
-        "desc_car" : "Car description"
+        "desc_car" : "Car description",
+        "new": "New",
+        "delivery_date" : "delivery date",
+        "car_count" : "Car count",
+        "privacy_policy" : "Privacy policy"
     },
 
     "order": {
@@ -283,7 +287,18 @@
         "number_of_cars": "Number of cars",
         "number_of_branches": "number of branches",
         "number_of_canceled_orders": "Number of canceled orders",
-        "location_determined" : "The location has not been determined yet"
+        "location_determined" : "The location has not been determined yet",
+        "new" : "New",
+        "current" : "current",
+        "rented" : "Rented",
+        "order_date" : "Order date",
+        "car_name_2" : "Name of the desired vehicle",
+        "rent_type" : "Rent type",
+        "rental_period" : "Rental period",
+        "rental_cost" : "Rental cost",
+        "rs" : "RS",
+        "choose_payment" : "Choose payment",
+        "customer_data" : "Customer data"
     },
     
     "Table" : {
@@ -377,6 +392,7 @@
         "edit_branch" : "Edit branch",
         "location_determined" : "The location has not been determined yet",
         "no_times" : "No times of work",
-        "current_location" : "Current location"
+        "current_location" : "Current location",
+        "delete_branch_manager" : "Are you sure you want to delete the branch manager?"
     }
 }

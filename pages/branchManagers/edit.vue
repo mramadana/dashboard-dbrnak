@@ -5,7 +5,7 @@
             <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
         </div>
         <div class="custom-width text-start w-100">
-            <form @submit.prevent="editemployee" ref="editemployeeform">
+            <form @submit.prevent="submitData" ref="editmanagerform">
                 <div class="inner p-3">
                     <div class="row">
     
@@ -32,7 +32,7 @@
                                 </label>
                                 <div class="main_input">
                                     <i class="fas fa-user sm-icon"></i>
-                                    <input type="text" name="username" v-model="username" class="custum-input-icon validInputs" :placeholder="$t('Table.username')">
+                                    <input type="text" name="name" v-model="name" class="custum-input-icon validInputs" :placeholder="$t('Table.username')">
                                 </div>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                     </div>
     
                     
-                    <button class="custom-btn md m-auto">
+                    <button class="custom-btn md m-auto" type="submit">
                         {{ $t('Cars.edit') }}
                         <span class="spinner-border spinner-border-sm" v-if="loading" role="status"
                         aria-hidden="true"></span>
@@ -200,9 +200,14 @@
     const email = ref('');
     const password = ref('');
     const phone = ref('');
-    const username = ref('');
-
+    const manager_id = ref('');
+    const image = ref('');
+    const errors = ref([]);
+    const loading = ref(false);
+    const editmanagerform = ref(null);
     const abilitiesChecked = ref({});
+    // Toast
+    const { successToast, errorToast } = toastMsg();
 
     const abilities = ref([
         {id: 1, name: "إضافة سيارة", value: "manage-packages"},
@@ -243,7 +248,64 @@
         uploadedImage_2.value = images;
     };
 
+    // validation Function
+    const validate = () => {
+        let imageUploaderInput = document.querySelector('.RemoveValid');
+        if (imageUploaderInput) {
+            imageUploaderInput.classList.remove('validInputs');
+        }
+        let allInputs = document.querySelectorAll('.validInputs');
+        for (let i = 0; i < allInputs.length; i++) {
+            if (allInputs[i].value === '') {
+                errors.value.push(t(`validation.${allInputs[i].name}`));
+            }
+        }
+
+        checkSelections()
+    }
+
+    // get detailes of manager
+    const getDetaile = async () => {
+    loading.value = true;
+    await axios.get(`provider/manager-details?manager_id=${manager_id.value}`, config).then(res => {
+        if (response(res) == "success") {
+            name.value = res.data.data.name;
+            email.value = res.data.data.email;
+            phone.value = res.data.data.phone;
+            image.value = res.data.data.image;
+            selectedCountry.value.key = res.data.data.country_code;
+        }
+        loading.value = false;
+    }).catch(err => console.log(err));
+    }
+
+    const submitData = () => {
+        loading.value = true;
+        const fd = new FormData(editmanagerform.value);
+        fd.append('manager_id', manager_id.value);
+        fd.append('country_code', selectedCountry.value.key);
+        validate();
+        if (errors.value.length) {
+            errorToast(errors.value[0]);
+            loading.value = false;
+            errors.value = [];
+        } else {
+            axios.post('provider/edit-manager', fd, config).then(res => {
+                if (response(res) == "success") {
+                    successToast(res.data.msg);
+                    getDetaile();
+                    setTimeout(() => {
+                        navigateTo('/branchManagers');
+                    }, 500)
+                }
+                loading.value = false;
+            }).catch(err => console.log(err));
+        }
+    }
+
     //  Get All countries
+    
+    
     const getCountries = async () => {
         await axios.get('countries').then(res => {
             if (response(res) == "success") {
@@ -258,8 +320,12 @@
     };
 
     onMounted( async () => {
+        manager_id.value = localStorage.getItem('manager_id');
+        console.log(manager_id.value, "manager_id");
         // Get All countries
        await getCountries();
+
+       await getDetaile();
     });
 
 </script>

@@ -36,12 +36,12 @@
                     {{ $t('Home.branches') }}
                 </nuxt-link>
 
-                <!-- <nuxt-link class="link" to="/employees" :class="{ 'active': isActiveLink('/employees') }">
+                <nuxt-link class="link" to="/myorders" :class="{ 'active': isActiveLink('/myorders') }">
                     <div class="hint-img">
-                        <img src="@/assets/images/sidebar/branch.png" alt="hint-img">
+                        <img src="@/assets/images/sidebar/orders.png" alt="hint-img">
                     </div>
-                    {{ $t('Home.employees') }}
-                </nuxt-link> -->
+                    {{ $t('Home.myrequests') }}
+                </nuxt-link>
 
                 <nuxt-link class="link" to="/branchManagers" :class="{ 'active': isActiveLink('/branchManagers') }">
                     <div class="hint-img">
@@ -64,21 +64,21 @@
                     {{ $t('Home.settings') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="">
+                <nuxt-link class="link" to="/privacyPolicy" :class="{ 'active': isActiveLink('/privacypolicy') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/privacy.png" alt="hint-img">
                     </div>
                     {{ $t('Home.privacy_policies') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="">
+                <nuxt-link class="link" to="/terms" :class="{ 'active': isActiveLink('/terms') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/later.png" alt="hint-img">
                     </div>
                     {{ $t('Home.terms_and_conditions') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="">
+                <nuxt-link class="link" to="/whoarewe" :class="{ 'active': isActiveLink('/whoarewe') }">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/users.png" alt="hint-img">
                     </div>
@@ -93,12 +93,12 @@
                     {{ $t('Home.connect_us') }}
                 </nuxt-link>
 
-                <nuxt-link class="link" to="">
+                <button class="link w-100" @click="logout">
                     <div class="hint-img">
                         <img src="@/assets/images/sidebar/logout.png" alt="hint-img">
                     </div>
                     {{ $t('Home.logout') }}
-                </nuxt-link>
+                  </button>
             </div>
 
         </div>
@@ -127,23 +127,31 @@ const isActiveLink = (path) => {
 
 const emit = defineEmits(['toggle-active']);
 
+    // Toast
+    const { successToast, errorToast } = toastMsg();
 
-// Handle link click, store clicked link path, and scroll to middle
-const handleLinkClick = (event) => {
-  const target = event.target.closest('.link');
-  const path = target.getAttribute('to');
-  localStorage.setItem('clickedLinkPath', path);
+    // Axios
+    const axios = useApi();
+    
+    // store
+    const store = useAuthStore();
 
-  if (window.innerWidth < 768) {
-    emit('toggle-active');
-  }
-  if (target) {
-    target.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    });
-  }
-};
+
+  const { token } = storeToRefs(store);
+
+  const config = {
+      headers: { Authorization: `Bearer ${token.value}` }
+  };
+
+    const { response } = responseApi();
+
+    const { logoutHandler } = store;
+    const logout = async () => {
+          const res = await logoutHandler();
+          res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+          localStorage.clear();
+      }
+
 
 
 // Scroll to the middle of the previously clicked link on mount

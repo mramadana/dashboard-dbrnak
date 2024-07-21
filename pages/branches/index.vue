@@ -34,9 +34,9 @@
         </div>
 
         <!-- ***** datatable skeleton ***** -->
-            <div v-if="loading">
-                <DatatableSkelton :SkeletonProducts="SkeletonProducts" />
-            </div>
+        <div v-if="loading">
+            <DatatableSkelton :SkeletonProducts="SkeletonProducts" />
+        </div>
 
         <!--***** Paginator *****-->
         <div class="paginate-parent" v-if="showPaginate">
@@ -137,21 +137,24 @@ const viewItem = async (id) => {
 }
 
 const deleteSuccessfullyFun = () => {
-    console.log(branch_id.value, "branch_id");
+    deleteBranch()
 }
 
-// const deleteItem = async (id) => {
-//     loading.value = true;
-//     await axios.delete(`provider/branches/${id}`, config).then(res => {
-//         if (response(res) == "success") {
-//             successToast(res.data.msg);
-//             getData();
-//         } else {
-//             errorToast(res.data.msg);
-//         }
-//         loading.value = false;
-//     }).catch(err => console.log(err));
-// }
+const deleteBranch = async () => {
+    loading.value = true;
+    const fd = new FormData();
+    fd.append('branch_id', branch_id.value);
+    await axios.delete(`provider/delete-branch`, config).then(res => {
+        if (response(res) == "success") {
+            successToast(res.data.msg);
+            deleteSuccessfully.value = false;
+            getData();
+        } else {
+            errorToast(res.data.msg);
+        }
+        loading.value = false;
+    }).catch(err => console.log(err));
+}
 
 const getData = async () => {
     loading.value = true;

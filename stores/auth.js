@@ -116,7 +116,7 @@ export const useAuthStore = defineStore("auth", {
         headers: { Authorization: `Bearer ${this.token}` },
       };
 
-      const resData = await axios.delete("sign-out", config);
+      const resData = await axios.delete("sign-out?device_id=11111111111", config);
       if (
         response(resData) == "success" ||
         response(resData) == "blocked" ||
@@ -128,7 +128,9 @@ export const useAuthStore = defineStore("auth", {
           country_code: "",
         };
         this.isLoggedIn = false;
-        navigateTo("/Auth/login");
+        setTimeout(() => {
+          navigateTo("/Auth/login");
+        }, 300);
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };

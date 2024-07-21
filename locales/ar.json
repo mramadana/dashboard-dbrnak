@@ -80,7 +80,7 @@
         "please_enter_email" : "الرجاء ادخال البريد الالكتروني",
         "confirm_password_sm" : "تأكيد كلمة المرور",
         "agree_to" : "الموافقة على",
-        "terms_and_conditions" : "الشروط والإحكام",
+        "terms_and_conditions" : "الشروط والأحكام",
         "already_have_account" : "لديك حساب بالفعل ؟",
         "activation_code" : "كود التفعيل",
         "select_city" : "اختر المدينة",
@@ -220,7 +220,7 @@
         "Activate_notifications" : "تفعيل الاشعارات",
         "delete" : "حذف",
         "account_deleted" : "تم حذف الحساب",
-        "terms_and_conditions" : "الشروط والإحكام",
+        "terms_and_conditions" : "الشروط والأحكام",
         "about_site" : "عن الموقع",
         "message" : "الرسالة",
         "please_enter_message" : "برجاء كتابة الرساله",
@@ -261,7 +261,11 @@
         "daily" : "يومى",
         "monthly" : "شهرى",
         "yearly" : "سنوى",
-        "desc_car" : "وصف السيارة"
+        "desc_car" : "وصف السيارة",
+        "new": "الجديدة",
+        "delivery_date" : "تاريخ التسليم",
+        "car_count" : "عدد السيارات",
+        "privacy_policy" : "سياسة الخصوصية"
     },
 
     "order": {
@@ -284,7 +288,18 @@
         "number_of_cars": "عدد السيارات",
         "number_of_branches": "عدد الفروع",
         "number_of_canceled_orders": "عدد الطلبات الملغيه",
-        "location_determined" : "لم يتم تحديد الموقع بعد"
+        "location_determined" : "لم يتم تحديد الموقع بعد",
+        "new" : "جديد",
+        "current" : "حالي",
+        "rented" : "تم التأجير",
+        "order_date" : "تاريخ الطلب",
+        "car_name_2" : "اسم السيارة المطلوبة",
+        "rent_type" : "نوع الإيجار",
+        "rental_period" : "مدة الإيجار",
+        "rental_cost" : "تكلفة اليوم",
+        "rs" : "ر.س",
+        "choose_payment" : "طريقة الدفع",
+        "customer_data" : "بيانات العميل"
     },
     
     "Table" : {
@@ -379,6 +394,8 @@
         "edit_branch" : "تعديل الفرع",
         "location_determined" : "لم يتم تحديد الموقع بعد",
         "no_times" : "لا يوجد أوقات عمل",
-        "current_location" : "الموقع الحالي"
+        "current_location" : "الموقع الحالي",
+        "branch_manager_data" : "بيانات مدير الفرع",
+        "delete_branch_manager" : "هل بالفعل تريد حذف مدير الفرع؟"
     }
 }

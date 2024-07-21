@@ -507,11 +507,6 @@
     const removeTime = (index) => {
       times.value.splice(index, 1);
     };
-    
-
-    const showData = () => {
-      console.log(times.value)
-    };
 
     const createConfig = (index, type) => ({
       enableTime: true,
@@ -740,12 +735,10 @@
     const getDetaile = async () => {
         await axios.get(`provider/branch-details?branch_id=${id}`, config).then(res => {
             if (response(res) == "success") {
-                console.log(branchCountry.value.key, "branchCountry");
                 name.value = res.data.data.name;
                 email.value = res.data.data.email;
                 phone.value = res.data.data.phone;
                 image.value = res.data.data.image;
-                console.log(image.value, "image");
                 branchCountry.value.key = res.data.data.country_code;
                 location.value.lat = +res.data.data.lat;
                 location.value.lng = +res.data.data.lng;

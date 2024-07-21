@@ -1,18 +1,20 @@
 <template>
     <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Home.connect_us") }}</h1>
+        <h1 class="main-title bold lg mb-4">{{ $t("Home.connect_us") }}</h1>
+        <div class="layout-form custom-width w-100">
+            <img src="@/assets/images/black_logo.png" alt="logo" class="login_logo sm mb-4" loading="lazy">
+
             <form @submit.prevent="submitData" ref="connectForm">
                 <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
+                    <div class="col-12 col-md-6 mr-auto">
 
                         <div class="form-group">
                             <label class="label">
-                                {{ $t('Auth.username') }}
+                                {{ $t('Auth.name') }}
                             </label>
                             <div class="main_input">
                                 <i class="fas fa-user sm-icon"></i>
-                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
+                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.name')">
                             </div>
                         </div>
 
@@ -65,24 +67,14 @@
 
                         <div class="form-group">
                             <label class="label">
-                                {{ $t('Auth.email') }}
-                            </label>
-                            <div class="main_input">
-                                <i class="fas fa-envelope sm-icon"></i>
-                                <input type="email" class="custum-input-icon validInputs" valid="email" name="email" v-model="email" :placeholder="$t('Auth.please_enter_email')">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
                                 {{ $t('Global.message') }}
                             </label>
-                            <textarea  class="main_input main_area mb-4 validInputs" valid="message" name="message" v-model="message" :placeholder="$t('Global.please_enter_message')"></textarea>
+                            <textarea  class="main_input main_area mb-4 validInputs" valid="content" name="content" v-model="content" :placeholder="$t('Global.please_enter_message')"></textarea>
                         </div>
 
                         
                         
-                        <button class="custom-btn w-100 mr-auto mt-4">
+                        <button class="custom-btn md mr-auto mt-4">
                             {{ $t('Global.send') }}
                             <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
                         </button>
@@ -97,6 +89,7 @@
 
 definePageMeta({
     name: "Home.connect_us",
+    middleware: ['auth', 'check'],
 });
 
 const selectedCountry = ref(null);
@@ -114,6 +107,15 @@ const errors = ref([]);
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n({ useScope: 'global' });
+
+// store
+const store = useAuthStore();
+
+const { token } = storeToRefs(store);
+
+const config = {
+    headers: { Authorization: `Bearer ${token.value}` }
+};
 
 // success response
 const { response } = responseApi();
@@ -140,14 +142,14 @@ const validate = () => {
 const submitData = async () => {
     loading.value = true;
     const fd = new FormData(connectForm.value);
-    fd.append('country_id', selectedCountry.value.key);
+    fd.append('country_code', selectedCountry.value.key);
     validate();
     if (errors.value.length) {
             errorToast(errors.value[0]);
             loading.value = false;
             errors.value = [];
         } else {
-            axios.post("contact-us", fd).then(res => {
+            axios.post("provider/contact-us", fd, config).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
                     connectForm.value.reset();

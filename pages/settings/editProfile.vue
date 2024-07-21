@@ -147,7 +147,8 @@
 <script setup>
     definePageMeta({
         name: "Home.edit_profile",
-        middleware: 'auth',
+        middleware: ['auth', 'check'],
+
     });
 
 import { useI18n } from 'vue-i18n';

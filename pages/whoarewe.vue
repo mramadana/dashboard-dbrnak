@@ -2,7 +2,7 @@
     <div>
         
         <div class="container">
-            <h1 class="main-title bold lg">{{ $t("Global.terms_and_conditions") }}</h1>
+            <h1 class="main-title bold lg">{{ $t("Home.who_are_we") }}</h1>
             <div class="layout-form custom-width w-100">
 
                 <img src="@/assets/images/black_logo.png" alt="logo" class="login_logo sm mb-4" loading="lazy">
@@ -26,7 +26,7 @@
 <script setup>
 
 definePageMeta({
-    name: "Global.terms_and_conditions",
+    name: "Home.who_are_we",
     middleware: ['auth', 'check'],
 });
 
@@ -52,7 +52,7 @@ const terms = ref('');
 
 const getTerms = async () => {
     loading.value = true;
-    await axios.get(`provider/terms`, config).then(res => {
+    await axios.get(`provider/who-us`, config).then(res => {
     if (response(res) == "success") {
         terms.value = res.data.data;
     }
