@@ -263,6 +263,7 @@
         if (imageUploaderInput) {
             imageUploaderInput.classList.remove('validInputs');
         }
+        
         let allInputs = document.querySelectorAll('.validInputs');
         for (let i = 0; i < allInputs.length; i++) {
             if (allInputs[i].value === '') {

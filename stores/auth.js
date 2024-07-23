@@ -26,6 +26,7 @@ export const useAuthStore = defineStore("auth", {
     address: null,
     selectedAddress: null,
     abilities_list: [],
+    test_data: null
   }),
   actions: {
     // Sign In
@@ -78,7 +79,7 @@ export const useAuthStore = defineStore("auth", {
       };
 
       const resData = await axios.post(
-        "update-profile?_method=put",
+        "provider/update-profile",
         formData,
         config
       );

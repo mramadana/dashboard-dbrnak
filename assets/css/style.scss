@@ -1483,7 +1483,7 @@ input.p-inputtext.p-component {
     justify-content: center;
     width: 100%;
     height: 100%;
-
+    color: inherit;
     i {
       font-size: 20px;
     }
@@ -1540,6 +1540,11 @@ input.p-inputtext.p-component {
           transform: scale(1);
         }
       }
+    }
+    
+    &.main-notfications {
+      background-color: transparent;
+      box-shadow: none;
     }
   }
 

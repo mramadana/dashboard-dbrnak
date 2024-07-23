@@ -15,10 +15,10 @@
                         </NuxtLink>
 
                         <div class="profile-hint resp-icon">
-                            <img :src="user.image" loading="lazy" class="user-img">
+                            <img :src="user?.image" loading="lazy" class="user-img">
                             <div class="hints">
-                                <p class="title" v-if="user.name">{{ user.name }} </p>
-                                <p class="desc" v-if="user.type">{{ user.type }}</p>
+                                <p class="title" v-if="user?.name">{{ user.name }} </p>
+                                <p class="desc">{{ $t("Home.provider") }}</p>
                             </div>
                         </div>
 

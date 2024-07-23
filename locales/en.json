@@ -131,7 +131,8 @@
         "electronic_contract" : "Electronic contract",
         "privacy_policies" : "Privacy policies",
         "who_are_we" : "who are we",
-        "employees" : "Employees"
+        "employees" : "Employees",
+        "provider" : "Provider"
     },
 
     "Global": {

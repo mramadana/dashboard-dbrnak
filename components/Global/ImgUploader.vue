@@ -57,9 +57,12 @@
         alt="Uploaded Image"
         class="test"
       />
-      <div v-else-if="acceptedFiles == 'application/*'">
-        <p>{{ image.file.name }}</p>
-        pdf text
+      <div  class="w-100 h-100" v-else-if="acceptedFiles == 'application/*'">
+        <a :href="image.url" target="_blank" download class="file-name">
+          <i class="far fa-file-alt"></i>
+          <p>{{ image.file ? image.file.name : 'Unknown file' }}</p>
+        </a>
+        <!-- pdf text -->
       </div>
       <button class="remove-btn" @click="removeImage(index)">
         <i class="fa-solid fa-xmark"></i>
@@ -109,7 +112,8 @@ export default {
             }
 
         // Emit a custom event to pass the uploadedImages array to the parent component
-        this.$emit("uploaded-images-updated", this.uploadedImages[0].file);
+        // this.$emit("uploaded-images-updated", this.uploadedImages[0].file);
+        this.$emit("uploaded-images-updated", this.uploadedImages.map(img => ({ file: img.file, name: img.file.name })));
         console.log(this.uploadedImages)
         // event.target.value = null;
     },

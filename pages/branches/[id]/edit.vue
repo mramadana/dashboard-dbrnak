@@ -306,7 +306,7 @@
         const toTime = new Date(`1970-01-01T${to.value}:00`);
 
         if (fromTime >= toTime) {
-          alert('The "from" time must be less than the "to" time.');
+          errorToast(t(`Auth.time_should_be_more`));
           return;
         }
 

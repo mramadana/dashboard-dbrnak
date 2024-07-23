@@ -12,7 +12,7 @@
                                     <i class="fas fa-edit"></i>
                                 </div>
                                 <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_4.length > 0, 'default-class': true}">
-                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_4" />
+                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" />
                             </div>
                         </div>
 
@@ -168,10 +168,11 @@
             :lng="lng"
             @handleClose="handleClose"
             :closeModal_btn="closeModal_btn"
-            :submit_location="submit_location"
             :isDraggable="false"
             :title= "$t('Auth.location')"
-            
+            :mapAddress="mapAddress"
+            :submit_location="submit_location"
+            :AutoComplete="true"
         />
 
         <!-- if no lat and lng -->
@@ -195,10 +196,11 @@ definePageMeta({
     middleware: 'auth'
 });
 // pinia store
-
+const submit_location = ref(true);
 // success response
 const { response } = responseApi();
 
+const mapAddress = ref('');
 
 // // Axios
 const axios = useApi();
@@ -237,6 +239,7 @@ const closeModal_btn = ref(true);
 const lat = ref(null);
 const lng = ref(null);
 
+const city_id = ref(null);
 // image upload
 
 const uploadedImage = ref([]);
@@ -267,27 +270,15 @@ const editProfileform = ref(null);
         await axios.get('cities').then(res => {
             if (response(res) == "success") {
                 cities.value = res.data.data;
+                for (let i = 0; i < cities.value.length; i++) {
+                if (cities.value[i].id == city_id.value) {
+                    city.value = cities.value[i];
+                }
+            }
             }
         }).catch(err => console.log(err));
     };
 
-    //  get profile data
-    const profile = async () => {
-        await axios.get('profile', config).then(res => {
-            name.value = res.data.data.name;
-            phone.value = res.data.data.phone;
-            email.value = res.data.data.email;
-            selectedCountry.value.key = res.data.data.country_code;
-            image.value = res.data.data.image;
-            mainAddress.value = res.data.data.map_desc;
-            lat.value = res.data.data.lat;
-            lng.value = res.data.data.lng;
-            logo.value = res.data.data.logo;
-            file.value = res.data.data.file;
-            commercial_image.value = res.data.data.commercial_image;
-        }).catch(err => console.log(err));
-    }
-    
     const getCountries = async () => {
         await axios.get('countries').then(res => {
         if (response(res) == "success") {
@@ -300,6 +291,26 @@ const editProfileform = ref(null);
             }
         }).catch(err => console.log(err));
     };
+    
+
+    //  get profile data
+    const profile = async () => {
+        await axios.get('provider/show-profile', config).then(res => {
+            name.value = res.data.data.name;
+            phone.value = res.data.data.phone;
+            email.value = res.data.data.email;
+            selectedCountry.value.key = res.data.data.country_code;
+            image.value = res.data.data.image;
+            mainAddress.value = res.data.data.map_desc;
+            lat.value = +res.data.data.lat;
+            lng.value = +res.data.data.lng;
+            logo.value = res.data.data.logo;
+            commercial_image.value = res.data.data.commercial_image;
+            mapAddress.value = res.data.data.map_desc;
+            city_id.value = res.data.data.city_id;
+            file.value = res.data.data.file;
+        }).catch(err => console.log(err));
+    }
 
     onMounted(async () => {
         await profile();

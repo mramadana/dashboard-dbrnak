@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1 class="main-title bold head-title mb-5">{{ $t("Home.edit_profile") }}</h1>
-
         <div class="container">
             <form @submit.prevent="editProfile" ref="editProfileform">
                 <div class="row pb-4">
@@ -23,7 +22,7 @@
                             </label>
                             <div class="main_input">
                                 <i class="fas fa-user sm-icon"></i>
-                                <input type="text" class="custum-input-icon" name="name" readonly v-model="name" :placeholder="$t('Auth.enter_username')">
+                                <input type="text" class="custum-input-icon" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
                             </div>
                         </div>
 
@@ -33,7 +32,7 @@
                             </label>
                             <div class="flex justify-content-center dropdown_card main_input special-custom">
                                 <i class="fa-solid fa-city sm-icon"></i>
-                                <Dropdown v-model="city" :options="cities" disabled optionLabel="name" :placeholder="$t('Auth.select_city')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="city" :options="cities" optionLabel="name" :placeholder="$t('Auth.select_city')" class="w-full md:w-14rem custum-dropdown" />
                             </div>
                         </div>
 
@@ -120,10 +119,13 @@
             :lng="lng"
             @handleClose="handleClose"
             :closeModal_btn="closeModal_btn"
+            @closeModal="closeModal"
             :submit_location="submit_location"
-            :isDraggable="false"
+            :isDraggable="true"
             :title= "$t('Auth.location')"
             @updateAddress="handleUpdateAddress"
+            :mapAddress="mapAddress"
+            :current_location_button="true"
         />
 
         <!-- if no lat and lng -->
@@ -151,17 +153,23 @@
 
     });
 
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n({ useScope: 'global' });
+    const mapAddress = ref('');
 
-// pinia store
-import { useAuthStore } from '~/stores/auth';
-import { useGlobalStore } from '~/stores/global';
+    import { useI18n } from 'vue-i18n';
+    const { t } = useI18n({ useScope: 'global' });
 
+    // pinia store
+    import { useAuthStore } from '~/stores/auth';
+
+    const city_id = ref(null);
+
+    const closeModal = () => {
+        visible.value = false
+        mainAddress.value = location.value.address
+    }
 
 // Store
 const store = useAuthStore();
-const globalStore = useGlobalStore();
 
 // success response
 const { response } = responseApi();
@@ -176,8 +184,7 @@ const axios = useApi();
 
 
 /******************* Data *******************/
-const selectedCountry = ref({})
-const countries = ref([]);
+
 const image = ref('');
 const name = ref('');
 const city = ref(null);
@@ -252,7 +259,7 @@ const handleUpdateAddress = (newAddress) => {
     }
 
         // Validation Function
-        function validate() {
+    function validate() {
         let allInputs = document.querySelectorAll('.validInputs');
         for (let i = 0; i < allInputs.length; i++) {
             if (allInputs[i].value === '') {
@@ -261,17 +268,33 @@ const handleUpdateAddress = (newAddress) => {
         }
     };
 
+    const getCities = async () => {
+        await axios.get('cities').then(res => {
+            if (response(res) == "success") {
+                cities.value = res.data.data;
+                for (let i = 0; i < cities.value.length; i++) {
+                if (cities.value[i].id == city_id.value) {
+                    city.value = cities.value[i];
+                }
+            }
+            }
+        }).catch(err => console.log(err));
+    };
+
     //  get profile data
     const profile = async () => {
-        await axios.get('profile', config).then(res => {
+
+        await axios.get('provider/show-profile', config).then(res => {
             name.value = res.data.data.name;
             image.value = res.data.data.image;
             mainAddress.value = res.data.data.map_desc;
-            lat.value = res.data.data.lat;
-            lng.value = res.data.data.lng;
+            lat.value = +res.data.data.lat;
+            lng.value = +res.data.data.lng;
             logo.value = res.data.data.logo;
-            // file.value = res.data.data.file;
+            mapAddress.value = res.data.data.map_desc;
             commercial_image.value = res.data.data.commercial_image;
+            city_id.value = res.data.data.city_id;
+            file.value = res.data.data.file
         }).catch(err => console.log(err));
     }
 
@@ -281,8 +304,14 @@ const handleUpdateAddress = (newAddress) => {
         if(city.value) {
             fd.append('city_id', city.value.id);
         }
+        if(location.value) {
+            fd.append('lat', location.value.lat);
+            fd.append('lng', location.value.lng);
+        } else {
+            fd.append('lat', lat.value);
+            fd.append('lng', lng.value);
+        }
         fd.append('map_desc', mainAddress.value);
-
         validate();
 
         // Get Returned Data From Store
@@ -303,8 +332,9 @@ const handleUpdateAddress = (newAddress) => {
 
     }
 
-    onMounted(() => {
-        profile();
+    onMounted(async () => {
+       await profile();
+       await getCities();
     })
     
 

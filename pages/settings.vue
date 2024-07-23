@@ -1,6 +1,9 @@
 <template>
     <div>
 
+        <h1 class="main-title bold lg">{{ $t("Home.settings") }}</h1>
+        <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
+
         <div class="container">
             
             <div class="section-btns justify-content-start mb-4">
@@ -56,6 +59,8 @@
 
     const { deleteAccountHandler } = store;
 
+    const { user } = storeToRefs(store);
+
     const delete_Successfully = ref(false)
 
     const deleteAcount = ref(false)
@@ -72,26 +77,3 @@
     }
 </script>
 
-<!-- <script>
-    definePageMeta({
-        name: "Home.settings",
-        middleware: "auth",
-    })
-
-    export default {
-        data() {
-            return {
-                deleteAcount: false,
-                delete_Successfully: false,
-            };
-        },
-
-        methods: {
-            deletedAcount() {
-                localStorage.clear();
-                this.delete_Successfully = true
-                this.deleteAcount = false
-            }
-        }
-    }
-</script> -->

@@ -1,18 +1,15 @@
 <template>
+
     <div class="custom-height">
       <div class="container">
-          <div class="layout-form custom-width lg">
-              <h1 class="main-title bold lg mb-5 position-relative">
-                {{ $t("Global.notifications") }}
-                
-                <button type="button" class="deleteAll-btn" @click="deleteAll" v-if="notifications.length">
-                    <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading"></i>
-                    <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
-                    <div class="resp-text">
-                        {{ $t("Global.delete_all") }}
-                    </div>
-                </button>
-            </h1>
+
+          <h1 class="main-title bold lg position-relative">
+              {{ $t("Global.notifications") }}
+          </h1>
+
+          <p class="main-disc">{{ $t('Home.welcome') }} {{ user?.name }} ، {{ $t('Home.welcome_back') }}</p>
+
+          <div class="layout-form custom-width main-notfications mt-0 lg">
 
             <transition-group name="fade" v-if="!loading">
                 
@@ -20,7 +17,7 @@
                     <div class="layout-form sm" v-if="notifications.length">
                     <div class="notificatin-card">
                         <div class="d-flex">
-                            <img src="@/assets/images/black_logo.png" loading="lazy" alt="notificatin-img" class="notificatin-img">
+                            <img src="@/assets/images/notifications-img.png" loading="lazy" alt="notificatin-img" class="notificatin-img">
                             <div class="text text-start">
                                 <h1 class="main-title normal wrap_text"> {{ result.body }}</h1>
                                 <div class="d-flex align-items-center gap-2">
@@ -49,7 +46,7 @@
 
             <div v-if="loading">
                 <div class="notification-items">
-                    <div class="not-item d-flex" v-for="i in 5" :key="i">
+                    <div class="not-item d-flex" v-for="i in 3" :key="i">
                         <div class="right">
                             <Skeleton shape="circle" size="4rem"></Skeleton>
                             <div class="not_body">
@@ -91,7 +88,7 @@ import { useAuthStore } from '~/stores/auth';
 
 // Store
 const store = useAuthStore();
-const { token } = storeToRefs(store);
+const { token, user } = storeToRefs(store);
 
 // loading
 const loading = ref(true);
@@ -187,13 +184,14 @@ onMounted(async () => {
 /******************* Required Auth *******************/
 definePageMeta({
     name: "Global.notifications",
-    middleware: 'auth'
+    middleware: ['auth', 'check'],
 });
 
 </script>
 
 
 <style lang="scss">
+
     .wrap_text {
         word-break: break-word;
     }
@@ -210,6 +208,7 @@ definePageMeta({
         display: flex;
         flex-grow: 1;
         justify-content: space-between;
+        align-items: start;
         .notificatin-img {
             width: 65px;
             height: 45px;

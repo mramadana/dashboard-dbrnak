@@ -116,7 +116,7 @@
         "awamer_alshabaka" : "أوامر الشبكة",
         "copy_right" : "جميع الحقوق محفوظة لموقع أميال",
         "profile_personly" : "الملف الشخصي",
-        "settings" : "الاعدادات",
+        "settings" : "الإعدادات",
         "portfolio" : "المحفظة",
         "myrequests" : "طلباتي",
         "logout" : "تسجيل خروج",
@@ -131,7 +131,8 @@
         "electronic_contract" : "العقد الإلكتروني",
         "privacy_policies" : "سياسات الخصوصية",
         "who_are_we" : "من نحن",
-        "employees" : "الموظفين"
+        "employees" : "الموظفين",
+        "provider" : "مقدم خدمة"
     },
 
     "Global": {
